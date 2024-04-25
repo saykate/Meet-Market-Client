@@ -5,7 +5,7 @@ export type GetUserRequest = {
   token: string;
 };
 
-export const user = async ({ userId, token }: GetUserRequest) => {
+export const getUser = async ({ userId, token }: GetUserRequest) => {
   if (!token) {
     throw new Error("No token, authorization denied");
   }
