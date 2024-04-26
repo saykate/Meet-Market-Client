@@ -35,7 +35,7 @@ export const listOfUsers = async () => {
   return data;
 };
 
-export const userLists = async ({ userId, token }: GetUserRequest) => {
+export const getUserLists = async ({ userId, token }: GetUserRequest) => {
   if (!token) {
     throw new Error("No token, user not authorized");
   }
@@ -54,7 +54,7 @@ export const userLists = async ({ userId, token }: GetUserRequest) => {
   return data;
 };
 
-export const userMessages = async ({ userId, token }: GetUserRequest) => {
+export const getUserMessages = async ({ userId, token }: GetUserRequest) => {
   if (!token) {
     throw new Error("No token, user not authorized");
   }
