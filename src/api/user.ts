@@ -73,8 +73,7 @@ export const getUserMessages = async ({ userId, token }: GetUserRequest) => {
   return data;
 };
 
-//TODO:
-/* export const updateUser = async ({ userId, token }: GetUserRequest) => {
+export const updateUser = async ({ userId, token }: GetUserRequest, userData: any) => {
   if (!token) {
     throw new Error("No token, user not authorized");
   }
@@ -85,10 +84,10 @@ export const getUserMessages = async ({ userId, token }: GetUserRequest) => {
       Authorization: token,
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ })
+    body: JSON.stringify(userData)
   });
 
   if (!res.ok) {
     throw new Error("Failed to update user");
   }
-}; */
+};
