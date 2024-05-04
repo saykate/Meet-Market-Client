@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-interface InputProps {
+type InputProps = {
   type: string, 
   name: string, 
   value: string,
