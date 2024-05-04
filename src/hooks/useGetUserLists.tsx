@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import useAuthContext from "./useAuthContext";
-import * as api from "../api/user";
+import * as api from "../api/users";
 
 type Category = {
-  _id: string; 
-  title: string
-}
+  _id: string;
+  title: string;
+};
 
 type List = {
   _id: string;
@@ -16,7 +16,7 @@ type List = {
 
 const useGetUserLists = () => {
   const { token, userId } = useAuthContext();
-  const [lists, setLists] = useState<List[]>([])
+  const [lists, setLists] = useState<List[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,7 +30,7 @@ const useGetUserLists = () => {
       try {
         setLoading(true);
         const fetchedLists = await api.getUserLists({ userId, token });
-        setLists(fetchedLists)
+        setLists(fetchedLists);
         setError(null);
       } catch (error: any) {
         console.error("Failed to get message", error);

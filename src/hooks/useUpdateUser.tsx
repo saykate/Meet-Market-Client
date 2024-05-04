@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useAuthContext from "./useAuthContext";
-import * as api from "../api/user";
+import * as api from "../api/users";
 
 const useUpdateUser = () => {
   const { token, userId } = useAuthContext();

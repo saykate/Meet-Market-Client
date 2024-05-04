@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import useAuthContext from "./useAuthContext";
-import * as api from "../api/user";
+import * as api from "../api/users";
 
 type Message = {
   _id: string;
@@ -12,7 +12,7 @@ type Message = {
 
 const useGetUserMessages = () => {
   const { token, userId } = useAuthContext();
-  const [messages, setMessages] = useState<Message[]>([])
+  const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +26,7 @@ const useGetUserMessages = () => {
       try {
         setLoading(true);
         const fetchedMessages = await api.getUserMessages({ userId, token });
-        setMessages(fetchedMessages)
+        setMessages(fetchedMessages);
         setError(null);
       } catch (error: any) {
         console.error("Failed to get message", error);

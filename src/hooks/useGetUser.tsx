@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import useAuthContext from "./useAuthContext";
-import * as api from "../api/user";
+import * as api from "../api/users";
 
 type User = {
   _id: string;
