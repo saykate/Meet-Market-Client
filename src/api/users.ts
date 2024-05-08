@@ -5,6 +5,16 @@ export type GetUserRequest = {
   token: string;
 };
 
+export type UserData = {
+  username: string;
+  firstName: string;
+  lastName: string;
+  bio: string;
+  birthdate: Date;
+  profilePhoto: string;
+  coverPhoto: string;
+}
+
 export const getUser = async ({ userId, token }: GetUserRequest) => {
   if (!token) {
     throw new Error("No token, authorization denied");
@@ -73,7 +83,7 @@ export const getUserMessages = async ({ userId, token }: GetUserRequest) => {
   return data;
 };
 
-export const updateUser = async ({ userId, token }: GetUserRequest, userData: any) => {
+export const updateUser = async ({ userId, token }: GetUserRequest, userData: UserData) => {
   if (!token) {
     throw new Error("No token, user not authorized");
   }

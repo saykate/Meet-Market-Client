@@ -8,11 +8,15 @@ export type LoginFormData = {
   password: string;
 };
 
+type ErrorType = {
+  message: string;
+}
+
 const useLogin = () => {
   const { setToken } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ErrorType | null>(null);
 
   const login = async ({ username, password }: LoginFormData) => {
     try {
@@ -20,9 +24,13 @@ const useLogin = () => {
       const res = await api.login({ username, password });
       setToken(res.JWT);
       navigate("/profile");
-    } catch (error: any) {
-      console.error("Failed to login", error);
-      setError(error.message || "An unknown error occurred");
+    } catch (error) {
+      console.error("Failed to Login", error);
+      if (error instanceof Error) {
+        setError({ message: error.message })
+      } else {
+      setError({ message: "An unknown error occurred" });
+      }
     } finally {
       setLoading(false);
     }

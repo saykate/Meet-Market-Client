@@ -1,23 +1,33 @@
 import { FC } from 'react';
 
-type InputProps = {
+export type InputProps = {
   type: string, 
   name: string, 
+  label: string, 
   value: string,
-  placeholder: string,
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  isRequired: boolean,
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
 }
 
 const Input: FC<InputProps> = ({ 
-  type, 
+  type = 'text', 
   name,
+  label,
   value, 
-  placeholder, 
-  onChange }) => {
+  onChange, 
+  isRequired
+}) => {
     return (
-        <div className='inputContainer'>
-            <label htmlFor={name}>{name}</label>
-            <input type={type} name={name} id={name} value={value} placeholder={placeholder} onChange={onChange} />
+        <div>
+            <label htmlFor={name}>{label}: </label>
+            <input 
+              type={type} 
+              id={name}
+              name={name} 
+              value={value} 
+              onChange={onChange}
+              required={isRequired}
+              />
         </div>
     )
 }
