@@ -3,7 +3,7 @@ import * as api from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import useAuthContext from "./useAuthContext";
 
-type RegisterFormData = {
+export type RegisterFormData = {
   username: string;
   password: string;
   confirmPassword: string;

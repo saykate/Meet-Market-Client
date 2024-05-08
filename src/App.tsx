@@ -1,17 +1,16 @@
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar"
 import Login from "./modals/Login";
-import "./App.css";
+import Register from "./modals/Register"
 
 function App() {
 
-
   return (
     <>
-      <p>Hey from the Client!</p>
     <Navbar />  
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
     </Routes>
     </>
   );
