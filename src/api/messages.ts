@@ -11,6 +11,8 @@ export const createMessage = async (token: string) => {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json"
     },
+    //do I need to specify what needs to be in the data?
+    //author, recipient, text
   });
   
 };
