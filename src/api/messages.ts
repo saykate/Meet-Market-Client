@@ -1,14 +1,11 @@
 import { SERVER_URL } from "./config";
-import useAuthContext from "../hooks/useAuthContext";
 
-const { token } = useAuthContext()
-
-export const createMessage = async () => {
+export const createMessage = async (token: string) => {
   if (!token) {
     throw new Error("No token, authorization denied");
   }
 
-  const res = await fetch(`${SERVER_URL}/messages`, {
+  await fetch(`${SERVER_URL}/messages`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -18,7 +15,7 @@ export const createMessage = async () => {
   
 };
 
-export const getMessage = async (_id: string) => {
+export const getMessage = async (token: string, _id: string) => {
   if (!token) {
     throw new Error("No token, authorization denied");
   }
@@ -33,7 +30,7 @@ export const getMessage = async (_id: string) => {
   return data
 };
 
-export const deleteMessage = async (_id: string) => {
+export const deleteMessage = async (token: string, _id: string) => {
   if (!token) {
     throw new Error("No token, authorization denied");
   }

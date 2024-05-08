@@ -14,17 +14,21 @@ type List = {
   categories: Category[];
 };
 
+type ErrorType = {
+  message: string;
+}
+
 const useGetUserLists = () => {
   const { token, userId } = useAuthContext();
   const [lists, setLists] = useState<List[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ErrorType | null>(null);
 
   useEffect(() => {
     const getUserLists = async () => {
       if (!token || !userId) {
         setLoading(false);
-        setError("Authentication token or user ID not found");
+        setError({ message: "Authentication token or user ID not found" });
         return;
       }
       try {
@@ -32,9 +36,13 @@ const useGetUserLists = () => {
         const fetchedLists = await api.getUserLists({ userId, token });
         setLists(fetchedLists);
         setError(null);
-      } catch (error: any) {
-        console.error("Failed to get message", error);
-        setError(error.message || "An unknown error occurred");
+      } catch (error) {
+        console.error("Failed to get lists", error);
+        if (error instanceof Error) {
+          setError({ message: error.message })
+        } else {
+        setError({ message: "An unknown error occurred" });
+        }
       } finally {
         setLoading(false);
       }

@@ -2,20 +2,28 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthContext from "./useAuthContext";
 
+type ErrorType = {
+  message: string;
+}
+
 const useLogout = () => {
   const { setToken } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ErrorType | null>(null);
 
   const logout = () => {
     try {
       setLoading(true);
       setToken(null);
       navigate("/");
-    } catch (error: any) {
+    } catch (error) {
       console.error("Failed to logout", error);
-      setError(error.message || "An unknown error occurred");
+      if (error instanceof Error) {
+        setError({ message: error.message })
+      } else {
+      setError({ message: "An unknown error occurred" });
+      }
     } finally {
       setLoading(false);
     }

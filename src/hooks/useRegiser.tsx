@@ -9,11 +9,15 @@ type RegisterFormData = {
   confirmPassword: string;
 };
 
+type ErrorType = {
+  message: string;
+}
+
 const useRegister = () => {
   const { setToken } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ErrorType | null>(null);
 
   const register = async ({
     username,
@@ -25,9 +29,13 @@ const useRegister = () => {
       const res = await api.register({ username, password, confirmPassword });
       setToken(res.JWT);
       navigate("/profile");
-    } catch (error: any) {
+    } catch (error) {
       console.error("Failed to register", error);
-      setError(error.message || "An unknown error occurred");
+      if (error instanceof Error) {
+        setError({ message: error.message })
+      } else {
+      setError({ message: "An unknown error occurred" });
+      }
     } finally {
       setLoading(false);
     }
