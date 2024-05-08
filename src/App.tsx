@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
-// import AuthRoute from "./components/AuthRoute";
-import Login from "./pages/Login";
+import Navbar from "./components/Navbar"
+import Login from "./modals/Login";
 import "./App.css";
 
 function App() {
@@ -9,8 +9,9 @@ function App() {
   return (
     <>
       <p>Hey from the Client!</p>
+    <Navbar />  
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
     </Routes>
     </>
   );
