@@ -14,7 +14,7 @@ type ErrorType = {
 const useGetMessage = (_id: string) => {
   const { token } = useAuthContext();
   const [message, setMessage] = useState<MessageType | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<ErrorType | null>(null);
 
   useEffect(() => {

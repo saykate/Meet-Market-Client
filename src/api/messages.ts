@@ -1,19 +1,30 @@
 import { SERVER_URL } from "./config";
 
-export const createMessage = async (token: string) => {
+export const createMessage = async (
+  token: string,
+  _id: string, 
+  author: string, 
+  recipient: string, 
+  text: string,
+) => {
   if (!token) {
     throw new Error("No token, authorization denied");
   }
 
-  await fetch(`${SERVER_URL}/messages`, {
+  const res = await fetch(`${SERVER_URL}/messages`, {
     method: "POST",
     headers: {
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json"
     },
-    //do I need to specify what needs to be in the data?
-    //author, recipient, text
+    body: JSON.stringify({
+      _id, 
+      author,
+      recipient, 
+      text,
+    })
   });
+  return res.json()
   
 };
 
