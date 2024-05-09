@@ -1,16 +1,15 @@
 import { SERVER_URL } from "./config";
 
 export const createMessage = async (
-  token: string,
-  _id: string, 
-  author: string, 
-  recipient: string, 
+  token: string, 
+  authorId: string, 
+  recipientId: string, 
   text: string,
 ) => {
   if (!token) {
     throw new Error("No token, authorization denied");
   }
-
+  
   const res = await fetch(`${SERVER_URL}/messages`, {
     method: "POST",
     headers: {
@@ -18,14 +17,12 @@ export const createMessage = async (
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      _id, 
-      author,
-      recipient, 
+      authorId,
+      recipientId, 
       text,
     })
   });
   return res.json()
-  
 };
 
 export const getMessage = async (token: string, _id: string) => {

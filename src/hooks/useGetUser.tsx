@@ -11,8 +11,8 @@ type ErrorType = {
   message: string;
 };
 
-const useGetUser = () => {
-  const { token, userId } = useAuthContext();
+const useGetUser = (userId: string | undefined) => {
+  const { token } = useAuthContext();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ErrorType | null>(null);

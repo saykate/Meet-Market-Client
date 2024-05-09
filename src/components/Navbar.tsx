@@ -1,13 +1,28 @@
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
+import useLogout from "../hooks/useLogout"
+import useAuthContext from "../hooks/useAuthContext";
 
 const Navbar = () => {
+  const { logout } = useLogout();
+  const location = useLocation();
+  const { isAuthenticated } = useAuthContext();
+
   return (
     <nav>
-      <Link to="/">Home</Link>
-      <Link to="login">Login</Link>
-      <Link to="profile">Profile</Link>
+      { !isAuthenticated &&
+        <Link to="login">Login</Link>
+      }
+      { location.pathname !== "/" &&
+        <Link to="/">Home</Link>
+      }
+      { isAuthenticated &&
+        <div className="nav">
+          <Link to="profile">Profile</Link>
+          <Link to="messages">Messages</Link>
+          <Link onClick={logout} to="/">Logout</Link>
+        </div>
+      }
       <Link to="shopping">Shopping</Link>
-      <Link to="messages">Messages</Link>
     </nav>
   )
 }
