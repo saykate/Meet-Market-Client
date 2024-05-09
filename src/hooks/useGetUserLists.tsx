@@ -16,7 +16,7 @@ type List = {
 
 type ErrorType = {
   message: string;
-}
+};
 
 const useGetUserLists = () => {
   const { token, userId } = useAuthContext();
@@ -38,11 +38,9 @@ const useGetUserLists = () => {
         setError(null);
       } catch (error) {
         console.error("Failed to get lists", error);
-        if (error instanceof Error) {
-          setError({ message: error.message })
-        } else {
-        setError({ message: "An unknown error occurred" });
-        }
+        setError({
+          message: (error as Error).message || "An unknown error occurred",
+        });
       } finally {
         setLoading(false);
       }

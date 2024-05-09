@@ -5,7 +5,7 @@ import { UserData } from "../api/users";
 
 type ErrorType = {
   message: string;
-}
+};
 
 const useUpdateUser = () => {
   const { token, userId } = useAuthContext();
@@ -23,11 +23,9 @@ const useUpdateUser = () => {
       setError(null);
     } catch (error) {
       console.error("Failed to update user", error);
-      if (error instanceof Error) {
-        setError({ message: error.message })
-      } else {
-      setError({ message: "An unknown error occurred" });
-      }
+      setError({
+        message: (error as Error).message || "An unknown error occurred",
+      });
     } finally {
       setLoading(false);
     }

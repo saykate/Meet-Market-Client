@@ -9,7 +9,7 @@ type User = {
 
 type ErrorType = {
   message: string;
-}
+};
 
 const useGetUser = () => {
   const { token, userId } = useAuthContext();
@@ -31,11 +31,9 @@ const useGetUser = () => {
         setError(null);
       } catch (error) {
         console.error("Failed to get message", error);
-        if (error instanceof Error) {
-          setError({ message: error.message })
-        } else {
-        setError({ message: "An unknown error occurred" });
-        }
+        setError({
+          message: (error as Error).message || "An unknown error occurred",
+        });
       } finally {
         setLoading(false);
       }

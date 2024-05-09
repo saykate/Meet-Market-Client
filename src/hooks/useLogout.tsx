@@ -4,7 +4,7 @@ import useAuthContext from "./useAuthContext";
 
 type ErrorType = {
   message: string;
-}
+};
 
 const useLogout = () => {
   const { setToken } = useAuthContext();
@@ -19,11 +19,9 @@ const useLogout = () => {
       navigate("/");
     } catch (error) {
       console.error("Failed to logout", error);
-      if (error instanceof Error) {
-        setError({ message: error.message })
-      } else {
-      setError({ message: "An unknown error occurred" });
-      }
+      setError({
+        message: (error as Error).message || "An unknown error occurred",
+      });
     } finally {
       setLoading(false);
     }
@@ -33,4 +31,3 @@ const useLogout = () => {
 };
 
 export default useLogout;
-

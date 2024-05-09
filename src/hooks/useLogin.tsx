@@ -10,7 +10,7 @@ export type LoginFormData = {
 
 type ErrorType = {
   message: string;
-}
+};
 
 const useLogin = () => {
   const { setToken } = useAuthContext();
@@ -26,11 +26,9 @@ const useLogin = () => {
       navigate("/profile");
     } catch (error) {
       console.error("Failed to Login", error);
-      if (error instanceof Error) {
-        setError({ message: error.message })
-      } else {
-      setError({ message: "An unknown error occurred" });
-      }
+      setError({
+        message: (error as Error).message || "An unknown error occurred",
+      });
     } finally {
       setLoading(false);
     }

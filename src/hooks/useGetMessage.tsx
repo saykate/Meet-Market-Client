@@ -3,13 +3,13 @@ import useAuthContext from "./useAuthContext";
 import * as api from "../api/messages";
 
 export type MessageType = {
-  token: string, 
+  token: string;
   _id: string;
 };
 
 type ErrorType = {
   message: string;
-}
+};
 
 const useGetMessage = (_id: string) => {
   const { token } = useAuthContext();
@@ -31,11 +31,9 @@ const useGetMessage = (_id: string) => {
         setError(null);
       } catch (error) {
         console.error("Failed to get message", error);
-        if (error instanceof Error) {
-          setError({ message: error.message })
-        } else {
-        setError({ message: "An unknown error occurred" });
-        }
+        setError({
+          message: (error as Error).message || "An unknown error occurred",
+        });
       } finally {
         setLoading(false);
       }

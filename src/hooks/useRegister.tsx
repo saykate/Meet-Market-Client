@@ -11,7 +11,7 @@ export type RegisterFormData = {
 
 type ErrorType = {
   message: string;
-}
+};
 
 const useRegister = () => {
   const { setToken } = useAuthContext();
@@ -31,11 +31,9 @@ const useRegister = () => {
       navigate("/profile");
     } catch (error) {
       console.error("Failed to register", error);
-      if (error instanceof Error) {
-        setError({ message: error.message })
-      } else {
-      setError({ message: "An unknown error occurred" });
-      }
+      setError({
+        message: (error as Error).message || "An unknown error occurred",
+      });
     } finally {
       setLoading(false);
     }

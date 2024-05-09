@@ -3,13 +3,13 @@ import useAuthContext from "./useAuthContext";
 import * as api from "../api/messages";
 
 export type MessageType = {
-  token: string, 
+  token: string;
   _id: string;
 };
 
 type ErrorType = {
   message: string;
-}
+};
 
 const useDeleteMessage = (_id: string) => {
   const { token } = useAuthContext();
@@ -29,11 +29,9 @@ const useDeleteMessage = (_id: string) => {
         setError(null);
       } catch (error) {
         console.error("Failed to delete message", error);
-        if (error instanceof Error) {
-          setError({ message: error.message })
-        } else {
-        setError({ message: "An unknown error occurred" });
-        }
+        setError({
+          message: (error as Error).message || "An unknown error occurred",
+        });
       } finally {
         setLoading(false);
       }
