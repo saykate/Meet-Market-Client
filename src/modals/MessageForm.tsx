@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Form from "../components/Form";
+import FormComponent from "../components/FormComponent";
 import useAuthContext from "../hooks/useAuthContext";
 import { createMessage } from "../api/messages";
 
@@ -15,24 +15,25 @@ const MessageForm: FC<MessageFormProps> = ({ recipient }) => {
 
   const inputs = [
     {
+      colSpan: 2,
+      label: "Text",
       type: "text",
       name: "text",
-      label: "Text",
+      placeholder: "compose your message here",
       isRequired: true,
     },
   ];
 
-  const handleCreateMessage = async (text: string ) => {
+  const handleCreateMessage = async (text: string) => {
     if (!token || !userId) {
       return null;
     }
-    const newMessage = await createMessage(token, userId, recipient, text)
-    console.log(newMessage)
+    const newMessage = await createMessage(token, userId, recipient, text);
+    console.log(newMessage);
   };
 
   return (
-    
-    <Form
+    <FormComponent
       title="Message Form"
       subTitle="Compose a message:"
       inputs={inputs}

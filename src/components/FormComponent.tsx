@@ -1,5 +1,13 @@
 import React, { FC, useState } from "react";
-import Input, { InputProps } from "./Input";
+import {
+  VStack,
+  Heading,
+  Text,
+  SimpleGrid,
+  GridItem,
+  Button,
+} from "@chakra-ui/react";
+import InputBox, { InputProps } from "./InputBox";
 
 export type InputItem = Omit<InputProps, "onChange" | "value">;
 
@@ -17,7 +25,7 @@ type FormProps = {
   loading: boolean;
 };
 
-const Form: FC<FormProps> = ({
+const FormComponent: FC<FormProps> = ({
   title,
   subTitle,
   inputs,
@@ -51,35 +59,35 @@ const Form: FC<FormProps> = ({
   };
 
   return (
-    <div>
-      <div>
-        <h1>{title}</h1>
-        <p>{subTitle}</p>
-      </div>
-      <div>
-        <form>
-          {inputs.map((input, idx) => (
-            <Input
-              key={idx}
-              {...input}
-              value={formData[input.name]}
-              onChange={handleChange}
-            />
-          ))}
-          <button type="button" disabled={loading} onClick={handleSubmit}>
+    <VStack w="full" h="full" p={10} spacing={10} alignItems="flex-start">
+      <VStack spacing={3} alignItems="flex-start">
+        <Heading size="2xl">{title}</Heading>
+        <Text>{subTitle}</Text>
+      </VStack>
+      <SimpleGrid columns={2} columnGap={3} rowGap={6} w="full">
+        {inputs.map((input, idx) => (
+          <InputBox
+            key={idx}
+            {...input}
+            value={formData[input.name]}
+            onChange={handleChange}
+          />
+        ))}
+        <GridItem colSpan={2}>
+          <Button size="lg" w="full" disabled={loading} onClick={handleSubmit}>
             {cta}
-          </button>
-        </form>
-      </div>
-      {linkPrompt && link && linkText && (
-        <div>
-          <p>
+          </Button>
+        </GridItem>
+        {linkPrompt && link && linkText && (
+        <GridItem colSpan={2}>
+          <Text>
             {linkPrompt} <a href={link}>{linkText}</a>
-          </p>
-        </div>
+          </Text>
+        </GridItem>
       )}
-    </div>
+      </SimpleGrid>
+    </VStack>
   );
 };
 
-export default Form;
+export default FormComponent;

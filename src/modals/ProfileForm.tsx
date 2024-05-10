@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Form from "../components/Form";
+import FormComponent from "../components/FormComponent";
 import useAuthContext from "../hooks/useAuthContext";
 import { updateUser, UserData } from "../api/users";
 
@@ -17,39 +17,51 @@ const ProfileForm: FC = () => {
 
   const inputs = [
     {
+      colSpan: 1,
+      label: "First Name",
       type: "text",
       name: "firstName",
-      label: "First Name",
+      placeholder: "John",
       isRequired: false,
     },
     {
+      colSpan: 1,
+      label: "Last Name",
       type: "text",
       name: "lastName",
-      label: "Last Name",
+      placeholder: "Smith",
       isRequired: false,
     },
     {
+      colSpan: 2,
+      label: "Biography",
       type: "text",
       name: "bio",
-      label: "Biography",
+      placeholder: "This section is about me",
       isRequired: false,
     },
     {
+      colSpan: 2,
+      label: "Birth Date",
       type: "date",
       name: "birthdate",
-      label: "Birth Date",
+      placeholder: "01/01/1983",
       isRequired: false,
     },
     {
+      colSpan: 2,
+      label: "Profile Photo URL",
       type: "text",
       name: "profilePhoto",
-      label: "Profile Photo URL",
+      placeholder: "",
       isRequired: false,
     },
     {
+      colSpan: 2,
+      label: "Cover Photo URL",
       type: "text",
       name: "coverPhoto",
-      label: "Cover Photo URL",
+      placeholder: "",
       isRequired: false,
     },
   ];
@@ -59,9 +71,9 @@ const ProfileForm: FC = () => {
       console.error("No token or user ID");
       return null;
     }
-    
+
     const userData: UserData = {
-      username: username, 
+      username: username,
       firstName: formData.firstName,
       lastName: formData.lastName,
       bio: formData.bio,
@@ -70,20 +82,18 @@ const ProfileForm: FC = () => {
       coverPhoto: formData.coverPhoto,
     };
 
-  console.log(userData)
+    console.log(userData);
 
-  try {
-    await updateUser({ userId, token }, userData)
-    console.log("User updated successfully")
-  } catch (error) {
-    console.error("Failed to update user:", error)
+    try {
+      await updateUser({ userId, token }, userData);
+      console.log("User updated successfully");
+    } catch (error) {
+      console.error("Failed to update user:", error);
     }
   };
 
-
   return (
-    
-    <Form
+    <FormComponent
       title="Profile Form"
       subTitle="Complete your profile:"
       inputs={inputs}

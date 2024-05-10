@@ -1,4 +1,4 @@
-import Form from "../components/Form";
+import Form from "../components/FormComponent";
 import useRegister, { RegisterFormData } from "../hooks/useRegister";
 
 const initState = {
@@ -9,34 +9,38 @@ const initState = {
 
 const inputs = [
   {
-    type: "text", 
-    name: "username", 
-    label: "Username", 
+    type: "text",
+    name: "username",
+    label: "Username",
     isRequired: true,
   },
   {
-    type: "text", 
-    name: "password", 
-    label: "Password", 
+    type: "text",
+    name: "password",
+    label: "Password",
     isRequired: true,
   },
   {
-    type: "text", 
-    name: "confirmPassword", 
-    label: "confirmPassword", 
+    type: "text",
+    name: "confirmPassword",
+    label: "confirmPassword",
     isRequired: true,
-  }
-]
+  },
+];
 
 const Register = () => {
   const { loading, register } = useRegister();
 
-  const handleRegister = async ({ username, password, confirmPassword }: RegisterFormData) => {
+  const handleRegister = async ({
+    username,
+    password,
+    confirmPassword,
+  }: RegisterFormData) => {
     await register({ username, password, confirmPassword });
   };
 
   return (
-    <Form 
+    <Form
       title="Register"
       subTitle="Welcome to the Meet Market!"
       inputs={inputs}

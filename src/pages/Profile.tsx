@@ -16,6 +16,7 @@ const Profile = () => {
 console.log("UserId", userId)
 console.log("currentUserId", currentUserId)
 console.log("currentUser", currentUser)
+console.log("user", user)
 
   if(loading) {
     return (

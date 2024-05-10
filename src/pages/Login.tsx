@@ -1,4 +1,4 @@
-import Form from "../components/Form";
+import Form from "../components/FormComponent";
 import useLogin, { LoginFormData } from "../hooks/useLogin";
 
 const initState = {
@@ -8,18 +8,18 @@ const initState = {
 
 const inputs = [
   {
-    type: "text", 
-    name: "username", 
-    label: "Username", 
+    type: "text",
+    name: "username",
+    label: "Username",
     isRequired: true,
   },
   {
-    type: "text", 
-    name: "password", 
-    label: "Password", 
+    type: "text",
+    name: "password",
+    label: "Password",
     isRequired: true,
-  }
-]
+  },
+];
 
 const Login = () => {
   const { loading, login } = useLogin();
@@ -29,7 +29,7 @@ const Login = () => {
   };
 
   return (
-    <Form 
+    <Form
       title="Login"
       subTitle="Welcome Back!"
       inputs={inputs}
