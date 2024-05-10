@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import MessageForm from "./modals/MessageForm";
 import Home from "./pages/Home";
 import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
@@ -22,14 +21,6 @@ function App() {
           element={
             <AuthRoute>
               <Profile />
-            </AuthRoute>
-          }
-        />
-        <Route
-          path="/messageForm"
-          element={
-            <AuthRoute>
-              <MessageForm />
             </AuthRoute>
           }
         />
