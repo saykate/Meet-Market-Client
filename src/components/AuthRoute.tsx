@@ -1,4 +1,4 @@
-// import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import useAuthContext from '../hooks/useAuthContext';
 import { FC, ReactNode } from 'react';
 
@@ -10,7 +10,7 @@ const AuthRoute: FC<AuthRouteProps> = ({ children }) => {
   const { isAuthenticated } = useAuthContext();
 
   if (!isAuthenticated) {
-    // return <Navigate to="/profile" />;
+    return <Navigate to="/" />;
   }
   return <>{ children }</>
 }

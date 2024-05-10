@@ -28,7 +28,6 @@ const AuthProvider: FC<Props> = ({ children }) => {
     if (!_token) {
       return null;
     }
-    console.log("TOKEN", _token);
     const decoded = jwtDecode(_token);
     console.log("DECODED", decoded);
     return decoded?.sub || null;
@@ -56,6 +55,8 @@ const AuthProvider: FC<Props> = ({ children }) => {
       localStorage.removeItem("accessToken");
     }
   }, [token]);
+
+  console.log(username, userId)
 
   return (
     <AuthContext.Provider value={{ token, setToken, isAuthenticated, userId, username }}>

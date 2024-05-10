@@ -9,6 +9,7 @@ import Shopping from "./pages/Shopping";
 import AuthRoute from "./components/AuthRoute";
 
 function App() {
+
   return (
     <>
       <Navbar />
@@ -17,7 +18,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Home />} />
         <Route
-          path="/profile"
+          path="/profile/:userId"
           element={
             <AuthRoute>
               <Profile />

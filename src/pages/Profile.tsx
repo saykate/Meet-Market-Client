@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import useAuthContext from "../hooks/useAuthContext";
 import useGetUser from "../hooks/useGetUser";
 import MessageForm from "../modals/MessageForm";
+import ProfileForm from "../modals/ProfileForm";
 import { useState } from "react";
 
 const Profile = () => {
@@ -9,7 +10,12 @@ const Profile = () => {
   const { userId } = useParams();
   const { user, loading } = useGetUser(userId);
   const currentUser = currentUserId === userId
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [messageIsOpen, setMessageIsOpen] = useState<boolean>(false)
+  const [editIsOpen, setEditIsOpen] = useState<boolean>(false)
+
+console.log("UserId", userId)
+console.log("currentUserId", currentUserId)
+console.log("currentUser", currentUser)
 
   if(loading) {
     return (
@@ -24,20 +30,20 @@ const Profile = () => {
       <div>
         {currentUser ? (
         <div>
-          <button>Edit Profile</button>
+          <button onClick={() => setEditIsOpen(true)}>Edit Profile</button>
+          {editIsOpen && <ProfileForm />}
           <h1>Welcome {user.username}</h1>
         </div>)
-        : <button onClick={() => setIsOpen(true)}>Send Message</button>}
-        {isOpen && <MessageForm recipient={userId} />}
+        : <button onClick={() => setMessageIsOpen(true)}>Send Message</button>}
+        {messageIsOpen && <MessageForm recipient={userId} />}
       </div>
     )
-  }
-
-  return (
-    <div>
-      <h1>User not found</h1>
-    </div>
-  )
+  } else {
+      return (
+        <div>
+          <h1>User not found</h1>
+        </div>
+)}
 }
 
 export default Profile

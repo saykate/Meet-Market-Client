@@ -13,7 +13,7 @@ type ErrorType = {
 };
 
 const useLogin = () => {
-  const { setToken } = useAuthContext();
+  const { setToken, userId } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<ErrorType | null>(null);
@@ -23,7 +23,7 @@ const useLogin = () => {
       setLoading(true);
       const res = await api.login({ username, password });
       setToken(res.JWT);
-      navigate("/profile");
+      navigate(`/profile/${userId}`);
     } catch (error) {
       console.error("Failed to Login", error);
       setError({

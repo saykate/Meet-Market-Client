@@ -5,7 +5,7 @@ import useAuthContext from "../hooks/useAuthContext";
 const Navbar = () => {
   const { logout } = useLogout();
   const location = useLocation();
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, userId } = useAuthContext();
 
   return (
     <nav>
@@ -17,7 +17,7 @@ const Navbar = () => {
       }
       { isAuthenticated &&
         <div className="nav">
-          <Link to="profile">Profile</Link>
+          <Link to={`profile/${userId}`}>Profile</Link>
           <Link to="messages">Messages</Link>
           <Link onClick={logout} to="/">Logout</Link>
         </div>

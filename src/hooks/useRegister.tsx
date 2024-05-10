@@ -14,7 +14,7 @@ type ErrorType = {
 };
 
 const useRegister = () => {
-  const { setToken } = useAuthContext();
+  const { setToken, userId } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<ErrorType | null>(null);
@@ -28,7 +28,7 @@ const useRegister = () => {
       setLoading(true);
       const res = await api.register({ username, password, confirmPassword });
       setToken(res.JWT);
-      navigate("/profile");
+      navigate(`/profile/${userId}`);
     } catch (error) {
       console.error("Failed to register", error);
       setError({
