@@ -1,19 +1,14 @@
 import { FC } from "react";
 import FormComponent from "../components/FormComponent";
-import useAuthContext from "../hooks/useAuthContext";
 import { updateUser, UserData } from "../api/users";
+import useAuthContext from "../hooks/useAuthContext";
 
-const ProfileForm: FC = () => {
+export type ProfileFormProps = {
+  initialState: Record<string, string>;
+}
+
+const ProfileForm: FC<ProfileFormProps> = ({ initialState }) => {
   const { token, userId, username } = useAuthContext();
-
-  const initState = {
-    firstName: "",
-    lastName: "",
-    bio: "",
-    birthdate: "",
-    profilePhoto: "",
-    coverPhoto: "",
-  };
 
   const inputs = [
     {
@@ -95,11 +90,10 @@ const ProfileForm: FC = () => {
   return (
     <FormComponent
       title="Profile Form"
-      subTitle="Complete your profile:"
       inputs={inputs}
       submit={handleUpdateUser}
       cta="Update Profile"
-      initState={initState}
+      initState={initialState}
       loading={false}
     />
   );

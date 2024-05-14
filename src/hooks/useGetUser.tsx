@@ -5,6 +5,12 @@ import * as api from "../api/users";
 type User = {
   _id: string;
   username: string;
+  firstName?: string;
+  lastName?: string;
+  bio?: string;
+  birthdate?: Date;
+  profilePhoto?: string;
+  coverPhoto?: string;
 };
 
 type ErrorType = {

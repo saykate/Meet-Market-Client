@@ -13,7 +13,6 @@ export type InputItem = Omit<InputProps, "onChange" | "value">;
 
 type FormProps = {
   title: string;
-  subTitle: string;
   inputs: InputItem[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   submit: (formData: any) => void;
@@ -27,7 +26,6 @@ type FormProps = {
 
 const FormComponent: FC<FormProps> = ({
   title,
-  subTitle,
   inputs,
   submit,
   cta,
@@ -62,7 +60,6 @@ const FormComponent: FC<FormProps> = ({
     <VStack w="full" h="full" p={10} spacing={10} alignItems="flex-start">
       <VStack spacing={3} alignItems="flex-start">
         <Heading size="2xl">{title}</Heading>
-        <Text>{subTitle}</Text>
       </VStack>
       <SimpleGrid columns={2} columnGap={3} rowGap={6} w="full">
         {inputs.map((input, idx) => (
