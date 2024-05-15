@@ -1,7 +1,7 @@
 import { SERVER_URL } from "./config";
 
 export type GetUserRequest = {
-  userId: string;
+  userId?: string;
   token: string;
 };
 
@@ -34,8 +34,12 @@ export const getUser = async ({ userId, token }: GetUserRequest) => {
   return data;
 };
 
-export const listOfUsers = async () => {
-  const res = await fetch(`${SERVER_URL}/users`);
+export const listOfUsers = async ({ token }: GetUserRequest) => {
+  const res = await fetch(`${SERVER_URL}/users`, {
+    headers: {
+      Authorization: token,
+  },
+});
 
   if (!res.ok) {
     throw new Error("Failed to get users");
