@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as api from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import useAuthContext from "./useAuthContext";
@@ -23,16 +23,22 @@ const useLogin = () => {
       setLoading(true);
       const res = await api.login({ username, password });
       setToken(res.JWT);
-      navigate(`/profile/${userId}`);
     } catch (error) {
       console.error("Failed to Login", error);
       setError({
         message: (error as Error).message || "An unknown error occurred",
       });
-    } finally {
-      setLoading(false);
-    }
+    } 
   };
+
+  useEffect(() => {
+    if(!userId || loading) {
+      return 
+    } 
+    setLoading(false)
+    navigate(`/profile/${userId}`);
+  }, [navigate, userId, loading]
+)
 
   return { loading, error, login };
 };

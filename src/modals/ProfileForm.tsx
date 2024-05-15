@@ -12,6 +12,14 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState }) => {
 
   const inputs = [
     {
+      colSpan: 2,
+      label: "Username",
+      type: "text",
+      name: "username",
+      placeholder: "",
+      isRequired: false,
+    },
+    {
       colSpan: 1,
       label: "First Name",
       type: "text",
@@ -68,6 +76,7 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState }) => {
     }
 
     const userData: UserData = {
+      _id: formData._id, 
       username: username,
       firstName: formData.firstName,
       lastName: formData.lastName,

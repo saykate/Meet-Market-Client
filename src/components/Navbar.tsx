@@ -15,6 +15,7 @@ const Navbar = () => {
       { location.pathname !== "/" &&
         <Link to="/">Home</Link>
       }
+      <Link to="shopping">Shopping</Link>
       { isAuthenticated &&
         <div className="nav">
           <Link to={`profile/${userId}`}>Profile</Link>
@@ -22,7 +23,6 @@ const Navbar = () => {
           <Link onClick={logout} to="/">Logout</Link>
         </div>
       }
-      <Link to="shopping">Shopping</Link>
     </nav>
   )
 }

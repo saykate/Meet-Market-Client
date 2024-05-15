@@ -8,15 +8,19 @@ const initState = {
 
 const inputs = [
   {
+    colSpan: 2,
+    label: "Username",
     type: "text",
     name: "username",
-    label: "Username",
+    placeholder: "",
     isRequired: true,
   },
   {
+    colSpan: 2,
+    label: "Password",
     type: "text",
     name: "password",
-    label: "Password",
+    placeholder: "",
     isRequired: true,
   },
 ];
@@ -31,7 +35,7 @@ const Login = () => {
   return (
     <Form
       title="Login"
-      subTitle="Welcome Back!"
+      subtitle="Welcome Back!"
       inputs={inputs}
       submit={handleLogin}
       cta="Login"

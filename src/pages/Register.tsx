@@ -9,21 +9,27 @@ const initState = {
 
 const inputs = [
   {
+    colSpan: 2,
+    label: "Username",
     type: "text",
     name: "username",
-    label: "Username",
+    placeholder: "",
     isRequired: true,
   },
   {
+    colSpan: 2,
+    label: "Password",
     type: "text",
     name: "password",
-    label: "Password",
+    placeholder: "",
     isRequired: true,
   },
   {
+    colSpan: 2,
+    label: "confirmPassword",
     type: "text",
     name: "confirmPassword",
-    label: "confirmPassword",
+    placeholder: "",
     isRequired: true,
   },
 ];
@@ -42,7 +48,7 @@ const Register = () => {
   return (
     <Form
       title="Register"
-      subTitle="Welcome to the Meet Market!"
+      subtitle="Welcome to the Meet Market!"
       inputs={inputs}
       submit={handleRegister}
       cta="Register"

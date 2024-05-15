@@ -10,11 +10,12 @@ export const createMessage = async (
     throw new Error("No token, authorization denied");
   }
   
+  console.log("createMessage", {token, authorId, recipientId, text})
   const res = await fetch(`${SERVER_URL}/messages`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
     body: JSON.stringify({
       authorId,
@@ -22,6 +23,7 @@ export const createMessage = async (
       text,
     })
   });
+  //make a variable and then return 
   return res.json()
 };
 
@@ -33,7 +35,7 @@ export const getMessage = async (token: string, _id: string) => {
   const res = await fetch(`${SERVER_URL}/messages/${_id}`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
   });
   const { data } = await res.json()
@@ -48,7 +50,7 @@ export const deleteMessage = async (token: string, _id: string) => {
   const res = await fetch(`${SERVER_URL}/messages/${_id}`, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
   });
   return res.json()

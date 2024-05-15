@@ -6,6 +6,7 @@ export type GetUserRequest = {
 };
 
 export type UserData = {
+  _id: string;
   username: string;
   firstName: string;
   lastName: string;

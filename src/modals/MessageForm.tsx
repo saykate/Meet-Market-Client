@@ -24,18 +24,17 @@ const MessageForm: FC<MessageFormProps> = ({ recipient }) => {
     },
   ];
 
-  const handleCreateMessage = async (text: string) => {
+  const handleCreateMessage = async ({ text }: {text: string}) => {
     if (!token || !userId) {
       return null;
     }
     const newMessage = await createMessage(token, userId, recipient, text);
-    console.log(newMessage);
+    console.log("NewMessage", newMessage);
   };
 
   return (
     <FormComponent
       title="Message Form"
-      subTitle="Compose a message:"
       inputs={inputs}
       submit={handleCreateMessage}
       cta="Send Message"

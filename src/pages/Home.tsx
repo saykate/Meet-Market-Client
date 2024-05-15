@@ -1,16 +1,20 @@
-// import useAuthContext from "../hooks/useAuthContext"
+import { Link } from "react-router-dom"
 import useListOfUsers from "../hooks/useListOfUsers";
 
 const Home = () => {
-  // const { isAuthenticated } = useAuthContext();
   const { users } = useListOfUsers()
 
-  console.log(users)
-
   return (
-    <>
-
-    </>
+    <div>
+      <h1>Users:</h1>
+      <ul>
+        {users.map(user => (
+          <li key={user._id}>
+            <Link to={`/profile/${user._id}`}>{user.username}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }
 
