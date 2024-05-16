@@ -53,6 +53,8 @@ const AuthProvider: FC<Props> = ({ children }) => {
       setUserId(jwtDecode(token)?.sub || null);
     } else {
       localStorage.removeItem("accessToken");
+      setUsername(null)
+      setUserId(null)
     }
   }, [token]);
 

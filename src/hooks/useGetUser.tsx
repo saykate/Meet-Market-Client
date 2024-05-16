@@ -32,11 +32,11 @@ const useGetUser = (userId: string | undefined) => {
       }
       try {
         setLoading(true);
-        const user = await api.getUser({ userId, token });
-        setUser(user);
+        const fetchedUser = await api.getUser({ userId, token });
+        setUser(fetchedUser);
         setError(null);
       } catch (error) {
-        console.error("Failed to get message", error);
+        console.error("Failed to get user", error);
         setError({
           message: (error as Error).message || "An unknown error occurred",
         });
@@ -44,7 +44,9 @@ const useGetUser = (userId: string | undefined) => {
         setLoading(false);
       }
     };
-    getUser();
+    if (userId) {
+      getUser();
+    }
   }, [token, userId]);
   return { user, loading, error };
 };

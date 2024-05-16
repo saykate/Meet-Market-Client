@@ -1,4 +1,4 @@
-import Form from "../components/FormComponent";
+import FormComponent from "../components/FormComponent";
 import useRegister, { RegisterFormData } from "../hooks/useRegister";
 
 const initState = {
@@ -34,7 +34,7 @@ const inputs = [
   },
 ];
 
-const Register = () => {
+const RegisterForm = () => {
   const { loading, register } = useRegister();
 
   const handleRegister = async ({
@@ -46,9 +46,9 @@ const Register = () => {
   };
 
   return (
-    <Form
+    <FormComponent
       title="Register"
-      subtitle="Welcome to the Meet Market!"
+      subtitle="Create an Account"
       inputs={inputs}
       submit={handleRegister}
       cta="Register"
@@ -58,4 +58,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterForm;

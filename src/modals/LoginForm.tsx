@@ -1,4 +1,4 @@
-import Form from "../components/FormComponent";
+import FormComponent from "../components/FormComponent";
 import useLogin, { LoginFormData } from "../hooks/useLogin";
 
 const initState = {
@@ -25,15 +25,21 @@ const inputs = [
   },
 ];
 
-const Login = () => {
-  const { loading, login } = useLogin();
+type LoginFormProps = {
+  onRegisterOpen: () => void;
+  onClose: () => void;
+};
+
+
+const LoginForm = ({ onRegisterOpen, onClose }: LoginFormProps) => {
+  const { loading, login } = useLogin(onClose);
 
   const handleLogin = async ({ username, password }: LoginFormData) => {
     await login({ username, password });
   };
 
   return (
-    <Form
+    <FormComponent
       title="Login"
       subtitle="Welcome Back!"
       inputs={inputs}
@@ -41,11 +47,11 @@ const Login = () => {
       cta="Login"
       initState={initState}
       linkPrompt="Don't have an account?"
-      link="/register"
+      linkAction={onRegisterOpen}
       linkText="Sign Up"
       loading={loading}
     />
   );
 };
 
-export default Login;
+export default LoginForm;

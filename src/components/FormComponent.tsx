@@ -20,7 +20,7 @@ type FormProps = {
   cta: string;
   initState: Record<string, string>;
   linkPrompt?: string;
-  link?: string;
+  linkAction?: () => void;
   linkText?: string;
   loading: boolean;
 };
@@ -33,7 +33,7 @@ const FormComponent: FC<FormProps> = ({
   cta,
   initState,
   linkPrompt,
-  link,
+  linkAction,
   linkText,
   loading,
 }) => {
@@ -56,7 +56,7 @@ const FormComponent: FC<FormProps> = ({
     }
     submit(formData);
     setFormData(initState);
-  };
+    };
 
   return (
     <VStack w="full" h="full" p={10} spacing={10} alignItems="flex-start">
@@ -78,10 +78,10 @@ const FormComponent: FC<FormProps> = ({
             {cta}
           </Button>
         </GridItem>
-        {linkPrompt && link && linkText && (
+        {linkPrompt && linkAction && linkText && (
         <GridItem colSpan={2}>
           <Text>
-            {linkPrompt} <a href={link}>{linkText}</a>
+            {linkPrompt} <Button onClick={linkAction}>{linkText}</Button>
           </Text>
         </GridItem>
       )}
