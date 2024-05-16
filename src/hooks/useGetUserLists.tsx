@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import useAuthContext from "./useAuthContext";
 import * as api from "../api/users";
 
-type Category = {
+type Department = {
   _id: string;
   title: string;
 };
@@ -11,7 +11,7 @@ type List = {
   _id: string;
   listName: string;
   creator: string;
-  categories: Category[];
+  departments: Department[];
 };
 
 type ErrorType = {
