@@ -1,7 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Login from "./modals/LoginForm";
-import Register from "./modals/RegisterForm";
 import Home from "./pages/Home";
 import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
