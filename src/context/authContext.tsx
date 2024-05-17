@@ -29,7 +29,7 @@ const AuthProvider: FC<Props> = ({ children }) => {
       return null;
     }
     const decoded = jwtDecode(_token);
-    console.log("DECODED", decoded);
+    // console.log("DECODED", decoded);
     return decoded?.sub || null;
   });
   const [token, setToken] = useState<string | null>(() => {
@@ -58,7 +58,7 @@ const AuthProvider: FC<Props> = ({ children }) => {
     }
   }, [token]);
 
-  console.log(username, userId)
+  // console.log(username, userId)
 
   return (
     <AuthContext.Provider value={{ token, setToken, isAuthenticated, userId, username }}>

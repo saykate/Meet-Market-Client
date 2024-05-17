@@ -16,7 +16,7 @@ const useGetDepartments = () => {
       try {
         setLoading(true);
         const fetchedDepartments = await api.getDepartments();
-        console.log("FetchedDepartments", fetchedDepartments)
+        // console.log("FetchedDepartments", fetchedDepartments)
         setDepartments(fetchedDepartments);
         setError(null);
       } catch (error) {

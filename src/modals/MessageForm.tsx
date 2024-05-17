@@ -22,6 +22,7 @@ const MessageForm: FC<MessageFormProps> = ({ recipient, onClose }) => {
       label: "Text",
       type: "text",
       name: "text",
+      id: "text",
       placeholder: "compose your message here",
       isRequired: true,
     },

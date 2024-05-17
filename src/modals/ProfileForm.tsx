@@ -19,6 +19,7 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState, onClose }) => {
       label: "Username",
       type: "text",
       name: "username",
+      id: "username",
       placeholder: "",
       isRequired: false,
     },
@@ -27,6 +28,7 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState, onClose }) => {
       label: "First Name",
       type: "text",
       name: "firstName",
+      id: "firstName",
       placeholder: "John",
       isRequired: false,
     },
@@ -35,6 +37,7 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState, onClose }) => {
       label: "Last Name",
       type: "text",
       name: "lastName",
+      id: "lastName",
       placeholder: "Smith",
       isRequired: false,
     },
@@ -43,6 +46,7 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState, onClose }) => {
       label: "Biography",
       type: "text",
       name: "bio",
+      id: "bio",
       placeholder: "This section is about me",
       isRequired: false,
     },
@@ -51,6 +55,7 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState, onClose }) => {
       label: "Birth Date",
       type: "date",
       name: "birthdate",
+      id: "birthdate",
       placeholder: "01/01/1983",
       isRequired: false,
     },
@@ -59,6 +64,7 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState, onClose }) => {
       label: "Profile Photo URL",
       type: "text",
       name: "profilePhoto",
+      id: "profilePhoto",
       placeholder: "",
       isRequired: false,
     },
@@ -67,6 +73,7 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState, onClose }) => {
       label: "Cover Photo URL",
       type: "text",
       name: "coverPhoto",
+      id: "coverPhoto",
       placeholder: "",
       isRequired: false,
     },
@@ -93,7 +100,7 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState, onClose }) => {
 
     try {
       await updateUser({ userId, token }, userData);
-      console.log("User updated successfully");
+      // console.log("User updated successfully");
       onClose()
       toast({
         title: "Profile updated",

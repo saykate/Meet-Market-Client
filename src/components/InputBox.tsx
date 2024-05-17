@@ -6,6 +6,7 @@ export type InputProps = {
   label: string;
   type: string;
   name: string;
+  id: string;
   placeholder: string;
   value: string;
   isRequired: boolean;
@@ -17,6 +18,7 @@ const InputBox: FC<InputProps> = ({
   label,
   type = "text",
   name,
+  id,
   placeholder,
   value,
   onChange,
@@ -28,11 +30,12 @@ const InputBox: FC<InputProps> = ({
   return (
     <GridItem colSpan={colSpan}>
       <FormControl>
-        <FormLabel htmlFor={name}>{label}: </FormLabel>
+        <FormLabel htmlFor={id}>{label}: </FormLabel>
         <InputGroup>
           <Input
             type={type !== "password" ? type: (show ? "text" : "password")}
             name={name}
+            id={id}
             placeholder={placeholder}
             value={value}
             onChange={onChange}

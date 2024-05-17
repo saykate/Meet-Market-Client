@@ -35,12 +35,12 @@ const Profile = () => {
   const { messages } = useGetUserMessages();
   const { lists } = useGetUserLists();
 
-  console.log("UserId", userId);
-  console.log("currentUserId", currentUserId);
-  console.log("currentUser", currentUser);
-  console.log("user", user);
-  console.log("messages", messages);
-  console.log("lists", lists);
+  // console.log("UserId", userId);
+  // console.log("currentUserId", currentUserId);
+  // console.log("currentUser", currentUser);
+  // console.log("user", user);
+  // console.log("messages", messages);
+  // console.log("lists", lists);
 
   const [initialState, setInitialState] = useState({
     username: "",
@@ -65,6 +65,7 @@ const Profile = () => {
         profilePhoto: user.profilePhoto || "",
         coverPhoto: user.coverPhoto || "",
       });
+      console.log("lastName in setState", user.lastName)
     }
   }, [user]);
 
