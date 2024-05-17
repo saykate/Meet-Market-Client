@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import {
   VStack,
   Heading,
@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import InputBox, { InputProps } from "./InputBox";
 
-export type InputItem = Omit<InputProps, "onChange" | "value">;
+export type InputItem = Omit<InputProps, "onChange" | "value"> & { isRequired?: boolean};
 
 type FormProps = {
   title: string;
@@ -39,8 +39,17 @@ const FormComponent: FC<FormProps> = ({
 }) => {
   const [formData, setFormData] = useState<Record<string, string>>(initState);
 
+  useEffect(() => {
+    setFormData(initState);
+  }, [initState]);
+
   const validate = () => {
-    return Object.values(formData).every((val) => val);
+    return inputs.every((input) => {
+      if (input.isRequired) {
+        return Boolean(formData[input.name]);
+      }
+      return true; 
+    });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

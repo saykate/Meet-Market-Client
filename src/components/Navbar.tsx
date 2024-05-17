@@ -1,7 +1,6 @@
 import { Link, useLocation } from "react-router-dom"
 import {
   useDisclosure,
-  Button,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -34,7 +33,7 @@ const Navbar = () => {
               </ModalBody>
             </ModalContent>
           </Modal>
-      { !isAuthenticated && <Button onClick={onOpen}>Login</Button> }
+      { !isAuthenticated && <button onClick={onOpen}>Login</button> }
       { location.pathname !== "/" &&
         <Link to="/">Home</Link>
       }

@@ -1,14 +1,17 @@
 import { FC } from "react";
+import { useToast } from "@chakra-ui/react";
 import FormComponent from "../components/FormComponent";
 import { updateUser, UserData } from "../api/users";
 import useAuthContext from "../hooks/useAuthContext";
 
 export type ProfileFormProps = {
   initialState: Record<string, string>;
+  onClose: () => void;
 }
 
-const ProfileForm: FC<ProfileFormProps> = ({ initialState }) => {
+const ProfileForm: FC<ProfileFormProps> = ({ initialState, onClose }) => {
   const { token, userId, username } = useAuthContext();
+  const toast = useToast();
 
   const inputs = [
     {
@@ -76,7 +79,7 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState }) => {
     }
 
     const userData: UserData = {
-      _id: formData._id, 
+      _id: userId, 
       username: username,
       firstName: formData.firstName,
       lastName: formData.lastName,
@@ -86,11 +89,17 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState }) => {
       coverPhoto: formData.coverPhoto,
     };
 
-    console.log(userData);
+    console.log("userData", userData);
 
     try {
       await updateUser({ userId, token }, userData);
       console.log("User updated successfully");
+      onClose()
+      toast({
+        title: "Profile updated",
+        duration: 2000,
+        position: "top"
+      })
     } catch (error) {
       console.error("Failed to update user:", error);
     }

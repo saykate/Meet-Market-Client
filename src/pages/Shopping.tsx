@@ -11,6 +11,7 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
+  ModalFooter,
   ModalBody,
   ModalCloseButton,
   useToast,
@@ -71,17 +72,18 @@ const Shopping = () => {
         ))}
       </SimpleGrid>
       <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Choose your List</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody>
-                    {lists.map(list => (
-                      <div key={list._id} onClick={() => addToList(list._id)} >{list.listName}</div>
-                    ))}
-                  </ModalBody>
-                </ModalContent>
-              </Modal>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Choose your List</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {lists.map(list => (
+              <Button key={list._id} onClick={() => addToList(list._id)} >{list.listName}</Button>
+            ))}
+          </ModalBody>
+          <ModalFooter></ModalFooter>
+        </ModalContent>
+      </Modal>
     </VStack>
   );
 };

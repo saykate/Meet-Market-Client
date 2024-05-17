@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom"
 import useListOfUsers from "../hooks/useListOfUsers";
+import useAuthContext from "../hooks/useAuthContext";
 
 const Home = () => {
   const { users } = useListOfUsers()
+  const { isAuthenticated } = useAuthContext();
 
   return (
+    <>
+    {isAuthenticated && 
     <div>
       <h1>Users:</h1>
       <ul>
@@ -15,6 +19,8 @@ const Home = () => {
         ))}
       </ul>
     </div>
+    }
+  </>
   )
 }
 

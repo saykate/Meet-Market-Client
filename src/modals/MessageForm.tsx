@@ -1,8 +1,8 @@
 import { FC } from "react";
+import { useToast } from "@chakra-ui/react";
 import FormComponent from "../components/FormComponent";
 import useAuthContext from "../hooks/useAuthContext";
 import { createMessage } from "../api/messages";
-import { useToast } from "@chakra-ui/react";
 
 export type MessageFormProps = {
   recipient: string;

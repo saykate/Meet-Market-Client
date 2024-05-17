@@ -12,15 +12,15 @@ const inputs = [
     label: "Username",
     type: "text",
     name: "username",
-    placeholder: "",
+    placeholder: "Enter username",
     isRequired: true,
   },
   {
     colSpan: 2,
     label: "Password",
-    type: "text",
+    type: "password",
     name: "password",
-    placeholder: "",
+    placeholder: "Enter password",
     isRequired: true,
   },
 ];

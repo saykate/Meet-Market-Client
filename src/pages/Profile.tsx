@@ -90,7 +90,7 @@ const Profile = () => {
                   <ModalHeader>Update Your Profile</ModalHeader>
                   <ModalCloseButton />
                   <ModalBody>
-                    <ProfileForm initialState={initialState} />
+                    <ProfileForm initialState={initialState} onClose={onClose}/>
                   </ModalBody>
                 </ModalContent>
               </Modal>
