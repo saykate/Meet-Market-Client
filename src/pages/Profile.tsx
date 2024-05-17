@@ -12,19 +12,10 @@ import {
 } from "@chakra-ui/react";
 import useAuthContext from "../hooks/useAuthContext";
 import useGetUser from "../hooks/useGetUser";
-import useGetUserMessages from "../hooks/useGetUserMessages";
 import useGetUserLists from "../hooks/useGetUserLists";
 import MessageForm from "../modals/MessageForm";
 import ProfileForm from "../modals/ProfileForm";
-import { UserData } from "../api/users";
 
-export type Message = {
-  _id: string;
-  author: UserData;
-  recipient: string;
-  text: string;
-  createdDate: Date;
-};
 
 const Profile = () => {
   const { userId: currentUserId } = useAuthContext();
@@ -32,7 +23,6 @@ const Profile = () => {
   const { user, loading } = useGetUser(userId);
   const currentUser = currentUserId === userId;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { messages } = useGetUserMessages();
   const { lists } = useGetUserLists();
 
   // console.log("UserId", userId);
@@ -97,15 +87,6 @@ const Profile = () => {
               </Modal>
             </div>
             <div>
-              <h2 style={{color: "red", textDecoration: "underline"}}>Your Messages</h2>
-              <ul>
-                {messages.map((message: Message) => (
-                  <li key={message._id}>
-                    <div>{message.author.username} said:</div>
-                    <div>'{message.text}'</div>
-                  </li>
-                ))}
-              </ul>
               <h2 style={{color: "red", textDecoration: "underline"}}>Your Lists</h2>
               <ul>
                 {lists.map(list => (
