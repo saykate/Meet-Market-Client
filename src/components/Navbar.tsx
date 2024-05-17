@@ -6,7 +6,6 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
@@ -33,14 +32,9 @@ const Navbar = () => {
               <ModalBody>
                 { isLoginModal ? <LoginForm onRegisterOpen={() => setIsLoginModal(false)} onClose={onClose} /> : <RegisterForm onClose={onClose}/>}
               </ModalBody>
-              <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={onClose}>
-                  Close
-                </Button>
-              </ModalFooter>
             </ModalContent>
           </Modal>
-      { !isAuthenticated && <button onClick={onOpen}>Login</button> }
+      { !isAuthenticated && <Button onClick={onOpen}>Login</Button> }
       { location.pathname !== "/" &&
         <Link to="/">Home</Link>
       }

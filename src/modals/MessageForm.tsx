@@ -2,13 +2,16 @@ import { FC } from "react";
 import FormComponent from "../components/FormComponent";
 import useAuthContext from "../hooks/useAuthContext";
 import { createMessage } from "../api/messages";
+import { useToast } from "@chakra-ui/react";
 
 export type MessageFormProps = {
   recipient: string;
+  onClose: () => void;
 };
 
-const MessageForm: FC<MessageFormProps> = ({ recipient }) => {
+const MessageForm: FC<MessageFormProps> = ({ recipient, onClose }) => {
   const { token, userId } = useAuthContext();
+  const toast = useToast();
   const initState = {
     text: "",
   };
@@ -30,6 +33,12 @@ const MessageForm: FC<MessageFormProps> = ({ recipient }) => {
     }
     const newMessage = await createMessage(token, userId, recipient, text);
     console.log("NewMessage", newMessage);
+    onClose()
+    toast({
+      title: "Message Sent",
+      duration: 2000,
+      position: "top"
+    })
   };
 
   return (

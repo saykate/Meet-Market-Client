@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import useAuthContext from "./useAuthContext";
 import * as api from "../api/users";
+import { UserData } from "../api/users";
 
-type Message = {
+export type Message = {
   _id: string;
-  author: string;
+  author: UserData;
   recipient: string;
   text: string;
   createdDate: Date;

@@ -11,7 +11,6 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   useToast,
@@ -55,7 +54,7 @@ const Shopping = () => {
     <VStack w="full" h="full" p={10} spacing={10} alignItems="flex-start">
       <VStack spacing={3} alignItems="flex-start">
         <Heading size="xl">Departments</Heading>
-        <Text>With an account, you can add Departments to your List!</Text>
+        {!isAuthenticated ? <Text>With an account, you can add Departments to your List!</Text> : <Text>Add Departments to your List!</Text>}
       </VStack>
       <SimpleGrid columns={4} columnGap={3} rowGap={3} w="full">
         {departments.map((department) => (
@@ -81,11 +80,6 @@ const Shopping = () => {
                       <div key={list._id} onClick={() => addToList(list._id)} >{list.listName}</div>
                     ))}
                   </ModalBody>
-                  <ModalFooter>
-                    <Button colorScheme="blue" mr={3} onClick={onClose}>
-                      Close
-                    </Button>
-                  </ModalFooter>
                 </ModalContent>
               </Modal>
     </VStack>

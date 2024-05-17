@@ -7,7 +7,6 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
@@ -17,6 +16,15 @@ import useGetUserMessages from "../hooks/useGetUserMessages";
 import useGetUserLists from "../hooks/useGetUserLists";
 import MessageForm from "../modals/MessageForm";
 import ProfileForm from "../modals/ProfileForm";
+import { UserData } from "../api/users";
+
+export type Message = {
+  _id: string;
+  author: UserData;
+  recipient: string;
+  text: string;
+  createdDate: Date;
+};
 
 const Profile = () => {
   const { userId: currentUserId } = useAuthContext();
@@ -84,21 +92,16 @@ const Profile = () => {
                   <ModalBody>
                     <ProfileForm initialState={initialState} />
                   </ModalBody>
-                  <ModalFooter>
-                    <Button colorScheme="blue" mr={3} onClick={onClose}>
-                      Close
-                    </Button>
-                  </ModalFooter>
                 </ModalContent>
               </Modal>
             </div>
             <div>
               <h2 style={{color: "red", textDecoration: "underline"}}>Your Messages</h2>
               <ul>
-                {messages.map(message => (
+                {messages.map((message: Message) => (
                   <li key={message._id}>
-                    <div>{message.author}</div>
-                    <div>{message.text}</div>
+                    <div>{message.author.username} said:</div>
+                    <div>'{message.text}'</div>
                   </li>
                 ))}
               </ul>
@@ -125,13 +128,8 @@ const Profile = () => {
                 <ModalHeader>Message</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                  <MessageForm recipient={userId} />
+                  <MessageForm recipient={userId} onClose={onClose} />
                 </ModalBody>
-                <ModalFooter>
-                  <Button colorScheme="blue" mr={3} onClick={onClose}>
-                    Close
-                  </Button>
-                </ModalFooter>
               </ModalContent>
             </Modal>
           </div>
