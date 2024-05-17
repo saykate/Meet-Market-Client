@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as api from "../api/auth";
 import { useNavigate } from "react-router-dom";
 import useAuthContext from "./useAuthContext";
@@ -13,7 +13,7 @@ type ErrorType = {
   message: string;
 };
 
-const useRegister = () => {
+const useRegister = (onClose: () => void) => {
   const { setToken, userId } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -24,20 +24,27 @@ const useRegister = () => {
     password,
     confirmPassword,
   }: RegisterFormData) => {
+    setLoading(true);
     try {
-      setLoading(true);
       const res = await api.register({ username, password, confirmPassword });
       setToken(res.JWT);
-      navigate(`/profile/${userId}`);
+      setLoading(false)
     } catch (error) {
       console.error("Failed to register", error);
       setError({
         message: (error as Error).message || "An unknown error occurred",
       });
-    } finally {
       setLoading(false);
-    }
-  };
+  }
+}
+
+useEffect(() => {
+  if(!userId || loading) {
+    return 
+  } 
+  navigate(`/profile/${userId}`);
+  onClose()
+}, [userId, loading])
 
   return { loading, error, register };
 };

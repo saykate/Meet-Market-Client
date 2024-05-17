@@ -31,7 +31,7 @@ const Navbar = () => {
               <ModalHeader>Login</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                { isLoginModal ? <LoginForm onRegisterOpen={() => setIsLoginModal(false)} onClose={onClose} /> : <RegisterForm />}
+                { isLoginModal ? <LoginForm onRegisterOpen={() => setIsLoginModal(false)} onClose={onClose} /> : <RegisterForm onClose={onClose}/>}
               </ModalBody>
               <ModalFooter>
                 <Button colorScheme="blue" mr={3} onClick={onClose}>

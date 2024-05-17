@@ -14,6 +14,7 @@ import {
 import useAuthContext from "../hooks/useAuthContext";
 import useGetUser from "../hooks/useGetUser";
 import useGetUserMessages from "../hooks/useGetUserMessages";
+import useGetUserLists from "../hooks/useGetUserLists";
 import MessageForm from "../modals/MessageForm";
 import ProfileForm from "../modals/ProfileForm";
 
@@ -24,11 +25,14 @@ const Profile = () => {
   const currentUser = currentUserId === userId;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { messages } = useGetUserMessages();
+  const { lists } = useGetUserLists();
 
   console.log("UserId", userId);
   console.log("currentUserId", currentUserId);
   console.log("currentUser", currentUser);
   console.log("user", user);
+  console.log("messages", messages);
+  console.log("lists", lists);
 
   const [initialState, setInitialState] = useState({
     username: "",
@@ -89,12 +93,23 @@ const Profile = () => {
               </Modal>
             </div>
             <div>
-              <h2>Your Messages:</h2>
+              <h2 style={{color: "red", textDecoration: "underline"}}>Your Messages</h2>
               <ul>
                 {messages.map(message => (
                   <li key={message._id}>
                     <div>{message.author}</div>
                     <div>{message.text}</div>
+                  </li>
+                ))}
+              </ul>
+              <h2 style={{color: "red", textDecoration: "underline"}}>Your Lists</h2>
+              <ul>
+                {lists.map(list => (
+                  <li key={list._id}>
+                    <div style={{fontSize: "1.25em"}}>{list.listName}:</div>
+                    {list.departments.map((dept) => (
+                      <div key={dept._id}>{dept.title}</div>
+                    ))}
                   </li>
                 ))}
               </ul>

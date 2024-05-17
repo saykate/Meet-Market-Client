@@ -34,8 +34,12 @@ const inputs = [
   },
 ];
 
-const RegisterForm = () => {
-  const { loading, register } = useRegister();
+type RegisterFormProps = {
+  onClose: () => void;
+};
+
+const RegisterForm = ({onClose}: RegisterFormProps) => {
+  const { loading, register } = useRegister(onClose);
 
   const handleRegister = async ({
     username,
