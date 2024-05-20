@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom";
 import {
   useDisclosure,
   Modal,
@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import LoginForm from "../modals/LoginForm";
 import RegisterForm from "../modals/RegisterForm";
-import useLogout from "../hooks/useLogout"
+import useLogout from "../hooks/useLogout";
 import useAuthContext from "../hooks/useAuthContext";
 import { useState } from "react";
 
@@ -19,34 +19,44 @@ const Navbar = () => {
   const location = useLocation();
   const { isAuthenticated, userId } = useAuthContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isLoginModal, setIsLoginModal] = useState(true)
+  const [isLoginModal, setIsLoginModal] = useState(true);
 
   return (
     <nav>
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Login</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                { isLoginModal ? <LoginForm onRegisterOpen={() => setIsLoginModal(false)} onClose={onClose} /> : <RegisterForm onClose={onClose}/>}
-              </ModalBody>
-            </ModalContent>
-          </Modal>
-      { !isAuthenticated && <button onClick={onOpen}>Login</button> }
-      { location.pathname !== "/" &&
-        <Link to="/">Home</Link>
-      }
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Login</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {isLoginModal ? (
+              <LoginForm
+                onRegisterOpen={() => setIsLoginModal(false)}
+                onClose={onClose}
+              />
+            ) : (
+              <RegisterForm 
+                onReturnToLogin={() => setIsLoginModal(true)}
+                onClose={onClose}
+              />
+            )}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+      {!isAuthenticated && <button onClick={onOpen}>Login</button>}
+      {location.pathname !== "/" && <Link to="/">Home</Link>}
       <Link to="shopping">Shopping</Link>
-      { isAuthenticated &&
+      {isAuthenticated && (
         <div className="nav">
           <Link to={`profile/${userId}`}>Profile</Link>
           <Link to="messages">Messages</Link>
-          <Link onClick={logout} to="/">Logout</Link>
+          <Link onClick={logout} to="/">
+            Logout
+          </Link>
         </div>
-      }
+      )}
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
