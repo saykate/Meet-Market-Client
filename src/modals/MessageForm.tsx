@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import FormComponent from "../components/FormComponent";
 import useAuthContext from "../hooks/useAuthContext";
@@ -9,9 +9,15 @@ export type MessageFormProps = {
   onClose: () => void;
 };
 
+type ErrorType = {
+  message: string;
+};
+
 const MessageForm: FC<MessageFormProps> = ({ recipient, onClose }) => {
   const { token, userId } = useAuthContext();
   const toast = useToast();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<ErrorType | null>(null);
   const initState = {
     text: "",
   };
@@ -29,9 +35,11 @@ const MessageForm: FC<MessageFormProps> = ({ recipient, onClose }) => {
   ];
 
   const handleCreateMessage = async ({ text }: {text: string}) => {
+    setLoading(true);
     if (!token || !userId) {
       return null;
     }
+    try {
     const newMessage = await createMessage(token, userId, recipient, text);
     console.log("NewMessage", newMessage);
     onClose()
@@ -40,16 +48,24 @@ const MessageForm: FC<MessageFormProps> = ({ recipient, onClose }) => {
       duration: 2000,
       position: "top"
     })
-  };
+    } catch (error) {
+      console.error("Failed to Send Message", error);
+      setError({
+        message: (error as Error).message || "An unknown error occurred",
+      });
+      setLoading(false)
+    } 
+  }
 
-  return (
+    return (
     <FormComponent
       title="Message Form"
       inputs={inputs}
       submit={handleCreateMessage}
       cta="Send Message"
       initState={initState}
-      loading={false}
+      loading={loading}
+      error={error}
     />
   );
 };

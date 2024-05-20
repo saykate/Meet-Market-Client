@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import FormComponent from "../components/FormComponent";
 import { updateUser, UserData } from "../api/users";
@@ -9,8 +9,14 @@ export type ProfileFormProps = {
   onClose: () => void;
 }
 
+type ErrorType = {
+  message: string;
+};
+
 const ProfileForm: FC<ProfileFormProps> = ({ initialState, onClose }) => {
   const { token, userId, username } = useAuthContext();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<ErrorType | null>(null);
   const toast = useToast();
 
   const inputs = [
@@ -80,6 +86,7 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState, onClose }) => {
   ];
 
   const handleUpdateUser = async (formData: Record<string, string>) => {
+    setLoading(true);
     if (!token || !userId || !username) {
       console.error("No token or user ID");
       return null;
@@ -109,6 +116,10 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState, onClose }) => {
       })
     } catch (error) {
       console.error("Failed to update user:", error);
+      setError({
+        message: (error as Error).message || "An unknown error occurred",
+      });
+      setLoading(false)
     }
   };
 
@@ -119,7 +130,8 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState, onClose }) => {
       submit={handleUpdateUser}
       cta="Update Profile"
       initState={initialState}
-      loading={false}
+      loading={loading}
+      error={error}
     />
   );
 };

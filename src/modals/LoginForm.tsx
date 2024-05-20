@@ -34,7 +34,7 @@ type LoginFormProps = {
 
 
 const LoginForm = ({ onRegisterOpen, onClose }: LoginFormProps) => {
-  const { loading, login } = useLogin(onClose);
+  const { loading, error, login } = useLogin(onClose);
 
   const handleLogin = async ({ username, password }: LoginFormData) => {
     await login({ username, password });
@@ -52,6 +52,7 @@ const LoginForm = ({ onRegisterOpen, onClose }: LoginFormProps) => {
       linkAction={onRegisterOpen}
       linkText="Sign Up"
       loading={loading}
+      error={error}
     />
   );
 };

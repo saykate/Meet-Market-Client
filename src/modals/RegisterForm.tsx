@@ -43,7 +43,7 @@ type RegisterFormProps = {
 };
 
 const RegisterForm = ({onReturnToLogin, onClose}: RegisterFormProps) => {
-  const { loading, register } = useRegister(onClose);
+  const { loading, error, register } = useRegister(onClose);
 
   const handleRegister = async ({
     username,
@@ -65,6 +65,7 @@ const RegisterForm = ({onReturnToLogin, onClose}: RegisterFormProps) => {
         linkAction={onReturnToLogin}
         linkText="Login"
         loading={loading}
+        error={error}
       />
   );
 };

@@ -8,6 +8,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import InputBox, { InputProps } from "./InputBox";
+import ErrorMessage from "../components/ErrorMessage";
 
 export type InputItem = Omit<InputProps, "onChange" | "value"> & { isRequired?: boolean};
 
@@ -23,6 +24,7 @@ type FormProps = {
   linkAction?: () => void;
   linkText?: string;
   loading: boolean;
+  error?: {message: string} | null;
 };
 
 const FormComponent: FC<FormProps> = ({
@@ -36,6 +38,7 @@ const FormComponent: FC<FormProps> = ({
   linkAction,
   linkText,
   loading,
+  error,
 }) => {
   const [formData, setFormData] = useState<Record<string, string>>(initState);
 
@@ -95,6 +98,7 @@ const FormComponent: FC<FormProps> = ({
         </GridItem>
       )}
       </SimpleGrid>
+      {error && <ErrorMessage message={error.message} />}
     </VStack>
   );
 };
