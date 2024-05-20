@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   useDisclosure,
+  Box,
+  Heading,
   Button,
   Modal,
   ModalOverlay,
@@ -38,7 +40,7 @@ const Profile = () => {
     lastName: "",
     bio: "",
     birthdate: "",
-    profilePhoto: "",
+    profilePhoto: "https://photos-for-meet-market.s3.amazonaws.com/profile.png",
     coverPhoto: "",
   });
 
@@ -52,7 +54,7 @@ const Profile = () => {
         birthdate: user.birthdate
           ? new Date(user.birthdate).toISOString().split("T")[0]
           : "",
-        profilePhoto: user.profilePhoto || "",
+        profilePhoto: user.profilePhoto || "https://photos-for-meet-market.s3.amazonaws.com/profile.png",
         coverPhoto: user.coverPhoto || "",
       });
       console.log("lastName in setState", user.lastName)
@@ -69,11 +71,18 @@ const Profile = () => {
 
   if (user && userId) {
     return (
-      <div>
+      <Box
+      w="full"
+      h="full"
+      display="flex"
+      flexDir="column"
+      p="1em" 
+      border="solid"
+      >
         {currentUser ? (
-          <div>
-            <div>
-              <h1>Welcome {user.username}</h1>
+          <Box p="1em" border="solid">
+            <Box p="1em" border="solid">
+              <Heading size="xl">Welcome {user.username}</Heading>
               <Button onClick={onOpen}>Edit Profile</Button>
               <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
@@ -85,9 +94,9 @@ const Profile = () => {
                   </ModalBody>
                 </ModalContent>
               </Modal>
-            </div>
-            <div>
-              <h2 style={{color: "red", textDecoration: "underline"}}>Your Lists</h2>
+            </Box>
+            <Box p="1em" border="solid">
+              <Heading size="lg">Your Lists</Heading>
               <ul>
                 {lists.map(list => (
                   <li key={list._id}>
@@ -98,10 +107,10 @@ const Profile = () => {
                   </li>
                 ))}
               </ul>
-            </div>
-          </div>
+            </Box>
+          </Box>
         ) : (
-          <div>
+          <Box p="1em" border="solid">
             <h1>{user.username}</h1>
             <Button onClick={onOpen}>Send a Message</Button>
             <Modal isOpen={isOpen} onClose={onClose}>
@@ -114,9 +123,9 @@ const Profile = () => {
                 </ModalBody>
               </ModalContent>
             </Modal>
-          </div>
+          </Box>
         )}
-      </div>
+      </Box>
     );
   } else {
     return (

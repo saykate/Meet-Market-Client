@@ -1,7 +1,6 @@
 import {
   SimpleGrid,
-  GridItem,
-  VStack,
+  Box,
   Heading,
   Text,
   Image,
@@ -21,7 +20,7 @@ import useGetDepartments from "../hooks/useGetDepartments";
 import useAuthContext from "../hooks/useAuthContext";
 import useGetUserLists from "../hooks/useGetUserLists";
 import { useState } from "react";
-import { addDeptToList } from "../api/lists"
+import { addDeptToList } from "../api/lists";
 
 const Shopping = () => {
   const { departments } = useGetDepartments();
@@ -29,46 +28,82 @@ const Shopping = () => {
   const { lists } = useGetUserLists();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-  const [selectedDept, setSelectedDept] = useState<string | null>(null)
+  const [selectedDept, setSelectedDept] = useState<string | null>(null);
 
   const handleAddToList = (deptId: string) => {
-    setSelectedDept(deptId)
-    onOpen()
-  }
+    setSelectedDept(deptId);
+    onOpen();
+  };
 
   const addToList = async (listId: string) => {
-    if(!selectedDept || !token) return; 
+    if (!selectedDept || !token) return;
     try {
       await addDeptToList({ listId, deptId: selectedDept, token });
       onClose();
       toast({
         title: "Department added to your List",
         duration: 2000,
-        position: "top"
-      })
+        position: "top",
+      });
     } catch (error) {
       console.error("Failed to add department to list", error);
     }
-  }
-  
+  };
+
   return (
-    <VStack w="full" h="full" p={10} spacing={10} alignItems="flex-start">
-      <VStack spacing={3} alignItems="flex-start">
+    <Box
+      w="full"
+      h="full"
+      display="flex"
+      flexDir="column"
+      alignItems="flex-start"
+    >
+      <Box
+        display="flex"
+        flexDir="column"
+        alignItems="flex-start"
+        mt="1em"
+        mb="1em"
+        alignContent="flex-start"
+      >
         <Heading size="xl">Departments</Heading>
-        {!isAuthenticated ? <Text>With an account, you can add Departments to your List!</Text> : <Text>Add Departments to your List!</Text>}
-      </VStack>
-      <SimpleGrid columns={4} columnGap={3} rowGap={3} w="full">
+        {!isAuthenticated ? (
+          <Text>With an account, you can add Departments to your List!</Text>
+        ) : (
+          <Text>Add Departments to your List!</Text>
+        )}
+      </Box>
+      <SimpleGrid minChildWidth="180px" spacing="10px" w="full">
         {departments.map((department) => (
-          <GridItem colSpan={1} key={uuidv4()}>
-            {department.title}
+          <Box
+            key={uuidv4()}
+            display="flex"
+            flexDir="column"
+            alignItems="center"
+            justifyContent="space-between"
+            h="auto"
+            w="100%"
+            p="10px"
+            shadow="md"
+            borderWidth="1px"
+            borderRadius="md"
+          >
+            <Text fontSize="xl" fontWeight="bold">
+              {department.title}
+            </Text>
             <Image
-              boxSize={40}
+              w="160px"
               objectFit="cover"
               src={department.photo}
               alt={department.title}
+              mb="10px"
             />
-            {isAuthenticated && <Button onClick={() => handleAddToList(department._id)}>+ to List</Button>}
-          </GridItem>
+            {isAuthenticated && (
+              <Button size="sm" onClick={() => handleAddToList(department._id)}>
+                + to List
+              </Button>
+            )}
+          </Box>
         ))}
       </SimpleGrid>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -77,14 +112,16 @@ const Shopping = () => {
           <ModalHeader>Choose your List</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {lists.map(list => (
-              <Button key={list._id} onClick={() => addToList(list._id)} >{list.listName}</Button>
+            {lists.map((list) => (
+              <Button key={list._id} onClick={() => addToList(list._id)}>
+                {list.listName}
+              </Button>
             ))}
           </ModalBody>
           <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
-    </VStack>
+    </Box>
   );
 };
 

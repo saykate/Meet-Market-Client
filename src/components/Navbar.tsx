@@ -1,13 +1,20 @@
 import { Link, useLocation } from "react-router-dom";
 import {
+  Box,
+  Flex,
   useDisclosure,
+  useBreakpointValue,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalCloseButton,
+  IconButton,
+  VStack, 
+  HStack
 } from "@chakra-ui/react";
+import { HamburgerIcon } from "@chakra-ui/icons";
 import LoginForm from "../modals/LoginForm";
 import RegisterForm from "../modals/RegisterForm";
 import useLogout from "../hooks/useLogout";
@@ -20,13 +27,19 @@ const Navbar = () => {
   const { isAuthenticated, userId } = useAuthContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoginModal, setIsLoginModal] = useState(true);
+  const {
+    isOpen: isMenuOpen,
+    onOpen: onMenuOpen,
+    onClose: onMenuClose,
+  } = useDisclosure();
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
-    <nav>
+    <Box w="full" p={4} borderBottom="1px solid" borderColor="gray.200">
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Login</ModalHeader>
+          <ModalHeader>{isLoginModal ? 'Login' : 'Register'}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {isLoginModal ? (
@@ -35,7 +48,7 @@ const Navbar = () => {
                 onClose={onClose}
               />
             ) : (
-              <RegisterForm 
+              <RegisterForm
                 onReturnToLogin={() => setIsLoginModal(true)}
                 onClose={onClose}
               />
@@ -43,19 +56,59 @@ const Navbar = () => {
           </ModalBody>
         </ModalContent>
       </Modal>
-      {!isAuthenticated && <button onClick={onOpen}>Login</button>}
-      {location.pathname !== "/" && <Link to="/">Home</Link>}
-      <Link to="shopping">Shopping</Link>
-      {isAuthenticated && (
-        <div className="nav">
-          <Link to={`profile/${userId}`}>Profile</Link>
-          <Link to="messages">Messages</Link>
-          <Link onClick={logout} to="/">
-            Logout
-          </Link>
-        </div>
-      )}
-    </nav>
+
+      <Flex justifyContent="space-between" alignItems="center">
+        {!isMobile && (
+          <HStack spacing="2em" fontSize="1.5rem">
+            {!isAuthenticated && <button onClick={onOpen}>Login</button>}
+            {location.pathname !== "/" && <Link to="/">Home</Link>}
+            <Link to="shopping">Shopping</Link>
+            {isAuthenticated && (
+              <HStack spacing="2rem">
+                <Link to={`profile/${userId}`}>Profile</Link>
+                <Link to="messages">Messages</Link>
+                <Link onClick={logout} to="/">
+                  Logout
+                </Link>
+              </HStack>
+            )}
+          </HStack>
+        )}
+        {isMobile && (
+          <>
+          {!isAuthenticated && <button onClick={onOpen}>Login</button>}
+          <IconButton
+            icon={<HamburgerIcon />}
+            onClick={onMenuOpen}
+            aria-label="Open menu"
+          />
+          </>
+        )}
+      </Flex>
+
+      <Modal isOpen={isMenuOpen} onClose={onMenuClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Menu</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <VStack spacing="1rem" alignItems="flex-start">
+              {location.pathname !== "/" && <Link to="/" onClick={onMenuClose}>Home</Link>}
+              <Link to="shopping" onClick={onMenuClose}>Shopping</Link>
+              {isAuthenticated && (
+                <>
+                  <Link to={`profile/${userId}`} onClick={onMenuClose}>Profile</Link>
+                  <Link to="messages" onClick={onMenuClose}>Messages</Link>
+                  <Link onClick={() => {logout(); onMenuClose();}} to="/">
+                    Logout
+                  </Link>
+                </>
+              )}
+            </VStack>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </Box>
   );
 };
 
