@@ -5,12 +5,15 @@ import {
   Box,
   Heading,
   Button,
+  Text,
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalCloseButton,
+  Avatar,
+  Flex,
 } from "@chakra-ui/react";
 import useAuthContext from "../hooks/useAuthContext";
 import useGetUser from "../hooks/useGetUser";
@@ -18,14 +21,13 @@ import useGetUserLists from "../hooks/useGetUserLists";
 import MessageForm from "../modals/MessageForm";
 import ProfileForm from "../modals/ProfileForm";
 
-
 const Profile = () => {
   const { userId: currentUserId } = useAuthContext();
   const { userId } = useParams();
   const { user, loading } = useGetUser(userId);
+  const { lists } = useGetUserLists(userId);
   const currentUser = currentUserId === userId;
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { lists } = useGetUserLists();
 
   // console.log("UserId", userId);
   // console.log("currentUserId", currentUserId);
@@ -40,7 +42,7 @@ const Profile = () => {
     lastName: "",
     bio: "",
     birthdate: "",
-    profilePhoto: "https://photos-for-meet-market.s3.amazonaws.com/profile.png",
+    profilePhoto: "",
     coverPhoto: "",
   });
 
@@ -54,10 +56,10 @@ const Profile = () => {
         birthdate: user.birthdate
           ? new Date(user.birthdate).toISOString().split("T")[0]
           : "",
-        profilePhoto: user.profilePhoto || "https://photos-for-meet-market.s3.amazonaws.com/profile.png",
+        profilePhoto: user.profilePhoto || "",
         coverPhoto: user.coverPhoto || "",
       });
-      console.log("lastName in setState", user.lastName)
+      console.log("lastName in setState", user.lastName);
     }
   }, [user]);
 
@@ -72,17 +74,37 @@ const Profile = () => {
   if (user && userId) {
     return (
       <Box
-      w="full"
-      h="full"
-      display="flex"
-      flexDir="column"
-      p="1em" 
-      border="solid"
+        w="full"
+        h="100vh"
+        display="flex"
+        flexDir="column"
       >
-        {currentUser ? (
-          <Box p="1em" border="solid">
-            <Box p="1em" border="solid">
-              <Heading size="xl">Welcome {user.username}</Heading>
+        <Box
+          p="1em"
+          h="25%"
+          display="flex"
+          alignItems="center"
+          gap="2rem"
+          position="relative"
+          bgImage={user.coverPhoto}
+          bgPosition="center"
+          bgSize="cover"
+        >
+          {/* <Image src={user.coverPhoto}/> */}
+          <Avatar
+            size={["xl", "xl", "2xl"]}
+            position="absolute"
+            top="80%"
+            src={user.profilePhoto}
+          />
+        </Box>
+        <Flex alignItems="center" justifyContent="space-between" px="3%" py={["2rem","5rem"]} flexDir={{base: "column", sm: "row"}} gap="2rem">
+          <Flex flexDir="column"justifyContent="center">
+            <Heading size="xl">{user.username}</Heading>
+            <Text>{user.firstName} {user.lastName}</Text>
+          </Flex>
+          {currentUser ? (
+            <>
               <Button onClick={onOpen}>Edit Profile</Button>
               <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
@@ -90,41 +112,45 @@ const Profile = () => {
                   <ModalHeader>Update Your Profile</ModalHeader>
                   <ModalCloseButton />
                   <ModalBody>
-                    <ProfileForm initialState={initialState} onClose={onClose}/>
+                    <ProfileForm
+                      initialState={initialState}
+                      onClose={onClose}
+                    />
                   </ModalBody>
                 </ModalContent>
               </Modal>
-            </Box>
-            <Box p="1em" border="solid">
-              <Heading size="lg">Your Lists</Heading>
-              <ul>
-                {lists.map(list => (
-                  <li key={list._id}>
-                    <div style={{fontSize: "1.25em"}}>{list.listName}:</div>
-                    {list.departments.map((dept) => (
-                      <div key={dept._id}>{dept.title}</div>
-                    ))}
-                  </li>
-                ))}
-              </ul>
-            </Box>
-          </Box>
-        ) : (
-          <Box p="1em" border="solid">
-            <h1>{user.username}</h1>
+            </>
+          ) : (
+            <>
             <Button onClick={onOpen}>Send a Message</Button>
             <Modal isOpen={isOpen} onClose={onClose}>
-              <ModalOverlay />
-              <ModalContent>
-                <ModalHeader>Message</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  <MessageForm recipient={userId} onClose={onClose} />
-                </ModalBody>
-              </ModalContent>
-            </Modal>
-          </Box>
-        )}
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Message</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <MessageForm recipient={userId} onClose={onClose} />
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+          </>
+          )}
+        </Flex>      
+        <Box p="5em" bg="gray.200" h="50%">
+          <Heading size="xl">{user.username}'s Lists</Heading>
+          <ul>
+            {lists.map((list) => (
+              <li key={list._id}>
+                <Text fontSize="2xl" as="b">
+                  {list.listName}:
+                </Text>
+                {list.departments.map((dept) => (
+                  <div key={dept._id}>{dept.title}</div>
+                ))}
+              </li>
+            ))}
+          </ul>
+        </Box>
       </Box>
     );
   } else {

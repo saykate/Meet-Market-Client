@@ -11,8 +11,8 @@ import {
   ModalBody,
   ModalCloseButton,
   IconButton,
-  VStack, 
-  HStack
+  VStack,
+  HStack,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import LoginForm from "../modals/LoginForm";
@@ -35,11 +35,11 @@ const Navbar = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
-    <Box w="full" p={4} borderBottom="1px solid" borderColor="gray.200">
+    <Box w="full" p={4} bg="gray.200">
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{isLoginModal ? 'Login' : 'Register'}</ModalHeader>
+          <ModalHeader>{isLoginModal ? "Login" : "Register"}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {isLoginModal ? (
@@ -76,12 +76,12 @@ const Navbar = () => {
         )}
         {isMobile && (
           <>
-          {!isAuthenticated && <button onClick={onOpen}>Login</button>}
-          <IconButton
-            icon={<HamburgerIcon />}
-            onClick={onMenuOpen}
-            aria-label="Open menu"
-          />
+            {!isAuthenticated && <button onClick={onOpen}>Login</button>}
+            <IconButton
+              icon={<HamburgerIcon />}
+              onClick={onMenuOpen}
+              aria-label="Open menu"
+            />
           </>
         )}
       </Flex>
@@ -93,13 +93,29 @@ const Navbar = () => {
           <ModalCloseButton />
           <ModalBody>
             <VStack spacing="1rem" alignItems="flex-start">
-              {location.pathname !== "/" && <Link to="/" onClick={onMenuClose}>Home</Link>}
-              <Link to="shopping" onClick={onMenuClose}>Shopping</Link>
+              {location.pathname !== "/" && (
+                <Link to="/" onClick={onMenuClose}>
+                  Home
+                </Link>
+              )}
+              <Link to="shopping" onClick={onMenuClose}>
+                Shopping
+              </Link>
               {isAuthenticated && (
                 <>
-                  <Link to={`profile/${userId}`} onClick={onMenuClose}>Profile</Link>
-                  <Link to="messages" onClick={onMenuClose}>Messages</Link>
-                  <Link onClick={() => {logout(); onMenuClose();}} to="/">
+                  <Link to={`profile/${userId}`} onClick={onMenuClose}>
+                    Profile
+                  </Link>
+                  <Link to="messages" onClick={onMenuClose}>
+                    Messages
+                  </Link>
+                  <Link
+                    onClick={() => {
+                      logout();
+                      onMenuClose();
+                    }}
+                    to="/"
+                  >
                     Logout
                   </Link>
                 </>
