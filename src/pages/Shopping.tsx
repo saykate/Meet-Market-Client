@@ -24,8 +24,8 @@ import { addDeptToList } from "../api/lists";
 
 const Shopping = () => {
   const { departments } = useGetDepartments();
-  const { isAuthenticated, token } = useAuthContext();
-  const { lists } = useGetUserLists();
+  const { isAuthenticated, token, userId } = useAuthContext();
+  const { lists } = useGetUserLists(userId);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const [selectedDept, setSelectedDept] = useState<string | null>(null);
