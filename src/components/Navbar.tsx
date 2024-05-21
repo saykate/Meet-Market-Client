@@ -35,7 +35,7 @@ const Navbar = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
-    <Box w="full" p={4} bg="gray.200">
+    <Box w="full" p={4} bg="gray.300">
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

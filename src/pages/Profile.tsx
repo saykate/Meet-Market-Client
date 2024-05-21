@@ -23,7 +23,7 @@ import ProfileForm from "../modals/ProfileForm";
 
 const Profile = () => {
   const { userId: currentUserId } = useAuthContext();
-  const { userId } = useParams<{ userId: string}>();
+  const { userId } = useParams<{ userId: string }>();
   const { user, loading } = useGetUser(userId as string);
   const { lists } = useGetUserLists(userId as string);
   const currentUser = currentUserId === userId;
@@ -73,12 +73,7 @@ const Profile = () => {
 
   if (user && userId) {
     return (
-      <Box
-        w="full"
-        h="100vh"
-        display="flex"
-        flexDir="column"
-      >
+      <Box w="full" h="100vh" display="flex" flexDir="column" bg="gray.100">
         <Box
           p="1em"
           h="25%"
@@ -97,10 +92,20 @@ const Profile = () => {
             src={user.profilePhoto}
           />
         </Box>
-        <Flex alignItems="center" justifyContent="space-between" px="3%" py={["2rem","5rem"]} flexDir={{base: "column", sm: "row"}} gap="2rem">
-          <Flex flexDir="column"justifyContent="center">
+        <Flex
+          alignItems="center"
+          justifyContent="space-between"
+          px="3%"
+          pt={["2rem", "3rem", "6rem"]}
+          pb="2rem"
+          flexDir={{ base: "column", sm: "row" }}
+          gap="2rem"
+        >
+          <Flex flexDir="column" justifyContent="center">
             <Heading size="xl">{user.username}</Heading>
-            <Text>{user.firstName} {user.lastName}</Text>
+            <Text>
+              {user.firstName} {user.lastName}
+            </Text>
           </Flex>
           {currentUser ? (
             <>
@@ -121,21 +126,24 @@ const Profile = () => {
             </>
           ) : (
             <>
-            <Button onClick={onOpen}>Send a Message</Button>
-            <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Message</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <MessageForm recipient={userId} onClose={onClose} />
-              </ModalBody>
-            </ModalContent>
-          </Modal>
-          </>
+              <Button onClick={onOpen}>Send a Message</Button>
+              <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Message</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    <MessageForm recipient={userId} onClose={onClose} />
+                  </ModalBody>
+                </ModalContent>
+              </Modal>
+            </>
           )}
-        </Flex>      
-        <Box p="5em" bg="gray.200" h="50%">
+        </Flex>
+        <Box p="3em" textAlign="center" border="solid" borderColor="gray.300" mx="2rem">
+          {user.bio}
+        </Box>
+        <Box p="5em" >
           <Heading size="xl">{user.username}'s Lists</Heading>
           <ul>
             {lists.map((list) => (
