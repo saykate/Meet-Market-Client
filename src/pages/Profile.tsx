@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import {
   useDisclosure,
@@ -15,6 +14,7 @@ import {
   Avatar,
   Flex,
 } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
 import useAuthContext from "../hooks/useAuthContext";
 import useGetUser from "../hooks/useGetUser";
 import useGetUserLists from "../hooks/useGetUserLists";
@@ -73,7 +73,7 @@ const Profile = () => {
 
   if (user && userId) {
     return (
-      <Box w="full" h="100vh" display="flex" flexDir="column" bg="gray.100">
+      <Box w="full" h="100vh" display="flex" flexDir="column" bg="gray.100" overflow="auto">
         <Box
           p="1em"
           h="25%"
@@ -90,6 +90,7 @@ const Profile = () => {
             position="absolute"
             top="80%"
             src={user.profilePhoto}
+
           />
         </Box>
         <Flex
@@ -109,7 +110,9 @@ const Profile = () => {
           </Flex>
           {currentUser ? (
             <>
-              <Button onClick={onOpen}>Edit Profile</Button>
+              <Button onClick={onOpen} bg="gray.300">
+                Edit Profile
+              </Button>
               <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
@@ -126,7 +129,9 @@ const Profile = () => {
             </>
           ) : (
             <>
-              <Button onClick={onOpen}>Send a Message</Button>
+              <Button onClick={onOpen} bg="gray.300">
+                Send a Message
+              </Button>
               <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
@@ -140,11 +145,19 @@ const Profile = () => {
             </>
           )}
         </Flex>
-        <Box p="3em" textAlign="center" border="solid" borderColor="gray.300" mx="2rem">
-          {user.bio}
+        <Box
+          p="2em"
+          textAlign="left"
+          border="solid"
+          borderColor="gray.300"
+          mx="2rem"
+        >
+          <Heading size="md" >Bio:</Heading>
+          <Text>{user.bio}</Text>   
         </Box>
-        <Box p="5em" >
+        <Box p="5em">
           <Heading size="xl">{user.username}'s Lists</Heading>
+          <hr style={{height: "1px", backgroundColor: "#c4cfdb" }}/>
           <ul>
             {lists.map((list) => (
               <li key={list._id}>

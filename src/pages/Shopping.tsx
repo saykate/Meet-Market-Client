@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   SimpleGrid,
   Box,
@@ -15,11 +16,9 @@ import {
   ModalCloseButton,
   useToast,
 } from "@chakra-ui/react";
-import { v4 as uuidv4 } from "uuid";
 import useGetDepartments from "../hooks/useGetDepartments";
 import useAuthContext from "../hooks/useAuthContext";
 import useGetUserLists from "../hooks/useGetUserLists";
-import { useState } from "react";
 import { addDeptToList } from "../api/lists";
 
 const Shopping = () => {
@@ -53,10 +52,13 @@ const Shopping = () => {
   return (
     <Box
       w="full"
-      h="full"
+      h="100vh"
+      p="1rem"
       display="flex"
       flexDir="column"
       alignItems="flex-start"
+      bg="gray.100"
+      overflow="auto"
     >
       <Box
         display="flex"
@@ -76,7 +78,7 @@ const Shopping = () => {
       <SimpleGrid minChildWidth="180px" spacing="10px" w="full">
         {departments.map((department) => (
           <Box
-            key={uuidv4()}
+            key={department._id}
             display="flex"
             flexDir="column"
             alignItems="center"
@@ -87,6 +89,7 @@ const Shopping = () => {
             shadow="md"
             borderWidth="1px"
             borderRadius="md"
+            bg="#F7F5E8"
           >
             <Text fontSize="xl" fontWeight="bold">
               {department.title}
