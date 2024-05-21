@@ -18,7 +18,7 @@ type ErrorType = {
   message: string;
 };
 
-const useGetUserLists = (userId: string | null) => {
+const useGetUserLists = (userId: string) => {
   const { token } = useAuthContext();
   const [lists, setLists] = useState<List[]>([]);
   const [loading, setLoading] = useState(true);

@@ -23,9 +23,9 @@ import ProfileForm from "../modals/ProfileForm";
 
 const Profile = () => {
   const { userId: currentUserId } = useAuthContext();
-  const { userId } = useParams();
-  const { user, loading } = useGetUser(userId);
-  const { lists } = useGetUserLists(userId);
+  const { userId } = useParams<{ userId: string}>();
+  const { user, loading } = useGetUser(userId as string);
+  const { lists } = useGetUserLists(userId as string);
   const currentUser = currentUserId === userId;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -90,7 +90,6 @@ const Profile = () => {
           bgPosition="center"
           bgSize="cover"
         >
-          {/* <Image src={user.coverPhoto}/> */}
           <Avatar
             size={["xl", "xl", "2xl"]}
             position="absolute"
