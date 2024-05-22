@@ -50,7 +50,14 @@ const Home = () => {
   }, [users]);
 
   return (
-    <Box w="full" h="100vh" display="flex" flexDir="column" bg="gray.100" overflow="auto">
+    <Box
+      w="full"
+      h="100vh"
+      display="flex"
+      flexDir="column"
+      bg="gray.100"
+      overflow="auto"
+    >
       <Box
         bgImage="https://photos-for-meet-market.s3.amazonaws.com/GroceryBag.jpg"
         bgPosition="center"
@@ -61,25 +68,35 @@ const Home = () => {
         <Flex
           flexDir="column"
           alignItems="center"
-          w={{base: "60%", sm: "50%", md: "40%" }}
+          w={{ base: "60%", sm: "50%", md: "40%" }}
           gap=".25rem"
           p=".5rem"
-          bgColor="rgba(247, 245, 232, 100)"
-          borderRadius="3xl"
+          position="relative"
         >
-          <Text fontSize={{ base: "sm", md: "lg", lg: "xl" }}>
+          <Box
+            zIndex="0"
+            position="absolute"
+            top="0"
+            bottom="0"
+            right="0"
+            left="0"
+            borderRadius="3xl"
+            bgColor="rgba(247, 245, 232, 100)"
+            sx={{ opacity: "70%" }}
+          />
+          <Text zIndex="5" fontSize={{ base: "lg", md: "2xl", lg: "3xl" }} as="b">
+            Welcome to
+          </Text>
+          <Text zIndex="5" fontSize={{ base: "lg", md: "2xl", lg: "3xl" }} as="b">
+            MEET-MARKET
+          </Text>
+          <Text zIndex="5" fontSize={{ base: "sm", md: "lg", lg: "xl" }} as="b">
             Get the benefits of BULK without the BURDEN of food waste and
             freezer space.
           </Text>
-          <Text fontSize={{ base: "sm", md: "lg", lg: "xl" }}>
+          <Text zIndex="5" fontSize={{ base: "sm", md: "lg", lg: "xl" }} as="b">
             Find friends in your area to share Costco groceries and SAVINGS
             with!
-          </Text>
-          <Text fontSize={{ base: "lg", md: "2xl", lg: "3xl" }} as="b">
-            Welcome to
-          </Text>
-          <Text fontSize={{ base: "lg", md: "2xl", lg: "3xl" }} as="b">
-            MEET-MARKET
           </Text>
         </Flex>
       </Box>
@@ -147,7 +164,9 @@ const Home = () => {
             <SimpleGrid minChildWidth="80px" spacing="10px" w="full">
               {displayedUsers.map((user) => (
                 <Flex flexDirection="column" alignItems="center" key={user._id}>
-                  <Link to={`/profile/${user._id}`}><Avatar src={user.profilePhoto} /></Link>
+                  <Link to={`/profile/${user._id}`}>
+                    <Avatar src={user.profilePhoto} />
+                  </Link>
                   <Link to={`/profile/${user._id}`}>{user.username}</Link>
                 </Flex>
               ))}

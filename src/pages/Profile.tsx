@@ -82,8 +82,7 @@ const Profile = () => {
         userId && (
           <Box>
             <Box
-              p="1em"
-              h="25%"
+              p="8rem"
               display="flex"
               alignItems="center"
               gap="2rem"
@@ -96,6 +95,7 @@ const Profile = () => {
                 size={["xl", "xl", "2xl"]}
                 position="absolute"
                 top="80%"
+                left="5"
                 src={user.profilePhoto}
               />
             </Box>
@@ -162,16 +162,13 @@ const Profile = () => {
               <Text>{user.bio}</Text>
             </Box>
             <Box p="5em">
-              <Heading size="xl">{user.username}'s Lists</Heading>
+              <Heading size="lg">{user.username} is interested in shopping for:</Heading>
               <hr style={{ height: "1px", backgroundColor: "#c4cfdb" }} />
               <ul>
                 {lists.map((list) => (
                   <li key={list._id}>
-                    <Text fontSize="2xl" as="b">
-                      {list.listName}:
-                    </Text>
                     {list.departments.map((dept) => (
-                      <div key={dept._id}>{dept.title}</div>
+                      <Box fontSize="1.5rem" key={dept._id}>{dept.title}</Box>
                     ))}
                   </li>
                 ))}

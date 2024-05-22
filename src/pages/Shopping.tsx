@@ -19,6 +19,12 @@ import {
   Spinner,
   Alert,
   AlertIcon,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
+  PopoverArrow,
+  PopoverCloseButton,
 } from "@chakra-ui/react";
 import useGetDepartments from "../hooks/useGetDepartments";
 import useAuthContext from "../hooks/useAuthContext";
@@ -68,8 +74,9 @@ const Shopping = () => {
         display="flex"
         flexDir="column"
         alignItems="flex-start"
-        mt="1em"
-        mb="1em"
+        gap="1rem"
+        mt="1rem"
+        mb="1rem"
         alignContent="flex-start"
       >
         <Heading size="xl">Departments</Heading>
@@ -78,6 +85,16 @@ const Shopping = () => {
         ) : (
           <Text>Add Departments to your List!</Text>
         )}
+        <Popover>
+          <PopoverTrigger>
+          <Button p="0">More info +</Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <PopoverArrow />
+            <PopoverCloseButton />
+            <PopoverBody>By adding departemnts to your list, other users can see if you are a compatible shopping partner!</PopoverBody>
+          </PopoverContent>
+        </Popover>  
       </Box>
       {loading ? (
           <Flex justify="center" align="center" w="full" h="100%">
