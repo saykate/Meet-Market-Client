@@ -1,3 +1,11 @@
+import {
+  Box,
+  Spinner,
+  Alert,
+  AlertIcon,
+  Flex,
+  Heading,
+} from "@chakra-ui/react";
 import useAuthContext from "../hooks/useAuthContext";
 import useGetUserMessages from "../hooks/useGetUserMessages";
 import { UserData } from "../api/users";
@@ -12,34 +20,46 @@ export type Message = {
 
 const Messages = () => {
   const { isAuthenticated } = useAuthContext();
-  const { messages, loading } = useGetUserMessages();
-
-
-  if (loading) {
-    return (
-      <div>
-        <h1>Loading...</h1>
-      </div>
-    );
-  }
+  const { messages, loading, error } = useGetUserMessages();
 
   return (
-    <>
-    {isAuthenticated && 
-      <div>
-        <h2 style={{color: "red", textDecoration: "underline"}}>Inbox</h2>
-        <ul>
-          {messages.map((message: Message) => (
-            <li key={message._id}>
-              <div>{message.author.username} said:</div>
-              <div>'{message.text}'</div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    }
-    </>
-  )
-}
+    <Box
+      w="full"
+      h="100vh"
+      display="flex"
+      flexDir="column"
+      bg="gray.100"
+      overflow="auto"
+    >
+      <Heading size="xl" p="1rem">
+        Messages:
+      </Heading>
+      {loading ? (
+        <Flex justify="center" align="center" w="full" h="100%">
+          <Spinner size="xl" />
+        </Flex>
+      ) : error ? (
+        <Alert status="error">
+          <AlertIcon />
+          {error.message}
+        </Alert>
+      ) : (
+        isAuthenticated && (
+          <Box>
+            <Heading as="h2">Inbox</Heading>
+            <ul>
+              {messages.map((message: Message) => (
+                <li key={message._id}>
+                  <div>{message.author.username} said:</div>
+                  <div>'{message.text}'</div>
+                </li>
+              ))}
+            </ul>
+          </Box>
+        )
+      )}
+    </Box>
+  );
+};
 
-export default Messages
+export default Messages;

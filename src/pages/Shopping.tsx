@@ -7,6 +7,7 @@ import {
   Image,
   useDisclosure,
   Button,
+  Flex,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -15,6 +16,9 @@ import {
   ModalBody,
   ModalCloseButton,
   useToast,
+  Spinner,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 import useGetDepartments from "../hooks/useGetDepartments";
 import useAuthContext from "../hooks/useAuthContext";
@@ -22,7 +26,7 @@ import useGetUserLists from "../hooks/useGetUserLists";
 import { addDeptToList } from "../api/lists";
 
 const Shopping = () => {
-  const { departments } = useGetDepartments();
+  const { departments, loading, error } = useGetDepartments();
   const { isAuthenticated, token, userId } = useAuthContext();
   const { lists } = useGetUserLists(userId as string);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -75,6 +79,16 @@ const Shopping = () => {
           <Text>Add Departments to your List!</Text>
         )}
       </Box>
+      {loading ? (
+          <Flex justify="center" align="center" w="full" h="100%">
+            <Spinner size="xl" />
+          </Flex>
+        ) : error ? (
+          <Alert status="error">
+            <AlertIcon />
+            {error.message}
+          </Alert>
+        ) : (
       <SimpleGrid minChildWidth="180px" spacing="10px" w="full">
         {departments.map((department) => (
           <Box
@@ -109,6 +123,7 @@ const Shopping = () => {
           </Box>
         ))}
       </SimpleGrid>
+        )}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

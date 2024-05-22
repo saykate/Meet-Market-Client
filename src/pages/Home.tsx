@@ -52,16 +52,16 @@ const Home = () => {
   return (
     <Box w="full" h="100vh" display="flex" flexDir="column" bg="gray.100" overflow="auto">
       <Box
-        h="30%"
         bgImage="https://photos-for-meet-market.s3.amazonaws.com/GroceryBag.jpg"
         bgPosition="center"
         bgSize="cover"
         p="1rem"
+        minH="30%"
       >
         <Flex
           flexDir="column"
           alignItems="center"
-          w={{ md: "40%" }}
+          w={{base: "60%", sm: "50%", md: "40%" }}
           gap=".25rem"
           p=".5rem"
           bgColor="rgba(247, 245, 232, 100)"
@@ -116,12 +116,14 @@ const Home = () => {
                 <Text fontSize="md" fontWeight="bold">
                   {department.title}
                 </Text>
-                <Image
-                  w="100px"
-                  objectFit="cover"
-                  src={department.photo}
-                  alt={department.title}
-                />
+                <Link to="/shopping">
+                  <Image
+                    w="100px"
+                    objectFit="cover"
+                    src={department.photo}
+                    alt={department.title}
+                  />
+                </Link>
               </Box>
             ))}
           </SimpleGrid>
@@ -145,7 +147,7 @@ const Home = () => {
             <SimpleGrid minChildWidth="80px" spacing="10px" w="full">
               {displayedUsers.map((user) => (
                 <Flex flexDirection="column" alignItems="center" key={user._id}>
-                  <Avatar src={user.profilePhoto} />
+                  <Link to={`/profile/${user._id}`}><Avatar src={user.profilePhoto} /></Link>
                   <Link to={`/profile/${user._id}`}>{user.username}</Link>
                 </Flex>
               ))}
