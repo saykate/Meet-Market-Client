@@ -6,9 +6,10 @@ import {
   SimpleGrid,
   GridItem,
   Button,
+  Alert, 
+  AlertIcon,
 } from "@chakra-ui/react";
 import InputBox, { InputProps } from "./InputBox";
-import ErrorMessage from "../components/ErrorMessage";
 
 export type InputItem = Omit<InputProps, "onChange" | "value"> & { isRequired?: boolean};
 
@@ -98,7 +99,12 @@ const FormComponent: FC<FormProps> = ({
         </GridItem>
       )}
       </SimpleGrid>
-      {error && <ErrorMessage message={error.message} />}
+      {error && (
+        <Alert status="error" w="full">
+          <AlertIcon />
+          {error.message}
+        </Alert>
+      )}
     </VStack>
   );
 };
