@@ -7,15 +7,15 @@ type ErrorType = {
 };
 
 const useLogout = () => {
-  const { setToken } = useAuthContext();
+  const { logout } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<ErrorType | null>(null);
 
-  const logout = () => {
+  const handleLogout = () => {
     try {
       setLoading(true);
-      setToken(null);
+      logout();
       navigate("/");
     } catch (error) {
       console.error("Failed to logout", error);
@@ -27,7 +27,7 @@ const useLogout = () => {
     }
   };
 
-  return { loading, error, logout };
+  return { loading, error, logout: handleLogout };
 };
 
 export default useLogout;
