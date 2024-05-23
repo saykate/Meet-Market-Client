@@ -6,12 +6,14 @@ import {
   SimpleGrid,
   GridItem,
   Button,
-  Alert, 
+  Alert,
   AlertIcon,
 } from "@chakra-ui/react";
 import InputBox, { InputProps } from "./InputBox";
 
-export type InputItem = Omit<InputProps, "onChange" | "value"> & { isRequired?: boolean};
+export type InputItem = Omit<InputProps, "onChange" | "value"> & {
+  isRequired?: boolean;
+};
 
 type FormProps = {
   title: string;
@@ -25,7 +27,7 @@ type FormProps = {
   linkAction?: () => void;
   linkText?: string;
   loading: boolean;
-  error?: {message: string} | null;
+  error?: { message: string } | null;
 };
 
 const FormComponent: FC<FormProps> = ({
@@ -52,7 +54,7 @@ const FormComponent: FC<FormProps> = ({
       if (input.isRequired) {
         return Boolean(formData[input.name]);
       }
-      return true; 
+      return true;
     });
   };
 
@@ -69,7 +71,7 @@ const FormComponent: FC<FormProps> = ({
     }
     submit(formData);
     setFormData(initState);
-    };
+  };
 
   return (
     <VStack w="full" h="full" p={10} spacing={10} alignItems="flex-start">
@@ -92,12 +94,12 @@ const FormComponent: FC<FormProps> = ({
           </Button>
         </GridItem>
         {linkPrompt && linkAction && linkText && (
-        <GridItem colSpan={2}>
-          <Text>
-            {linkPrompt} <Button onClick={linkAction}>{linkText}</Button>
-          </Text>
-        </GridItem>
-      )}
+          <GridItem colSpan={2}>
+            <Text>
+              {linkPrompt} <Button onClick={linkAction}>{linkText}</Button>
+            </Text>
+          </GridItem>
+        )}
       </SimpleGrid>
       {error && (
         <Alert status="error" w="full">

@@ -15,7 +15,7 @@ export type UserData = {
   birthdate: Date;
   profilePhoto: string;
   coverPhoto: string;
-}
+};
 
 export const getUser = async ({ userId, token }: GetUserRequest) => {
   if (!token) {
@@ -40,8 +40,8 @@ export const listOfUsers = async ({ token }: GetUserRequest) => {
   const res = await fetch(`${SERVER_URL}/users`, {
     headers: {
       Authorization: token,
-  },
-});
+    },
+  });
 
   if (!res.ok) {
     throw new Error("Failed to get users");
@@ -89,25 +89,33 @@ export const getUserMessages = async ({ userId, token }: GetUserRequest) => {
   return data;
 };
 
-export const getUserSentMessages = async ({ userId, token }: GetUserRequest) => {
-  const allMessages = await getUserMessages({ userId, token })
+export const getUserSentMessages = async ({
+  userId,
+  token,
+}: GetUserRequest) => {
+  const allMessages = await getUserMessages({ userId, token });
 
-  const sentMessages = allMessages.filter((message: Message) => message.author._id === userId)
-  return sentMessages
+  const sentMessages = allMessages.filter(
+    (message: Message) => message.author._id === userId
+  );
+  return sentMessages;
 };
 
-export const updateUser = async ({ userId, token }: GetUserRequest, userData: UserData) => {
+export const updateUser = async (
+  { userId, token }: GetUserRequest,
+  userData: UserData
+) => {
   if (!token) {
     throw new Error("No token, user not authorized");
   }
 
   const res = await fetch(`${SERVER_URL}/users/${userId}`, {
-    method: "PUT", 
+    method: "PUT",
     headers: {
       Authorization: token,
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(userData)
+    body: JSON.stringify(userData),
   });
 
   if (!res.ok) {

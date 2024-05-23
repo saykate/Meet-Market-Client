@@ -18,7 +18,7 @@ type ErrorType = {
 const useGetUserMessages = () => {
   const { token, userId } = useAuthContext();
   const [receivedMessages, setReceivedMessages] = useState<Message[]>([]);
-  const [sentMessages, setSentMessages] = useState<Message[]>([])
+  const [sentMessages, setSentMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ErrorType | null>(null);
 
@@ -32,9 +32,13 @@ const useGetUserMessages = () => {
       try {
         setLoading(true);
         const allMessages = await api.getUserMessages({ userId, token });
-        const sentMessages = allMessages.filter((message: Message) => message.author._id === userId);
-        const receivedMessages = allMessages.filter((message: Message) => message.recipient._id === userId);
-        
+        const sentMessages = allMessages.filter(
+          (message: Message) => message.author._id === userId
+        );
+        const receivedMessages = allMessages.filter(
+          (message: Message) => message.recipient._id === userId
+        );
+
         setReceivedMessages(receivedMessages);
         setSentMessages(sentMessages);
         setError(null);

@@ -33,5 +33,4 @@ const useGetDepartments = () => {
   return { departments, loading, error };
 };
 
-export default useGetDepartments
-;
+export default useGetDepartments;

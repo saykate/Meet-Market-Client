@@ -28,23 +28,23 @@ const useRegister = (onClose: () => void) => {
     try {
       const res = await api.register({ username, password, confirmPassword });
       setToken(res.JWT);
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       console.error("Failed to register", error);
       setError({
         message: (error as Error).message || "An unknown error occurred",
       });
       setLoading(false);
-  }
-}
+    }
+  };
 
-useEffect(() => {
-  if(!userId || loading) {
-    return 
-  } 
-  navigate(`/profile/${userId}`);
-  onClose()
-}, [userId, loading])
+  useEffect(() => {
+    if (!userId || loading) {
+      return;
+    }
+    navigate(`/profile/${userId}`);
+    onClose();
+  }, [userId, loading]);
 
   return { loading, error, register };
 };

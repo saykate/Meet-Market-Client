@@ -42,7 +42,7 @@ type RegisterFormProps = {
   onClose: () => void;
 };
 
-const RegisterForm = ({onReturnToLogin, onClose}: RegisterFormProps) => {
+const RegisterForm = ({ onReturnToLogin, onClose }: RegisterFormProps) => {
   const { loading, error, register } = useRegister(onClose);
 
   const handleRegister = async ({
@@ -54,19 +54,19 @@ const RegisterForm = ({onReturnToLogin, onClose}: RegisterFormProps) => {
   };
 
   return (
-      <FormComponent
-        title="Register"
-        subtitle="Create an Account"
-        inputs={inputs}
-        submit={handleRegister}
-        cta="Register"
-        initState={initState}
-        linkPrompt="Return to Login"
-        linkAction={onReturnToLogin}
-        linkText="Login"
-        loading={loading}
-        error={error}
-      />
+    <FormComponent
+      title="Register"
+      subtitle="Create an Account"
+      inputs={inputs}
+      submit={handleRegister}
+      cta="Register"
+      initState={initState}
+      linkPrompt="Return to Login"
+      linkAction={onReturnToLogin}
+      linkText="Login"
+      loading={loading}
+      error={error}
+    />
   );
 };
 

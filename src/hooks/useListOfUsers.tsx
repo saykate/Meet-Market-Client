@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import useAuthContext from "./useAuthContext";
 import * as api from "../api/users";
-import { UserData } from "../api/users"
+import { UserData } from "../api/users";
 
 type ErrorType = {
   message: string;

@@ -1,5 +1,13 @@
 import { FC, useState } from "react";
-import { FormControl, FormLabel, Input, GridItem, InputGroup, InputRightElement, Button } from "@chakra-ui/react";
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  GridItem,
+  InputGroup,
+  InputRightElement,
+  Button,
+} from "@chakra-ui/react";
 
 export type InputProps = {
   colSpan: number;
@@ -25,7 +33,7 @@ const InputBox: FC<InputProps> = ({
   isRequired,
 }) => {
   const [show, setShow] = useState(false);
-  const handleClick = () => setShow(!show); 
+  const handleClick = () => setShow(!show);
 
   return (
     <GridItem colSpan={colSpan}>
@@ -33,7 +41,7 @@ const InputBox: FC<InputProps> = ({
         <FormLabel htmlFor={id}>{label}: </FormLabel>
         <InputGroup>
           <Input
-            type={type !== "password" ? type: (show ? "text" : "password")}
+            type={type !== "password" ? type : show ? "text" : "password"}
             name={name}
             id={id}
             placeholder={placeholder}
@@ -41,7 +49,7 @@ const InputBox: FC<InputProps> = ({
             onChange={onChange}
             isRequired={isRequired}
           />
-            {type === 'password' && (
+          {type === "password" && (
             <InputRightElement width="4.5em">
               <Button h="1.75em" size="sm" onClick={handleClick}>
                 {show ? "Hide" : "Show"}

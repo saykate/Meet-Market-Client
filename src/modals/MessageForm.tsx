@@ -34,30 +34,30 @@ const MessageForm: FC<MessageFormProps> = ({ recipient, onClose }) => {
     },
   ];
 
-  const handleCreateMessage = async ({ text }: {text: string}) => {
+  const handleCreateMessage = async ({ text }: { text: string }) => {
     setLoading(true);
     if (!token || !userId) {
       return null;
     }
     try {
-    const newMessage = await createMessage(token, userId, recipient, text);
-    console.log("NewMessage", newMessage);
-    onClose()
-    toast({
-      title: "Message Sent",
-      duration: 2000,
-      position: "top"
-    })
+      const newMessage = await createMessage(token, userId, recipient, text);
+      console.log("NewMessage", newMessage);
+      onClose();
+      toast({
+        title: "Message Sent",
+        duration: 2000,
+        position: "top",
+      });
     } catch (error) {
       console.error("Failed to Send Message", error);
       setError({
         message: (error as Error).message || "An unknown error occurred",
       });
-      setLoading(false)
-    } 
-  }
+      setLoading(false);
+    }
+  };
 
-    return (
+  return (
     <FormComponent
       title="Message Form"
       inputs={inputs}

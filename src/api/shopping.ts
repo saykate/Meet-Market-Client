@@ -11,20 +11,20 @@ export type DepartmentData = {
   title: string;
   photo: string;
   categories: CategoryData[];
-}
+};
 
 export const getDepartments = async () => {
   const res = await fetch(`${SERVER_URL}/departments`, {
     method: "GET",
   });
-  const { data } = await res.json()
-  return data
+  const { data } = await res.json();
+  return data;
 };
 
 export const getDepartmentCategories = async (_id: string) => {
   const res = await fetch(`${SERVER_URL}/departments/${_id}`, {
     method: "GET",
   });
-  const { data } = await res.json()
-  return data.categories
+  const { data } = await res.json();
+  return data.categories;
 };

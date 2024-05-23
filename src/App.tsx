@@ -27,7 +27,7 @@ function App() {
       }
     }
   }, [token, logout]);
-  
+
   return (
     <>
       <Navbar />

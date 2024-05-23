@@ -23,24 +23,23 @@ const useLogin = (onClose: () => void) => {
     try {
       const res = await api.login({ username, password });
       setToken(res.JWT);
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       console.error("Failed to Login", error);
       setError({
         message: (error as Error).message || "An unknown error occurred",
       });
-      setLoading(false)
-    } 
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    if(!userId || loading) {
-      return 
-    } 
+    if (!userId || loading) {
+      return;
+    }
     navigate(`/profile/${userId}`);
-    onClose()
-  }, [userId, loading]
-)
+    onClose();
+  }, [userId, loading]);
 
   return { loading, error, login };
 };

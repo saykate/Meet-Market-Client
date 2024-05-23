@@ -32,7 +32,6 @@ type LoginFormProps = {
   onClose: () => void;
 };
 
-
 const LoginForm = ({ onRegisterOpen, onClose }: LoginFormProps) => {
   const { loading, error, login } = useLogin(onClose);
 

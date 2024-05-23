@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import useAuthContext from "./useAuthContext";
 import * as api from "../api/users";
 
@@ -23,32 +23,34 @@ const useGetUser = (userId: string | undefined) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ErrorType | null>(null);
 
-  useEffect(() => {
-    const getUser = async () => {
-      if (!token || !userId) {
-        setLoading(false);
-        setError({ message: "Authentication token or user ID not found" });
-        return;
-      }
-      try {
-        setLoading(true);
-        const fetchedUser = await api.getUser({ userId, token });
-        setUser(fetchedUser);
-        setError(null);
-      } catch (error) {
-        console.error("Failed to get user", error);
-        setError({
-          message: (error as Error).message || "An unknown error occurred",
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-    if (userId) {
-      getUser();
+  const fetchUser = useCallback(async () => {
+    if (!token || !userId) {
+      setLoading(false);
+      setError({ message: "Authentication token or user ID not found" });
+      return;
+    }
+    try {
+      setLoading(true);
+      const fetchedUser = await api.getUser({ userId, token });
+      setUser(fetchedUser);
+      setError(null);
+    } catch (error) {
+      console.error("Failed to get user", error);
+      setError({
+        message: (error as Error).message || "An unknown error occurred",
+      });
+    } finally {
+      setLoading(false);
     }
   }, [token, userId]);
-  return { user, loading, error };
+
+  useEffect(() => {
+    if (userId) {
+      fetchUser();
+    }
+  }, [fetchUser, userId]);
+
+  return { user, loading, error, refetch: fetchUser };
 };
 
 export default useGetUser;

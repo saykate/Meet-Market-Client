@@ -1,7 +1,7 @@
 import { SERVER_URL } from "./config";
 
 export const addCatToList = async ({
-  listId, 
+  listId,
   catId,
   token,
 }: {

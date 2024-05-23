@@ -84,10 +84,18 @@ const Home = () => {
             bgColor="rgba(247, 245, 232, 100)"
             sx={{ opacity: "70%" }}
           />
-          <Text zIndex="5" fontSize={{ base: "lg", md: "2xl", lg: "3xl" }} as="b">
+          <Text
+            zIndex="5"
+            fontSize={{ base: "lg", md: "2xl", lg: "3xl" }}
+            as="b"
+          >
             Welcome to
           </Text>
-          <Text zIndex="5" fontSize={{ base: "lg", md: "2xl", lg: "3xl" }} as="b">
+          <Text
+            zIndex="5"
+            fontSize={{ base: "lg", md: "2xl", lg: "3xl" }}
+            as="b"
+          >
             MEET-MARKET
           </Text>
           <Text zIndex="5" fontSize={{ base: "sm", md: "lg", lg: "xl" }} as="b">

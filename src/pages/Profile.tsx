@@ -17,7 +17,7 @@ import {
   Alert,
   AlertIcon,
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import useAuthContext from "../hooks/useAuthContext";
 import useGetUser from "../hooks/useGetUser";
 import useGetUserLists from "../hooks/useGetUserLists";
@@ -27,10 +27,23 @@ import ProfileForm from "../modals/ProfileForm";
 const Profile = () => {
   const { userId: currentUserId } = useAuthContext();
   const { userId } = useParams<{ userId: string }>();
-  const { user, loading, error } = useGetUser(userId as string);
+  const [shouldRefetch, setShouldRefetch] = useState(false);
+  const { user, loading, error, refetch } = useGetUser(userId as string);
   const { lists } = useGetUserLists(userId as string);
   const currentUser = currentUserId === userId;
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleUpdateSuccess = useCallback(() => {
+    setShouldRefetch(true);
+    onClose();
+  }, [onClose]);
+
+  useEffect(() => {
+    if (shouldRefetch) {
+      refetch();
+      setShouldRefetch(false);
+    }
+  }, [shouldRefetch, refetch]);
 
   const [initialState, setInitialState] = useState({
     username: "",
@@ -127,6 +140,7 @@ const Profile = () => {
                         <ProfileForm
                           initialState={initialState}
                           onClose={onClose}
+                          onUpdateSuccess={handleUpdateSuccess}
                         />
                       </ModalBody>
                     </ModalContent>
@@ -161,13 +175,17 @@ const Profile = () => {
               <Text>{user.bio}</Text>
             </Box>
             <Box p="5em">
-              <Heading size="lg">{user.username} is interested in shopping for:</Heading>
+              <Heading size="lg">
+                {user.username} is interested in shopping for:
+              </Heading>
               <hr style={{ height: "1px", backgroundColor: "#c4cfdb" }} />
               <ul>
                 {lists.map((list) => (
                   <li key={list._id}>
                     {list.categories.map((cat) => (
-                      <Box fontSize="1.5rem" key={cat._id}>{cat.title}</Box>
+                      <Box fontSize="1.5rem" key={cat._id}>
+                        {cat.title}
+                      </Box>
                     ))}
                   </li>
                 ))}

@@ -7,13 +7,18 @@ import useAuthContext from "../hooks/useAuthContext";
 export type ProfileFormProps = {
   initialState: Record<string, string>;
   onClose: () => void;
-}
+  onUpdateSuccess: () => void;
+};
 
 type ErrorType = {
   message: string;
 };
 
-const ProfileForm: FC<ProfileFormProps> = ({ initialState, onClose }) => {
+const ProfileForm: FC<ProfileFormProps> = ({
+  initialState,
+  onClose,
+  onUpdateSuccess,
+}) => {
   const { token, userId, username } = useAuthContext();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<ErrorType | null>(null);
@@ -93,7 +98,7 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState, onClose }) => {
     }
 
     const userData: UserData = {
-      _id: userId, 
+      _id: userId,
       username: username,
       firstName: formData.firstName,
       lastName: formData.lastName,
@@ -107,19 +112,19 @@ const ProfileForm: FC<ProfileFormProps> = ({ initialState, onClose }) => {
 
     try {
       await updateUser({ userId, token }, userData);
-      // console.log("User updated successfully");
-      onClose()
+      onUpdateSuccess();
+      onClose();
       toast({
         title: "Profile updated",
         duration: 2000,
-        position: "top"
-      })
+        position: "top",
+      });
     } catch (error) {
       console.error("Failed to update user:", error);
       setError({
         message: (error as Error).message || "An unknown error occurred",
       });
-      setLoading(false)
+      setLoading(false);
     }
   };
 

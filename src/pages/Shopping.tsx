@@ -54,7 +54,7 @@ const Shopping = () => {
     if (!selectedCategory || !token) return;
     try {
       await addCatToList({ listId, catId: selectedCategory, token });
-        toast({
+      toast({
         title: "Category added to your List",
         duration: 2000,
         position: "top",
@@ -68,10 +68,10 @@ const Shopping = () => {
 
   const handleOpenDeptModal = async (deptId: string) => {
     setSelectedDept(deptId);
-    console.log(selectedDept)
+    console.log(selectedDept);
     try {
       const fetchedCategories = await getDepartmentCategories(deptId);
-      setCategories(fetchedCategories)
+      setCategories(fetchedCategories);
       onDeptOpen();
     } catch (error) {
       console.error("Failed to fetch categories, error");
@@ -148,12 +148,18 @@ const Shopping = () => {
           <ModalHeader>Categories:</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-              {isAuthenticated ? (
-              <Text mb="1rem">By adding items to your list, other users can see if you are
-              a compatible shopping partner!</Text>) : ( 
-                <Text mb="1rem">By logging in, you can add items to your list and find others with similar shopping interests!</Text>
-              )}
-              <SimpleGrid minChildWidth="120px" spacing="10px" w="full">
+            {isAuthenticated ? (
+              <Text mb="1rem">
+                By adding items to your list, other users can see if you are a
+                compatible shopping partner!
+              </Text>
+            ) : (
+              <Text mb="1rem">
+                By logging in, you can add items to your list and find others
+                with similar shopping interests!
+              </Text>
+            )}
+            <SimpleGrid minChildWidth="120px" spacing="10px" w="full">
               {categories.map((category) => (
                 <Box
                   key={category._id}
@@ -170,7 +176,7 @@ const Shopping = () => {
                   bg="#F7F5E8"
                 >
                   <Text fontSize="lg" fontWeight="bold">
-                  {category.title}
+                    {category.title}
                   </Text>
                   <Image
                     w="100px"

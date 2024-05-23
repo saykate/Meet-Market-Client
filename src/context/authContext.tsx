@@ -41,7 +41,11 @@ const AuthProvider: FC<Props> = ({ children }) => {
     const handleToken = () => {
       if (token) {
         try {
-          const decoded = jwtDecode<{ exp: number, sub: string, _doc: { username: string } }>(token);
+          const decoded = jwtDecode<{
+            exp: number;
+            sub: string;
+            _doc: { username: string };
+          }>(token);
           const isExpired = decoded.exp * 1000 < Date.now();
 
           if (isExpired) {
@@ -71,10 +75,12 @@ const AuthProvider: FC<Props> = ({ children }) => {
   }, [token]);
 
   return (
-    <AuthContext.Provider value={{ token, setToken, isAuthenticated, userId, username, logout }}>
+    <AuthContext.Provider
+      value={{ token, setToken, isAuthenticated, userId, username, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export default AuthProvider
+export default AuthProvider;
