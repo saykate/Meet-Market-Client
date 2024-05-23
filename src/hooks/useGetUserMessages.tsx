@@ -6,7 +6,7 @@ import { UserData } from "../api/users";
 export type Message = {
   _id: string;
   author: UserData;
-  recipient: string;
+  recipient: UserData;
   text: string;
   createdDate: Date;
 };
@@ -33,7 +33,7 @@ const useGetUserMessages = () => {
         setLoading(true);
         const allMessages = await api.getUserMessages({ userId, token });
         const sentMessages = allMessages.filter((message: Message) => message.author._id === userId);
-        const receivedMessages = allMessages.filter((message: Message) => message.recipient !== userId);
+        const receivedMessages = allMessages.filter((message: Message) => message.recipient._id !== userId);
         
         setReceivedMessages(receivedMessages);
         setSentMessages(sentMessages);

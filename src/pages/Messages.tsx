@@ -15,7 +15,7 @@ import { UserData } from "../api/users";
 export type Message = {
   _id: string;
   author: UserData;
-  recipient: string;
+  recipient: UserData;
   text: string;
   createdDate: Date;
 };
@@ -24,6 +24,7 @@ const Messages = () => {
   const { isAuthenticated } = useAuthContext();
   const { receivedMessages, sentMessages, loading, error } = useGetUserMessages();
   console.log("sent", sentMessages)
+  console.log("received", receivedMessages)
 
   return (
     <Box
@@ -49,23 +50,23 @@ const Messages = () => {
       ) : (
         isAuthenticated && (
           <Box>
-            <Box>
+            <Box mt="2rem" p="2rem">
               <Heading as="h2">Inbox</Heading>
               <Box>
                 {receivedMessages.map((message: Message) => (
-                  <SimpleGrid key={message._id} w="full" columns={3}>
+                  <SimpleGrid key={message._id} w="full" columns={3} gap=".25rem" p=".25rem">
                     <GridItem border="solid" p="1rem" colSpan={1}>{message.author.username} said:</GridItem>
                     <GridItem border="solid" p="1rem" colSpan={2}>'{message.text}'</GridItem>
                   </SimpleGrid>
                 ))}
               </Box>
             </Box>
-            <Box>
+            <Box mt="3rem" p="2rem">
               <Heading as="h2">Sent Messages</Heading>
               <Box>
                 {sentMessages.map((message: Message) => (
-                  <SimpleGrid key={message._id} w="full" columns={3}>
-                    <GridItem border="solid" p="1rem" colSpan={1}>To: {message.recipient}</GridItem>
+                  <SimpleGrid key={message._id} w="full" columns={3} gap=".25rem" p=".25rem">
+                    <GridItem border="solid" p="1rem" colSpan={1}>To: {message.recipient.username}</GridItem>
                     <GridItem border="solid" p="1rem" colSpan={2}>'{message.text}'</GridItem>
                   </SimpleGrid>
                 ))}

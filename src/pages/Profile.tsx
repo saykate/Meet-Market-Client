@@ -55,7 +55,6 @@ const Profile = () => {
         profilePhoto: user.profilePhoto || "",
         coverPhoto: user.coverPhoto || "",
       });
-      console.log("lastName in setState", user.lastName);
     }
   }, [user]);
 
