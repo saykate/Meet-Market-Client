@@ -1,12 +1,12 @@
 import { SERVER_URL } from "./config";
 
-export const addDeptToList = async ({
+export const addCatToList = async ({
   listId, 
-  deptId,
+  catId,
   token,
 }: {
   listId: string;
-  deptId: string;
+  catId: string;
   token: string;
 }) => {
   const res = await fetch(`${SERVER_URL}/lists/${listId}`, {
@@ -15,11 +15,12 @@ export const addDeptToList = async ({
       Authorization: token,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ department_id: deptId }),
+    body: JSON.stringify({ category_id: catId }),
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch list");
+    const errorData = await res.json();
+    throw new Error(`Failed to fetch list: ${errorData.message}`);
   }
 
   const { data } = await res.json();

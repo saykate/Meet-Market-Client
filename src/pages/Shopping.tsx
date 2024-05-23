@@ -19,17 +19,11 @@ import {
   Spinner,
   Alert,
   AlertIcon,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
-  PopoverArrow,
-  PopoverCloseButton,
 } from "@chakra-ui/react";
 import useGetDepartments from "../hooks/useGetDepartments";
 import useAuthContext from "../hooks/useAuthContext";
 import useGetUserLists from "../hooks/useGetUserLists";
-import { addDeptToList } from "../api/lists";
+import { addCatToList } from "../api/lists";
 import { getDepartmentCategories, CategoryData } from "../api/shopping";
 
 const Shopping = () => {
@@ -37,6 +31,7 @@ const Shopping = () => {
   const { isAuthenticated, token, userId } = useAuthContext();
   const { lists } = useGetUserLists(userId as string);
   const [selectedDept, setSelectedDept] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [categories, setCategories] = useState<CategoryData[]>([]);
   const toast = useToast();
   const {
@@ -50,31 +45,32 @@ const Shopping = () => {
     onClose: onDeptClose,
   } = useDisclosure();
 
-  const handleAddToList = (deptId: string) => {
-    setSelectedDept(deptId);
+  const handleAddToList = (catId: string) => {
+    setSelectedCategory(catId);
     onListOpen();
   };
 
   const addToList = async (listId: string) => {
-    if (!selectedDept || !token) return;
+    if (!selectedCategory || !token) return;
     try {
-      await addDeptToList({ listId, deptId: selectedDept, token });
-      onListClose();
-      toast({
-        title: "Department added to your List",
+      await addCatToList({ listId, catId: selectedCategory, token });
+        toast({
+        title: "Category added to your List",
         duration: 2000,
         position: "top",
       });
+      onListClose();
+      onDeptClose();
     } catch (error) {
-      console.error("Failed to add department to list", error);
+      console.error("Failed to add category to list", error);
     }
   };
 
   const handleOpenDeptModal = async (deptId: string) => {
     setSelectedDept(deptId);
+    console.log(selectedDept)
     try {
       const fetchedCategories = await getDepartmentCategories(deptId);
-      console.log(fetchedCategories)
       setCategories(fetchedCategories)
       onDeptOpen();
     } catch (error) {
@@ -103,24 +99,6 @@ const Shopping = () => {
         alignContent="flex-start"
       >
         <Heading size="xl">Departments</Heading>
-        {!isAuthenticated ? (
-          <Text>With an account, you can add Departments to your List!</Text>
-        ) : (
-          <Text>Add Departments to your List!</Text>
-        )}
-        <Popover>
-          <PopoverTrigger>
-            <Button p="0">More info +</Button>
-          </PopoverTrigger>
-          <PopoverContent>
-            <PopoverArrow />
-            <PopoverCloseButton />
-            <PopoverBody>
-              By adding departemnts to your list, other users can see if you are
-              a compatible shopping partner!
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
       </Box>
       {loading ? (
         <Flex justify="center" align="center" w="full" h="100%">
@@ -159,14 +137,7 @@ const Shopping = () => {
                 alt={department.title}
                 mb="10px"
               />
-              {isAuthenticated && (
-                <Button
-                  size="sm"
-                  onClick={() => handleAddToList(department._id)}
-                >
-                  + to List
-                </Button>
-              )}
+              <Text>Click to see more</Text>
             </Box>
           ))}
         </SimpleGrid>
@@ -177,11 +148,49 @@ const Shopping = () => {
           <ModalHeader>Categories:</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {categories.map((category) => (
-              <Button key={category._id}>
-                {category.title}
-              </Button>
-            ))}
+              {isAuthenticated ? (
+              <Text mb="1rem">By adding items to your list, other users can see if you are
+              a compatible shopping partner!</Text>) : ( 
+                <Text mb="1rem">By logging in, you can add items to your list and find others with similar shopping interests!</Text>
+              )}
+              <SimpleGrid minChildWidth="120px" spacing="10px" w="full">
+              {categories.map((category) => (
+                <Box
+                  key={category._id}
+                  display="flex"
+                  flexDir="column"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  h="auto"
+                  w="100%"
+                  p="5px"
+                  shadow="md"
+                  borderWidth="1px"
+                  borderRadius="md"
+                  bg="#F7F5E8"
+                >
+                  <Text fontSize="lg" fontWeight="bold">
+                  {category.title}
+                  </Text>
+                  <Image
+                    w="100px"
+                    objectFit="cover"
+                    src={category.photo}
+                    alt={category.title}
+                    mb="5px"
+                  />
+                  {isAuthenticated && (
+                    <Button
+                      size="xs"
+                      bg="gray.200"
+                      onClick={() => handleAddToList(category._id)}
+                    >
+                      + to List
+                    </Button>
+                  )}
+                </Box>
+              ))}
+            </SimpleGrid>
           </ModalBody>
           <ModalFooter></ModalFooter>
         </ModalContent>

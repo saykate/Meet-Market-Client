@@ -2,16 +2,17 @@ import { useState, useEffect } from "react";
 import useAuthContext from "./useAuthContext";
 import * as api from "../api/users";
 
-type Department = {
+type Category = {
   _id: string;
   title: string;
+  // photo: string;
 };
 
 type List = {
   _id: string;
   listName: string;
   creator: string;
-  departments: Department[];
+  categories: Category[];
 };
 
 type ErrorType = {

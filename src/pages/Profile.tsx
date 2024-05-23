@@ -167,8 +167,8 @@ const Profile = () => {
               <ul>
                 {lists.map((list) => (
                   <li key={list._id}>
-                    {list.departments.map((dept) => (
-                      <Box fontSize="1.5rem" key={dept._id}>{dept.title}</Box>
+                    {list.categories.map((cat) => (
+                      <Box fontSize="1.5rem" key={cat._id}>{cat.title}</Box>
                     ))}
                   </li>
                 ))}
