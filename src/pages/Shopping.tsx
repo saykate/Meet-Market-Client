@@ -99,6 +99,7 @@ const Shopping = () => {
         alignContent="flex-start"
       >
         <Heading size="xl">Departments</Heading>
+        <Text as="b">Click Departments to see more.</Text>
       </Box>
       {loading ? (
         <Flex justify="center" align="center" w="full" h="100%">
@@ -137,7 +138,6 @@ const Shopping = () => {
                 alt={department.title}
                 mb="10px"
               />
-              <Text>Click to see more</Text>
             </Box>
           ))}
         </SimpleGrid>

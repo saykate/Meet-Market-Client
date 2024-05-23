@@ -1,4 +1,5 @@
 import { SERVER_URL } from "./config";
+import { Message } from "../hooks/useGetUserMessages";
 
 export type GetUserRequest = {
   userId?: string;
@@ -86,6 +87,13 @@ export const getUserMessages = async ({ userId, token }: GetUserRequest) => {
 
   const { data } = await res.json();
   return data;
+};
+
+export const getUserSentMessages = async ({ userId, token }: GetUserRequest) => {
+  const allMessages = await getUserMessages({ userId, token })
+
+  const sentMessages = allMessages.filter((message: Message) => message.author._id === userId)
+  return sentMessages
 };
 
 export const updateUser = async ({ userId, token }: GetUserRequest, userData: UserData) => {

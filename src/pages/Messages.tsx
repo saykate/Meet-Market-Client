@@ -5,6 +5,8 @@ import {
   AlertIcon,
   Flex,
   Heading,
+  SimpleGrid,
+  GridItem,
 } from "@chakra-ui/react";
 import useAuthContext from "../hooks/useAuthContext";
 import useGetUserMessages from "../hooks/useGetUserMessages";
@@ -20,7 +22,8 @@ export type Message = {
 
 const Messages = () => {
   const { isAuthenticated } = useAuthContext();
-  const { messages, loading, error } = useGetUserMessages();
+  const { receivedMessages, sentMessages, loading, error } = useGetUserMessages();
+  console.log("sent", sentMessages)
 
   return (
     <Box
@@ -46,15 +49,28 @@ const Messages = () => {
       ) : (
         isAuthenticated && (
           <Box>
-            <Heading as="h2">Inbox</Heading>
-            <ul>
-              {messages.map((message: Message) => (
-                <li key={message._id}>
-                  <div>{message.author.username} said:</div>
-                  <div>'{message.text}'</div>
-                </li>
-              ))}
-            </ul>
+            <Box>
+              <Heading as="h2">Inbox</Heading>
+              <Box>
+                {receivedMessages.map((message: Message) => (
+                  <SimpleGrid key={message._id} w="full" columns={3}>
+                    <GridItem border="solid" p="1rem" colSpan={1}>{message.author.username} said:</GridItem>
+                    <GridItem border="solid" p="1rem" colSpan={2}>'{message.text}'</GridItem>
+                  </SimpleGrid>
+                ))}
+              </Box>
+            </Box>
+            <Box>
+              <Heading as="h2">Sent Messages</Heading>
+              <Box>
+                {sentMessages.map((message: Message) => (
+                  <SimpleGrid key={message._id} w="full" columns={3}>
+                    <GridItem border="solid" p="1rem" colSpan={1}>To: {message.recipient}</GridItem>
+                    <GridItem border="solid" p="1rem" colSpan={2}>'{message.text}'</GridItem>
+                  </SimpleGrid>
+                ))}
+              </Box>
+            </Box>
           </Box>
         )
       )}
@@ -63,3 +79,47 @@ const Messages = () => {
 };
 
 export default Messages;
+
+// get messages where author is 'me' or the recipient is 'me'
+
+//  get me all where I am author
+// get all where I am recipient
+
+// const sentMessages = [
+//   {
+//     author: 'me',
+//     recipient: 'you',
+//   },
+// ];
+
+// const receivedMessages = [
+//   {
+//     author: 'you',
+//     recipient: 'me',
+//   },
+// ];
+
+// const conversation = {
+//   name: 'you',
+//   messages: [],
+// }
+
+// const conversations = {
+//   'you': conversation,
+//   'christian': conversation,
+//   'michael': conversation,
+//   'jacob': conversation,
+// }
+
+// const buildConversation = (messages) => {
+//   // Check if author is not me, or if recipient is not me
+//   const isAuthor = messages.author === 'me';
+//   const target = isAuthor ? messages.recipient : messages.author;
+//   if (!conversations[target]) {
+//     conversations[target] = {
+//       name: target,
+//       messages: [],
+//     }
+//   }
+//   conversations[target].messages.push(messages);
+// };

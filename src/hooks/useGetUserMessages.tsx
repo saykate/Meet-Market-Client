@@ -17,7 +17,8 @@ type ErrorType = {
 
 const useGetUserMessages = () => {
   const { token, userId } = useAuthContext();
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [receivedMessages, setReceivedMessages] = useState<Message[]>([]);
+  const [sentMessages, setSentMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ErrorType | null>(null);
 
@@ -30,8 +31,12 @@ const useGetUserMessages = () => {
       }
       try {
         setLoading(true);
-        const fetchedMessages = await api.getUserMessages({ userId, token });
-        setMessages(fetchedMessages);
+        const allMessages = await api.getUserMessages({ userId, token });
+        const sentMessages = allMessages.filter((message: Message) => message.author._id === userId);
+        const receivedMessages = allMessages.filter((message: Message) => message.recipient !== userId);
+        
+        setReceivedMessages(receivedMessages);
+        setSentMessages(sentMessages);
         setError(null);
       } catch (error) {
         console.error("Failed to get message", error);
@@ -44,7 +49,7 @@ const useGetUserMessages = () => {
     };
     getUserMessages();
   }, [token, userId]);
-  return { messages, loading, error };
+  return { receivedMessages, sentMessages, loading, error };
 };
 
 export default useGetUserMessages;
