@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   Box,
   Spinner,
@@ -22,9 +23,10 @@ export type Message = {
 
 const Messages = () => {
   const { isAuthenticated } = useAuthContext();
-  const { receivedMessages, sentMessages, loading, error } = useGetUserMessages();
-  console.log("sent", sentMessages)
-  console.log("received", receivedMessages)
+  const { receivedMessages, sentMessages, loading, error } =
+    useGetUserMessages();
+  console.log("sent", sentMessages);
+  console.log("received", receivedMessages);
 
   return (
     <Box
@@ -54,9 +56,22 @@ const Messages = () => {
               <Heading as="h2">Inbox</Heading>
               <Box>
                 {receivedMessages.map((message: Message) => (
-                  <SimpleGrid key={message._id} w="full" columns={3} gap=".25rem" p=".25rem">
-                    <GridItem border="solid" p="1rem" colSpan={1}>{message.author.username} said:</GridItem>
-                    <GridItem border="solid" p="1rem" colSpan={2}>'{message.text}'</GridItem>
+                  <SimpleGrid
+                    key={message._id}
+                    w="full"
+                    columns={3}
+                    gap=".25rem"
+                    p=".25rem"
+                  >
+                    <GridItem border="solid" p="1rem" colSpan={1}>
+                      <Link to={`/profile/${message.author._id}`}>
+                        {message.author.username}
+                      </Link>{" "}
+                      said:
+                    </GridItem>
+                    <GridItem border="solid" p="1rem" colSpan={2}>
+                      '{message.text}'
+                    </GridItem>
                   </SimpleGrid>
                 ))}
               </Box>
@@ -65,9 +80,21 @@ const Messages = () => {
               <Heading as="h2">Sent Messages</Heading>
               <Box>
                 {sentMessages.map((message: Message) => (
-                  <SimpleGrid key={message._id} w="full" columns={3} gap=".25rem" p=".25rem">
-                    <GridItem border="solid" p="1rem" colSpan={1}>To: {message.recipient.username}</GridItem>
-                    <GridItem border="solid" p="1rem" colSpan={2}>'{message.text}'</GridItem>
+                  <SimpleGrid
+                    key={message._id}
+                    w="full"
+                    columns={3}
+                    gap=".25rem"
+                    p=".25rem"
+                  >
+                    <GridItem border="solid" p="1rem" colSpan={1}>
+                      <Link to={`/profile/${message.recipient._id}`}>
+                        To: {message.recipient.username}
+                      </Link>
+                    </GridItem>
+                    <GridItem border="solid" p="1rem" colSpan={2}>
+                      '{message.text}'
+                    </GridItem>
                   </SimpleGrid>
                 ))}
               </Box>
