@@ -25,11 +25,18 @@ type Props = {
 
 const AuthProvider: FC<Props> = ({ children }) => {
   const [username, setUsername] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [token, setToken] = useState<string | null>(() => {
+  const [userId, setUserId] = useState<string | null>(() => {
     const _token = localStorage.getItem("accessToken");
-    return _token ? JSON.parse(_token) : null;
+    if (!_token) {
+      return null;
+    }
+    const decoded = jwtDecode(_token);
+    return decoded?.sub || null;
   });
+  const [token, setToken] = useState<string | null>(() => {
+      const _token = localStorage.getItem("accessToken");
+      return _token ? JSON.parse(_token) : null;
+    });
 
   const isAuthenticated = !!token;
 
@@ -47,13 +54,16 @@ const AuthProvider: FC<Props> = ({ children }) => {
             _doc: { username: string };
           }>(token);
           const isExpired = decoded.exp * 1000 < Date.now();
+          console.log("DECODED", decoded);
 
           if (isExpired) {
             logout();
           } else {
-            setUsername(decoded._doc.username);
-            setUserId(decoded.sub);
+            const _username = decoded?._doc?.username ?? null;
+            setUsername(_username);
+            setUserId(jwtDecode(token)?.sub || null);
           }
+
         } catch (error) {
           console.error("Invalid token", error);
           logout();
@@ -73,6 +83,8 @@ const AuthProvider: FC<Props> = ({ children }) => {
       localStorage.removeItem("accessToken");
     }
   }, [token]);
+
+  console.log("USERNAME", username)
 
   return (
     <AuthContext.Provider

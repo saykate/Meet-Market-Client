@@ -174,8 +174,8 @@ const Profile = () => {
               <Heading size="md">Bio:</Heading>
               <Text>{user.bio}</Text>
             </Box>
-            <Box p="5em">
-              <Heading size="lg">
+            <Box p={{ base: "3em", sm: "5em" }}>
+              <Heading size={{ base: "lg", sm: "xl" }}>
                 {user.username} is interested in shopping for:
               </Heading>
               <hr style={{ height: "1px", backgroundColor: "#c4cfdb" }} />
