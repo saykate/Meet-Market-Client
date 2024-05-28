@@ -62,13 +62,13 @@ const Home = () => {
         bgImage="https://photos-for-meet-market.s3.amazonaws.com/GroceryBag.jpg"
         bgPosition="center"
         bgSize="cover"
-        p="1rem"
+        p={{ base: ".5rem", sm: "1rem"}}
         minH="30%"
       >
         <Flex
           flexDir="column"
           alignItems="center"
-          w={{ base: "60%", sm: "50%", md: "40%" }}
+          w={{ base: "100%", sm: "50%", md: "40%" }}
           gap=".25rem"
           p=".5rem"
           position="relative"
@@ -109,7 +109,7 @@ const Home = () => {
         </Flex>
       </Box>
       <Box p="2rem">
-        <Heading size="xl" p="1rem">
+        <Heading size={{ base: "lg", sm: "xl" }} p="1rem">
           Shop Departments:
         </Heading>
         {departmentsLoading ? (
