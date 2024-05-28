@@ -34,6 +34,16 @@ const Navbar = () => {
   } = useDisclosure();
   const isMobile = useBreakpointValue({ base: true, md: false });
 
+  const handleOpen = () => {
+    setIsLoginModal(true); 
+    onOpen();
+  };
+
+  const handleClose = () => {
+    setIsLoginModal(true);
+    onClose();
+  };
+
   return (
     <Box w="full" p={4} bg="gray.300">
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -45,12 +55,12 @@ const Navbar = () => {
             {isLoginModal ? (
               <LoginForm
                 onRegisterOpen={() => setIsLoginModal(false)}
-                onClose={onClose}
+                onClose={handleClose}
               />
             ) : (
               <RegisterForm
                 onReturnToLogin={() => setIsLoginModal(true)}
-                onClose={onClose}
+                onClose={handleClose}
               />
             )}
           </ModalBody>
@@ -60,7 +70,7 @@ const Navbar = () => {
       <Flex justifyContent="space-between" alignItems="center">
         {!isMobile && (
           <HStack spacing="2em" fontSize="1.5rem">
-            {!isAuthenticated && <button onClick={onOpen}>Login</button>}
+            {!isAuthenticated && <button onClick={handleOpen}>Login</button>}
             {location.pathname !== "/" && <Link to="/">Home</Link>}
             <Link to="shopping">Shopping</Link>
             {isAuthenticated && (
@@ -76,7 +86,7 @@ const Navbar = () => {
         )}
         {isMobile && (
           <>
-            {!isAuthenticated && <button onClick={onOpen}>Login</button>}
+            {!isAuthenticated && <button onClick={handleOpen}>Login</button>}
             <IconButton
               icon={<HamburgerIcon />}
               onClick={onMenuOpen}
