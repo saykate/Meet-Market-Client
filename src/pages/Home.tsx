@@ -62,7 +62,7 @@ const Home = () => {
         bgImage="https://photos-for-meet-market.s3.amazonaws.com/GroceryBag.jpg"
         bgPosition="center"
         bgSize="cover"
-        p={{ base: ".5rem", sm: "1rem"}}
+        p={{ base: ".5rem", sm: "1rem" }}
         minH="30%"
       >
         <Flex
@@ -175,7 +175,11 @@ const Home = () => {
                   <Link to={`/profile/${user._id}`}>
                     <Avatar src={user.profilePhoto} />
                   </Link>
-                  <Link to={`/profile/${user._id}`}>{user.username}</Link>
+                  <Link to={`/profile/${user._id}`}>
+                    {user.username.length > 9
+                      ? `${user.username.slice(0, 9)}...`
+                      : user.username}
+                  </Link>
                 </Flex>
               ))}
             </SimpleGrid>

@@ -4,6 +4,7 @@ import {
   Spinner,
   Alert,
   AlertIcon,
+  Avatar,
   Flex,
   Heading,
   SimpleGrid,
@@ -55,48 +56,63 @@ const Messages = () => {
             <Box mt="2rem" p="2rem">
               <Heading as="h2">Inbox</Heading>
               <Box>
-                {receivedMessages.map((message: Message) => (
-                  <SimpleGrid
-                    key={message._id}
-                    w="full"
-                    columns={3}
-                    gap=".25rem"
-                    p=".25rem"
-                  >
-                    <GridItem border="solid" p="1rem" colSpan={1}>
-                      <Link to={`/profile/${message.author._id}`}>
-                        {message.author.username}
-                      </Link>{" "}
-                      said:
-                    </GridItem>
-                    <GridItem border="solid" p="1rem" colSpan={2}>
-                      '{message.text}'
-                    </GridItem>
-                  </SimpleGrid>
-                ))}
+                {receivedMessages.length ?
+                  receivedMessages.map((message: Message) => (
+                    <SimpleGrid
+                      key={message._id}
+                      w="full"
+                      columns={3}
+                      gap=".25rem"
+                      m="1rem"
+                      bg="gray.200"
+                      borderRadius="25"
+                    >
+                      <GridItem p=".5rem" colSpan={1}>
+                        <Flex alignItems="center" gap="2rem">
+                          <Link to={`/profile/${message.author._id}`}>
+                            <Avatar src={message.author.profilePhoto} />
+                          </Link>
+                          <Link to={`/profile/${message.author._id}`}>
+                            {message.author.username}
+                          </Link>
+                        </Flex>
+                      </GridItem>
+                      <GridItem p=".5rem" colSpan={2} alignContent="center">
+                        {message.text}
+                      </GridItem>
+                    </SimpleGrid>
+                  )) : "You have no messages"}
               </Box>
             </Box>
             <Box mt="3rem" p="2rem">
               <Heading as="h2">Sent Messages</Heading>
               <Box>
-                {sentMessages.map((message: Message) => (
-                  <SimpleGrid
-                    key={message._id}
-                    w="full"
-                    columns={3}
-                    gap=".25rem"
-                    p=".25rem"
-                  >
-                    <GridItem border="solid" p="1rem" colSpan={1}>
-                      <Link to={`/profile/${message.recipient._id}`}>
-                        To: {message.recipient.username}
-                      </Link>
-                    </GridItem>
-                    <GridItem border="solid" p="1rem" colSpan={2}>
-                      '{message.text}'
-                    </GridItem>
-                  </SimpleGrid>
-                ))}
+                {sentMessages.length ?
+                  sentMessages.map((message: Message) => (
+                    <SimpleGrid
+                      key={message._id}
+                      w="full"
+                      columns={3}
+                      gap=".25rem"
+                      m="1rem"
+                      bg="gray.200"
+                      borderRadius="25"
+                    >
+                      <GridItem p=".5rem" colSpan={1}>
+                      <Flex alignItems="center" gap="2rem">
+                          <Link to={`/profile/${message.recipient._id}`}>
+                            <Avatar src={message.recipient.profilePhoto} />
+                          </Link>
+                          <Link to={`/profile/${message.recipient._id}`}>
+                            {message.recipient.username}
+                          </Link>
+                        </Flex>
+                      </GridItem>
+                      <GridItem p=".5rem" colSpan={2} alignContent="center">
+                        {message.text}
+                      </GridItem>
+                    </SimpleGrid>
+                  )) : "You have sent no messages"}
               </Box>
             </Box>
           </Box>
