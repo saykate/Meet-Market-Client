@@ -45,6 +45,9 @@ const Shopping = () => {
     onClose: onDeptClose,
   } = useDisclosure();
 
+
+  // categories.map((category) => console.log("Category", category))
+
   const handleAddToList = (catId: string) => {
     setSelectedCategory(catId);
     onListOpen();
@@ -68,7 +71,7 @@ const Shopping = () => {
 
   const handleOpenDeptModal = async (deptId: string) => {
     setSelectedDept(deptId);
-    console.log(selectedDept);
+    console.log("Selected Dept", selectedDept);
     try {
       const fetchedCategories = await getDepartmentCategories(deptId);
       setCategories(fetchedCategories);

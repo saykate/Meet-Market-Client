@@ -1,17 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import useAuthContext from "./useAuthContext";
 import * as api from "../api/users";
+import { UserData } from "../api/users";
 
-type User = {
-  _id: string;
-  username: string;
-  firstName?: string;
-  lastName?: string;
-  bio?: string;
-  birthdate?: Date;
-  profilePhoto?: string;
-  coverPhoto?: string;
-};
 
 type ErrorType = {
   message: string;
@@ -19,7 +10,7 @@ type ErrorType = {
 
 const useGetUser = (userId: string | undefined) => {
   const { token } = useAuthContext();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ErrorType | null>(null);
 

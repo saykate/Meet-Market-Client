@@ -2,11 +2,6 @@ import { useState, useEffect } from "react";
 import useAuthContext from "./useAuthContext";
 import * as api from "../api/messages";
 
-export type MessageType = {
-  token: string;
-  _id: string;
-};
-
 type ErrorType = {
   message: string;
 };

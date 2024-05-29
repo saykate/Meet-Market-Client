@@ -1,18 +1,13 @@
 import { useState, useEffect } from "react";
 import useAuthContext from "./useAuthContext";
 import * as api from "../api/users";
-
-type Category = {
-  _id: string;
-  title: string;
-  // photo: string;
-};
+import { CategoryData } from "../api/shopping";
 
 type List = {
   _id: string;
   listName: string;
   creator: string;
-  categories: Category[];
+  categories: CategoryData[];
 };
 
 type ErrorType = {

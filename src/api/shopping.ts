@@ -3,13 +3,13 @@ import { SERVER_URL } from "./config";
 export type CategoryData = {
   _id: string;
   title: string;
-  photo: string;
+  photo?: string;
 };
 
 export type DepartmentData = {
   _id: string;
   title: string;
-  photo: string;
+  photo?: string;
   categories: CategoryData[];
 };
 

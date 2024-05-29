@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
 import useAuthContext from "./useAuthContext";
 import * as api from "../api/messages";
-
-export type MessageType = {
-  token: string;
-  _id: string;
-};
+import { Message } from "./useGetUserMessages";
 
 type ErrorType = {
   message: string;
@@ -13,7 +9,7 @@ type ErrorType = {
 
 const useGetMessage = (_id: string) => {
   const { token } = useAuthContext();
-  const [message, setMessage] = useState<MessageType | null>(null);
+  const [message, setMessage] = useState<Message | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<ErrorType | null>(null);
 

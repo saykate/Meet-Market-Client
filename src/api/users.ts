@@ -9,12 +9,12 @@ export type GetUserRequest = {
 export type UserData = {
   _id: string;
   username: string;
-  firstName: string;
-  lastName: string;
-  bio: string;
-  birthdate: Date;
-  profilePhoto: string;
-  coverPhoto: string;
+  firstName?: string;
+  lastName?: string;
+  bio?: string;
+  birthdate?: Date;
+  profilePhoto?: string;
+  coverPhoto?: string;
 };
 
 export const getUser = async ({ userId, token }: GetUserRequest) => {
