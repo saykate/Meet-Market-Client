@@ -52,67 +52,81 @@ const Messages = () => {
         </Alert>
       ) : (
         isAuthenticated && (
-          <Box>
-            <Box mt="2rem" p="2rem">
-              <Heading as="h2">Inbox</Heading>
-              <Box>
-                {receivedMessages.length ?
-                  receivedMessages.map((message: Message) => (
-                    <SimpleGrid
-                      key={message._id}
-                      w="full"
-                      columns={3}
-                      gap=".25rem"
-                      m="1rem"
-                      bg="gray.200"
-                      borderRadius="25"
-                    >
-                      <GridItem p=".5rem" colSpan={1}>
-                        <Flex alignItems="center" gap="2rem">
-                          <Link to={`/profile/${message.author._id}`}>
-                            <Avatar src={message.author.profilePhoto} />
-                          </Link>
-                          <Link to={`/profile/${message.author._id}`}>
-                            {message.author.username}
-                          </Link>
-                        </Flex>
-                      </GridItem>
-                      <GridItem p=".5rem" colSpan={2} alignContent="center">
-                        {message.text}
-                      </GridItem>
-                    </SimpleGrid>
-                  )) : "You have no messages"}
+          <Box >
+            <Box mt="1rem" p={{base: "0", sm: "1rem", md: "2rem" }} >
+              <Heading as="h2" pb="1rem">
+                Inbox
+              </Heading>
+              <Box p={{base: "0", sm: "1rem", md: "2rem" }} >
+                {receivedMessages.length
+                  ? receivedMessages.map((message: Message) => (
+                      <SimpleGrid
+                        key={message._id}
+                        w="full"
+                        columns={3}
+                        mt="1rem"
+                        bg="gray.200"
+                        borderRadius="25"
+                      >
+                        <GridItem p=".5rem" colSpan={1}>
+                          <Flex
+                            alignItems="center"
+                            gap={{ base: ".25rem", sm: "2rem" }}
+                          >
+                            <Link to={`/profile/${message.author._id}`}>
+                              <Avatar src={message.author.profilePhoto} />
+                            </Link>
+                            <Link to={`/profile/${message.author._id}`}>
+                              {message.author.username.length > 8
+                                ? `${message.author.username.slice(0, 8)}...`
+                                : message.author.username}
+                            </Link>
+                          </Flex>
+                        </GridItem>
+                        <GridItem p=".5rem" colSpan={2} alignContent="center">
+                          {message.text}
+                        </GridItem>
+                      </SimpleGrid>
+                    ))
+                  : "You have no messages"}
               </Box>
             </Box>
-            <Box mt="3rem" p="2rem">
-              <Heading as="h2">Sent Messages</Heading>
-              <Box>
-                {sentMessages.length ?
-                  sentMessages.map((message: Message) => (
-                    <SimpleGrid
-                      key={message._id}
-                      w="full"
-                      columns={3}
-                      gap=".25rem"
-                      m="1rem"
-                      bg="gray.200"
-                      borderRadius="25"
-                    >
-                      <GridItem p=".5rem" colSpan={1}>
-                      <Flex alignItems="center" gap="2rem">
-                          <Link to={`/profile/${message.recipient._id}`}>
-                            <Avatar src={message.recipient.profilePhoto} />
-                          </Link>
-                          <Link to={`/profile/${message.recipient._id}`}>
-                            {message.recipient.username}
-                          </Link>
-                        </Flex>
-                      </GridItem>
-                      <GridItem p=".5rem" colSpan={2} alignContent="center">
-                        {message.text}
-                      </GridItem>
-                    </SimpleGrid>
-                  )) : "You have sent no messages"}
+            <Box  mt="1rem" p={{base: "0", sm: "1rem", md: "2rem" }}>
+              <Heading as="h2" pb="1rem">
+                Sent Messages
+              </Heading>
+              <Box p={{base: "0", sm: "1rem", md: "2rem" }}>
+                {sentMessages.length
+                  ? sentMessages.map((message: Message) => (
+                      <SimpleGrid
+                        key={message._id}
+                        w="full"
+                        columns={3}
+                        mt="1rem"
+                        bg="gray.200"
+                        borderRadius="25"
+                      >
+                        <GridItem p=".5rem" colSpan={1}>
+                          <Flex
+                            alignItems="center"
+                            gap={{ base: ".25rem", sm: "2rem" }}
+                          >
+                            <Link to={`/profile/${message.recipient._id}`}>
+                              <Avatar src={message.recipient.profilePhoto} />
+                            </Link>
+                            <Link to={`/profile/${message.recipient._id}`}>
+                              {message.recipient.username.length > 8
+                                ? `${message.recipient.username.slice(0, 8)}...`
+                                : message.recipient.username}
+                            </Link>
+                          </Flex>
+                        </GridItem>
+                        <GridItem p=".5rem" colSpan={2} alignContent="center">
+                          {message.text}
+                        </GridItem>
+                      </SimpleGrid>
+                    ))
+                  : "You have sent no messages"}
               </Box>
             </Box>
           </Box>

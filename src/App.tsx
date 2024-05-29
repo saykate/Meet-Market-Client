@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
 import Shopping from "./pages/Shopping";
+import About from "./pages/About";
 import AuthRoute from "./components/AuthRoute";
 import useAuthContext from "./hooks/useAuthContext";
 import { jwtDecode } from "jwt-decode";
@@ -50,6 +51,7 @@ function App() {
           }
         />
         <Route path="/shopping" element={<Shopping />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </>
   );

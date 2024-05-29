@@ -73,6 +73,7 @@ const Navbar = () => {
             {!isAuthenticated && <button onClick={handleOpen}>Login</button>}
             {location.pathname !== "/" && <Link to="/">Home</Link>}
             <Link to="shopping">Shopping</Link>
+            <Link to="about">About</Link>
             {isAuthenticated && (
               <HStack spacing="2rem">
                 <Link to={`profile/${userId}`}>Profile</Link>
@@ -110,6 +111,9 @@ const Navbar = () => {
               )}
               <Link to="shopping" onClick={onMenuClose}>
                 Shopping
+              </Link>
+              <Link to="about" onClick={onMenuClose}>
+                About
               </Link>
               {isAuthenticated && (
                 <>
