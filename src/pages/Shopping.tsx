@@ -34,7 +34,9 @@ const Shopping = () => {
   const { isAuthenticated, token, userId } = useAuthContext();
   const { lists } = useGetUserLists(userId as string);
   const [selectedDept, setSelectedDept] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryData | null>(
+    null
+  );
   const [categories, setCategories] = useState<CategoryData[]>([]);
   const [usersInCat, setUsersInCat] = useState<UserData[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(false);
@@ -60,10 +62,39 @@ const Shopping = () => {
     onListOpen();
   };
 
+  // const isCategoryInList = (catId) => {
+  //   return lists.some((list) => list.categories.includes(catId));
+  // };
+
+  // const handleCategoryAction = async (category) => {
+  //   try {
+  //     if (isCategoryInList(category._id)) {
+  //       // Remove category from the list
+  //       await removeCatFromList({
+  //         userId,
+  //         categoryId: category._id,
+  //         token,
+  //       });
+  //       console.log("Category removed from list");
+  //     } else {
+  //       // Add category to the list
+  //       await addCatToList({
+  //         userId,
+  //         categoryId: category._id,
+  //         token,
+  //       });
+  //       console.log("Category added to list");
+  //       onListOpen()
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to modify category in list:", error);
+  //   }
+  // };
+
   const addToList = async (listId: string) => {
     if (!selectedCategory || !token) return;
     try {
-      await addCatToList({ listId, catId: selectedCategory, token });
+      await addCatToList({ listId, catId: selectedCategory._id, token });
       toast({
         title: "Category added to your List",
         duration: 2000,
@@ -104,12 +135,12 @@ const Shopping = () => {
   };
   console.log("Selected Dept", selectedDept);
 
-  const handleOpenCatModal = async (catId: string) => {
-    setSelectedCategory(catId);
+  const handleOpenCatModal = async (category: CategoryData) => {
+    setSelectedCategory(category);
     setLoadingUsers(true);
     try {
       if (!token) throw new Error("Unauthorized");
-      const fetchedUsers = await findUsersByCategory(catId, token);
+      const fetchedUsers = await findUsersByCategory(category._id, token);
       setUsersInCat(fetchedUsers);
       onCatOpen();
     } catch (error) {
@@ -202,8 +233,8 @@ const Shopping = () => {
               </Flex>
             ) : isAuthenticated ? (
               <Text mb="1rem">
-                Click on a Category to add it to your list and see others who
-                have added this category!
+                Open a Category to add it to your list and see others who have
+                added this category!
               </Text>
             ) : (
               <Text mb="1rem">
@@ -241,9 +272,9 @@ const Shopping = () => {
                     <Button
                       size="xs"
                       bg="gray.200"
-                      onClick={() => handleOpenCatModal(category._id)}
+                      onClick={() => handleOpenCatModal(category)}
                     >
-                      Open Category
+                      Open
                     </Button>
                   )}
                 </Box>
@@ -256,17 +287,26 @@ const Shopping = () => {
       <Modal isOpen={isCatOpen} onClose={onCatClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Details:</ModalHeader>
+          <ModalHeader>{selectedCategory?.title}:</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Button size="xs" bg="gray.200" mb="1rem" onClick={() => handleAddToList()}>
+              + {selectedCategory?.title} to List
+            </Button>
+            {/* <Button
+              size="xs"
+              bg="gray.200"
+              onClick={() => handleCategoryAction(selectedCategory)}
+            >
+              {isCategoryInList(selectedCategory?._id)
+                ? "Remove from List"
+                : "Add to List"}
+            </Button> */}
             <Text mb="1rem">
               By adding items to your list, other users can see if you are a
               compatible shopping partner!
             </Text>
             <SimpleGrid minChildWidth="80px" spacing="10px" w="full">
-              <Button size="xs" bg="gray.200" onClick={() => handleAddToList()}>
-                + to List
-              </Button>
               {loadingUsers ? (
                 <Flex justify="center" align="center" w="full" h="100%">
                   <Spinner size="xl" />
