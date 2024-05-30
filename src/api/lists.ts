@@ -26,3 +26,20 @@ export const addCatToList = async ({
   const { data } = await res.json();
   return data;
 };
+
+export const findUsersByCategory = async (categoryId: string, token: string) => {
+  const res = await fetch(`${SERVER_URL}/lists/category/${categoryId}/users`, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(`Failed to fetch users: ${errorData.message}`);
+  }
+
+  const { data } = await res.json();
+  return data;
+};

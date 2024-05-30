@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   SimpleGrid,
   Box,
   Heading,
   Text,
+  Avatar,
   Image,
   useDisclosure,
   Button,
@@ -23,7 +25,8 @@ import {
 import useGetDepartments from "../hooks/useGetDepartments";
 import useAuthContext from "../hooks/useAuthContext";
 import useGetUserLists from "../hooks/useGetUserLists";
-import { addCatToList } from "../api/lists";
+import { UserData } from "../api/users";
+import { addCatToList, findUsersByCategory } from "../api/lists";
 import { getDepartmentCategories, CategoryData } from "../api/shopping";
 
 const Shopping = () => {
@@ -33,6 +36,9 @@ const Shopping = () => {
   const [selectedDept, setSelectedDept] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [categories, setCategories] = useState<CategoryData[]>([]);
+  const [usersInCat, setUsersInCat] = useState<UserData[]>([]);
+  const [loadingCategories, setLoadingCategories] = useState(false);
+  const [loadingUsers, setLoadingUsers] = useState(false);
   const toast = useToast();
   const {
     isOpen: isListOpen,
@@ -44,12 +50,13 @@ const Shopping = () => {
     onOpen: onDeptOpen,
     onClose: onDeptClose,
   } = useDisclosure();
+  const {
+    isOpen: isCatOpen,
+    onOpen: onCatOpen,
+    onClose: onCatClose,
+  } = useDisclosure();
 
-
-  // categories.map((category) => console.log("Category", category))
-
-  const handleAddToList = (catId: string) => {
-    setSelectedCategory(catId);
+  const handleAddToList = () => {
     onListOpen();
   };
 
@@ -63,23 +70,61 @@ const Shopping = () => {
         position: "top",
       });
       onListClose();
+      onCatClose();
       onDeptClose();
     } catch (error) {
       console.error("Failed to add category to list", error);
+      toast({
+        title: "Failed to add category to list",
+        status: "error",
+        duration: 2000,
+        position: "top",
+      });
     }
   };
 
   const handleOpenDeptModal = async (deptId: string) => {
     setSelectedDept(deptId);
-    console.log("Selected Dept", selectedDept);
+    setLoadingCategories(true);
     try {
       const fetchedCategories = await getDepartmentCategories(deptId);
       setCategories(fetchedCategories);
       onDeptOpen();
     } catch (error) {
-      console.error("Failed to fetch categories, error");
+      console.error("Failed to fetch categories", error);
+      toast({
+        title: "Failed to fetch categories",
+        status: "error",
+        duration: 2000,
+        position: "top",
+      });
+    } finally {
+      setLoadingCategories(false);
     }
   };
+  console.log("Selected Dept", selectedDept);
+
+  const handleOpenCatModal = async (catId: string) => {
+    setSelectedCategory(catId);
+    setLoadingUsers(true);
+    try {
+      if (!token) throw new Error("Unauthorized");
+      const fetchedUsers = await findUsersByCategory(catId, token);
+      setUsersInCat(fetchedUsers);
+      onCatOpen();
+    } catch (error) {
+      console.error("Failed to fetch users", error);
+      toast({
+        title: "Failed to fetch users",
+        status: "error",
+        duration: 2000,
+        position: "top",
+      });
+    } finally {
+      setLoadingUsers(false);
+    }
+  };
+  console.log("Selected Category", selectedCategory);
 
   return (
     <Box
@@ -151,10 +196,14 @@ const Shopping = () => {
           <ModalHeader>Categories:</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {isAuthenticated ? (
+            {loadingCategories ? (
+              <Flex justify="center" align="center" w="full" h="100%">
+                <Spinner size="xl" />
+              </Flex>
+            ) : isAuthenticated ? (
               <Text mb="1rem">
-                By adding items to your list, other users can see if you are a
-                compatible shopping partner!
+                Click on a Category to add it to your list and see others who
+                have added this category!
               </Text>
             ) : (
               <Text mb="1rem">
@@ -192,13 +241,54 @@ const Shopping = () => {
                     <Button
                       size="xs"
                       bg="gray.200"
-                      onClick={() => handleAddToList(category._id)}
+                      onClick={() => handleOpenCatModal(category._id)}
                     >
-                      + to List
+                      Open Category
                     </Button>
                   )}
                 </Box>
               ))}
+            </SimpleGrid>
+          </ModalBody>
+          <ModalFooter></ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Modal isOpen={isCatOpen} onClose={onCatClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Details:</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text mb="1rem">
+              By adding items to your list, other users can see if you are a
+              compatible shopping partner!
+            </Text>
+            <SimpleGrid minChildWidth="80px" spacing="10px" w="full">
+              <Button size="xs" bg="gray.200" onClick={() => handleAddToList()}>
+                + to List
+              </Button>
+              {loadingUsers ? (
+                <Flex justify="center" align="center" w="full" h="100%">
+                  <Spinner size="xl" />
+                </Flex>
+              ) : (
+                usersInCat.map((user) => (
+                  <Flex
+                    flexDirection="column"
+                    alignItems="center"
+                    key={user._id}
+                  >
+                    <Link to={`/profile/${user._id}`}>
+                      <Avatar src={user.profilePhoto} />
+                    </Link>
+                    <Link to={`/profile/${user._id}`}>
+                      {user.username.length > 9
+                        ? `${user.username.slice(0, 9)}...`
+                        : user.username}
+                    </Link>
+                  </Flex>
+                ))
+              )}
             </SimpleGrid>
           </ModalBody>
           <ModalFooter></ModalFooter>
