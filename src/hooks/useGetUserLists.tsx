@@ -3,7 +3,7 @@ import useAuthContext from "./useAuthContext";
 import * as api from "../api/users";
 import { CategoryData } from "../api/shopping";
 
-type List = {
+export type ListData = {
   _id: string;
   listName: string;
   creator: string;
@@ -16,7 +16,7 @@ type ErrorType = {
 
 const useGetUserLists = (userId: string) => {
   const { token } = useAuthContext();
-  const [lists, setLists] = useState<List[]>([]);
+  const [lists, setLists] = useState<ListData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ErrorType | null>(null);
 

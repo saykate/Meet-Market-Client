@@ -26,7 +26,7 @@ import useGetDepartments from "../hooks/useGetDepartments";
 import useAuthContext from "../hooks/useAuthContext";
 import useGetUserLists from "../hooks/useGetUserLists";
 import { UserData } from "../api/users";
-import { addCatToList, findUsersByCategory } from "../api/lists";
+import { addListItem, deleteListItem, findUsersByCategory } from "../api/lists";
 import { getDepartmentCategories, CategoryData } from "../api/shopping";
 
 const Shopping = () => {
@@ -58,43 +58,18 @@ const Shopping = () => {
     onClose: onCatClose,
   } = useDisclosure();
 
-  const handleAddToList = () => {
+  const handleListChoice = () => {
     onListOpen();
   };
 
-  // const isCategoryInList = (catId) => {
-  //   return lists.some((list) => list.categories.includes(catId));
-  // };
-
-  // const handleCategoryAction = async (category) => {
-  //   try {
-  //     if (isCategoryInList(category._id)) {
-  //       // Remove category from the list
-  //       await removeCatFromList({
-  //         userId,
-  //         categoryId: category._id,
-  //         token,
-  //       });
-  //       console.log("Category removed from list");
-  //     } else {
-  //       // Add category to the list
-  //       await addCatToList({
-  //         userId,
-  //         categoryId: category._id,
-  //         token,
-  //       });
-  //       console.log("Category added to list");
-  //       onListOpen()
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to modify category in list:", error);
-  //   }
-  // };
+  const isCategoryInList = (catId: string) => {
+    return lists.some((list) => list.categories.some(category => category._id === catId));
+  };
 
   const addToList = async (listId: string) => {
     if (!selectedCategory || !token) return;
     try {
-      await addCatToList({ listId, catId: selectedCategory._id, token });
+      await addListItem({ listId, catId: selectedCategory._id, token });
       toast({
         title: "Category added to your List",
         duration: 2000,
@@ -107,6 +82,29 @@ const Shopping = () => {
       console.error("Failed to add category to list", error);
       toast({
         title: "Failed to add category to list",
+        status: "error",
+        duration: 2000,
+        position: "top",
+      });
+    }
+  };
+
+  const deleteFromList = async (listId: string) => {
+    if (!selectedCategory || !token) return;
+    try {
+      await deleteListItem({ listId, catId: selectedCategory._id, token });
+      toast({
+        title: "Category removed from your List",
+        duration: 2000,
+        position: "top",
+      });
+      onListClose();
+      onCatClose();
+      onDeptClose();
+    } catch (error) {
+      console.error("Failed to remove category from list", error);
+      toast({
+        title: "Failed to remove category from list",
         status: "error",
         duration: 2000,
         position: "top",
@@ -290,18 +288,31 @@ const Shopping = () => {
           <ModalHeader>{selectedCategory?.title}:</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Button size="xs" bg="gray.200" mb="1rem" onClick={() => handleAddToList()}>
-              + {selectedCategory?.title} to List
-            </Button>
-            {/* <Button
-              size="xs"
-              bg="gray.200"
-              onClick={() => handleCategoryAction(selectedCategory)}
-            >
-              {isCategoryInList(selectedCategory?._id)
-                ? "Remove from List"
-                : "Add to List"}
-            </Button> */}
+            {/* { isCategoryInList(selectedCategory?._id ?? "")
+                ? (
+                <Button
+                size="xs"
+                bg="gray.200"
+                onClick={() => deleteFromList(selectedCategory?._id ?? "")}
+              >
+                Remove from List
+                </Button> )
+                : 
+                (<Button size="xs"
+                bg="gray.200"
+                onClick={() => addToList(selectedCategory?._id ?? "")}
+                  >
+                  Add to List
+                  </Button>
+                )} */}
+                <Button
+                  size="xs"
+                  bg="gray.200"
+                  onClick={() => handleListChoice()}
+                > 
+                { isCategoryInList(selectedCategory?._id ?? "")
+                ? "Remove from List" : "Add to List" }
+                </Button>
             <Text mb="1rem">
               By adding items to your list, other users can see if you are a
               compatible shopping partner!
@@ -341,7 +352,12 @@ const Shopping = () => {
           <ModalCloseButton />
           <ModalBody>
             {lists.map((list) => (
-              <Button key={list._id} onClick={() => addToList(list._id)}>
+              <Button 
+              key={list._id} 
+              onClick={() => {
+                isCategoryInList(selectedCategory?._id ?? "") 
+                ? deleteFromList(list._id) 
+                : addToList(list._id)}}>
                 {list.listName}
               </Button>
             ))}
