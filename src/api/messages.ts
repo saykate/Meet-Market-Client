@@ -23,8 +23,13 @@ export const createMessage = async (
       text,
     }),
   });
-  //make a variable and then return
-  return res.json();
+  
+  if (!res.ok) {
+    throw new Error("Failed to send message");
+  }
+
+  const { data } = await res.json();
+  return data;
 };
 
 export const getMessage = async (token: string, _id: string) => {
