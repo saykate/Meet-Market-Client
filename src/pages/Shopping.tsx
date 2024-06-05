@@ -46,11 +46,7 @@ const Shopping = () => {
   const [loadingCategories, setLoadingCategories] = useState(false);
   const [loadingUsers, setLoadingUsers] = useState(false);
   const toast = useToast();
-  // const {
-  //   isOpen: isListOpen,
-  //   onOpen: onListOpen,
-  //   onClose: onListClose,
-  // } = useDisclosure();
+
   const {
     isOpen: isDeptOpen,
     onOpen: onDeptOpen,
@@ -61,10 +57,6 @@ const Shopping = () => {
     onOpen: onCatOpen,
     onClose: onCatClose,
   } = useDisclosure();
-
-  // const handleListChoice = () => {
-  //   onListOpen();
-  // };
 
   const isCategoryInList = (catId: string) => {
     return userCategories.some((category) => category._id === catId);
@@ -79,7 +71,6 @@ const Shopping = () => {
         duration: 2000,
         position: "top",
       });
-      // onListClose();
       onCatClose();
       onDeptClose();
     } catch (error) {
@@ -102,7 +93,6 @@ const Shopping = () => {
         duration: 2000,
         position: "top",
       });
-      // onListClose();
       onCatClose();
       onDeptClose();
     } catch (error) {
@@ -142,7 +132,10 @@ const Shopping = () => {
     setLoadingUsers(true);
     try {
       if (!token) throw new Error("Unauthorized");
-      const fetchedUsers = await findUsersByCategory({ catId: category._id, token });
+      const fetchedUsers = await findUsersByCategory({
+        catId: category._id,
+        token,
+      });
       setUsersInCat(fetchedUsers);
       onCatOpen();
     } catch (error) {
@@ -337,28 +330,6 @@ const Shopping = () => {
           <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
-      {/* <Modal isOpen={isListOpen} onClose={onListClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Choose your List</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {lists.map((list) => (
-              <Button
-                key={list._id}
-                onClick={() => {
-                  isCategoryInList(selectedCategory?._id ?? "")
-                    ? deleteFromList(list._id)
-                    : addToList(list._id);
-                }}
-              >
-                {list.listName}
-              </Button>
-            ))}
-          </ModalBody>
-          <ModalFooter></ModalFooter>
-        </ModalContent>
-      </Modal> */}
     </Box>
   );
 };

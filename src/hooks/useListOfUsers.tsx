@@ -23,7 +23,6 @@ const useListOfUsers = () => {
       try {
         setLoading(true);
         const fetchedUsers = await api.listOfUsers({ token });
-        // console.log("FetchedUsers", fetchedUsers)
         setUsers(fetchedUsers);
         setError(null);
       } catch (error) {

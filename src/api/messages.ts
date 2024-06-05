@@ -10,7 +10,6 @@ export const createMessage = async (
     throw new Error("No token, authorization denied");
   }
 
-  // console.log("createMessage", {token, authorId, recipientId, text})
   const res = await fetch(`${SERVER_URL}/messages`, {
     method: "POST",
     headers: {
