@@ -54,7 +54,6 @@ const AuthProvider: FC<Props> = ({ children }) => {
             _doc: { username: string };
           }>(token);
           const isExpired = decoded.exp * 1000 < Date.now();
-          console.log("DECODED", decoded);
 
           if (isExpired) {
             logout();
@@ -83,8 +82,6 @@ const AuthProvider: FC<Props> = ({ children }) => {
       localStorage.removeItem("accessToken");
     }
   }, [token]);
-
-  console.log("USERNAME", username)
 
   return (
     <AuthContext.Provider

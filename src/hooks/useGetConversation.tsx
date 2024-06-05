@@ -22,7 +22,6 @@ const useGetConversation = (recipientId: string) => {
     try {
       setLoading(true);
       const allMessages = await api.getUserMessages({ userId, token });
-      console.log("Received messages Convo:", allMessages);
 
       const conversationMessages = allMessages.filter(
         (message: Message) =>

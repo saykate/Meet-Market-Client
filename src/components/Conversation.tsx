@@ -22,8 +22,6 @@ const Conversation = () => {
   const { recipientId = "" } = useParams<{ recipientId?: string }>();
   const recipient = useGetUser(recipientId);
 
-  console.log("recipient", recipient);
-
   const { messages, loading, error, refetch } = useGetConversation(recipientId);
   const [newMessage, setNewMessage] = useState("");
 
