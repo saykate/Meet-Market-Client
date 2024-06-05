@@ -36,7 +36,7 @@ const useGetUserCategories = (userId: string) => {
     };
     getUserCategories();
   }, [token, userId]);
-  return { categories, loading, error };
+  return { categories, setCategories, loading, error };
 };
 
 export default useGetUserCategories;

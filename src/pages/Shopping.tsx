@@ -36,7 +36,7 @@ import { getDepartmentCategories, CategoryData } from "../api/shopping";
 const Shopping = () => {
   const { departments, loading, error } = useGetDepartments();
   const { isAuthenticated, token, userId } = useAuthContext();
-  const { categories: userCategories } = useGetUserCategories(userId as string);
+  const { categories: userCategories, setCategories: setUserCategories } = useGetUserCategories(userId as string);
   const [selectedDept, setSelectedDept] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<CategoryData | null>(
     null
@@ -66,6 +66,8 @@ const Shopping = () => {
     if (!selectedCategory || !token || !userId) return;
     try {
       await addUserCategory({ userId, catId: selectedCategory._id, token });
+      const newUserCategory = { ...selectedCategory };
+      setUserCategories([...userCategories, newUserCategory]);
       toast({
         title: "Category added to your List",
         duration: 2000,
@@ -88,6 +90,10 @@ const Shopping = () => {
     if (!selectedCategory || !token || !userId) return;
     try {
       await deleteUserCategory({ userId, catId: selectedCategory._id, token });
+      const updatedCategories = userCategories.filter(
+        (cat) => cat._id !== selectedCategory._id
+      );
+      setUserCategories(updatedCategories);
       toast({
         title: "Category removed from your List",
         duration: 2000,
