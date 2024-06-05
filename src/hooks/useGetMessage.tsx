@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import useAuthContext from "./useAuthContext";
 import * as api from "../api/messages";
-import { Message } from "./useGetUserMessages";
+import { Message } from "./useGetUserConversations";
 
 type ErrorType = {
   message: string;

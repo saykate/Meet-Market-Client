@@ -1,5 +1,5 @@
 import { SERVER_URL } from "./config";
-import { Message } from "../hooks/useGetUserMessages";
+import { Message } from "../hooks/useGetUserConversations";
 
 export type GetUserRequest = {
   userId?: string;

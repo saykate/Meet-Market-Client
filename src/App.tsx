@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Messages from "./pages/Messages";
+import Conversation from "./components/Conversation";
 import Profile from "./pages/Profile";
 import Shopping from "./pages/Shopping";
 import About from "./pages/About";
@@ -50,6 +51,15 @@ function App() {
             </AuthRoute>
           }
         />
+        <Route
+          path="/messages/:recipientId"
+          element={
+            <AuthRoute>
+              <Conversation />
+            </AuthRoute>
+          }
+        />
+
         <Route path="/shopping" element={<Shopping />} />
         <Route path="/about" element={<About />} />
       </Routes>
