@@ -3,25 +3,18 @@ import useAuthContext from "./useAuthContext";
 import * as api from "../api/users";
 import { CategoryData } from "../api/shopping";
 
-export type ListData = {
-  _id: string;
-  listName: string;
-  creator: string;
-  categories: CategoryData[];
-};
-
 type ErrorType = {
   message: string;
 };
 
-const useGetUserLists = (userId: string) => {
+const useGetUserCategories = (userId: string) => {
   const { token } = useAuthContext();
-  const [lists, setLists] = useState<ListData[]>([]);
+  const [categories, setCategories] = useState<CategoryData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ErrorType | null>(null);
 
   useEffect(() => {
-    const getUserLists = async () => {
+    const getUserCategories = async () => {
       if (!token || !userId) {
         setLoading(false);
         setError({ message: "Authentication token or user ID not found" });
@@ -29,11 +22,11 @@ const useGetUserLists = (userId: string) => {
       }
       try {
         setLoading(true);
-        const fetchedLists = await api.getUserLists({ userId, token });
-        setLists(fetchedLists);
+        const fetchedCategories = await api.getUserCategories({ userId, token });
+        setCategories(fetchedCategories);
         setError(null);
       } catch (error) {
-        console.error("Failed to get lists", error);
+        console.error("Failed to get categories", error);
         setError({
           message: (error as Error).message || "An unknown error occurred",
         });
@@ -41,9 +34,9 @@ const useGetUserLists = (userId: string) => {
         setLoading(false);
       }
     };
-    getUserLists();
+    getUserCategories();
   }, [token, userId]);
-  return { lists, loading, error };
+  return { categories, loading, error };
 };
 
-export default useGetUserLists;
+export default useGetUserCategories;

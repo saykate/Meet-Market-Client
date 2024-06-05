@@ -20,7 +20,7 @@ import {
 import { useState, useEffect, useCallback } from "react";
 import useAuthContext from "../hooks/useAuthContext";
 import useGetUser from "../hooks/useGetUser";
-import useGetUserLists from "../hooks/useGetUserLists";
+import useGetUserCategories from "../hooks/useGetUserCategories";
 import MessageForm from "../modals/MessageForm";
 import ProfileForm from "../modals/ProfileForm";
 
@@ -29,7 +29,7 @@ const Profile = () => {
   const { userId } = useParams<{ userId: string }>();
   const [shouldRefetch, setShouldRefetch] = useState(false);
   const { user, loading, error, refetch } = useGetUser(userId as string);
-  const { lists } = useGetUserLists(userId as string);
+  const { categories } = useGetUserCategories(userId as string);
   const currentUser = currentUserId === userId;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -179,17 +179,9 @@ const Profile = () => {
                 {user.username} is interested in shopping for:
               </Heading>
               <hr style={{ height: "1px", backgroundColor: "#c4cfdb" }} />
-              <ul>
-                {lists.map((list) => (
-                  <li key={list._id}>
-                    {list.categories.map((cat) => (
-                      <Box fontSize="1.5rem" key={cat._id}>
-                        {cat.title}
-                      </Box>
-                    ))}
-                  </li>
-                ))}
-              </ul>
+              {categories.map((category) => (
+                <Text key={category._id}>{category.title}</Text>
+              ))}
             </Box>
           </Box>
         )

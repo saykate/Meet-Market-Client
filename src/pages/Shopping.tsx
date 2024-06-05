@@ -24,15 +24,19 @@ import {
 } from "@chakra-ui/react";
 import useGetDepartments from "../hooks/useGetDepartments";
 import useAuthContext from "../hooks/useAuthContext";
-import useGetUserLists from "../hooks/useGetUserLists";
+import useGetUserCategories from "../hooks/useGetUserCategories";
 import { UserData } from "../api/users";
-import { addListItem, deleteListItem, findUsersByCategory } from "../api/lists";
+import {
+  addUserCategory,
+  deleteUserCategory,
+  findUsersByCategory,
+} from "../api/lists";
 import { getDepartmentCategories, CategoryData } from "../api/shopping";
 
 const Shopping = () => {
   const { departments, loading, error } = useGetDepartments();
   const { isAuthenticated, token, userId } = useAuthContext();
-  const { lists } = useGetUserLists(userId as string);
+  const { categories: userCategories } = useGetUserCategories(userId as string);
   const [selectedDept, setSelectedDept] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<CategoryData | null>(
     null
@@ -42,11 +46,11 @@ const Shopping = () => {
   const [loadingCategories, setLoadingCategories] = useState(false);
   const [loadingUsers, setLoadingUsers] = useState(false);
   const toast = useToast();
-  const {
-    isOpen: isListOpen,
-    onOpen: onListOpen,
-    onClose: onListClose,
-  } = useDisclosure();
+  // const {
+  //   isOpen: isListOpen,
+  //   onOpen: onListOpen,
+  //   onClose: onListClose,
+  // } = useDisclosure();
   const {
     isOpen: isDeptOpen,
     onOpen: onDeptOpen,
@@ -58,24 +62,24 @@ const Shopping = () => {
     onClose: onCatClose,
   } = useDisclosure();
 
-  const handleListChoice = () => {
-    onListOpen();
-  };
+  // const handleListChoice = () => {
+  //   onListOpen();
+  // };
 
   const isCategoryInList = (catId: string) => {
-    return lists.some((list) => list.categories.some(category => category._id === catId));
+    return userCategories.some((category) => category._id === catId);
   };
 
-  const addToList = async (listId: string) => {
-    if (!selectedCategory || !token) return;
+  const addToList = async () => {
+    if (!selectedCategory || !token || !userId) return;
     try {
-      await addListItem({ listId, catId: selectedCategory._id, token });
+      await addUserCategory({ userId, catId: selectedCategory._id, token });
       toast({
         title: "Category added to your List",
         duration: 2000,
         position: "top",
       });
-      onListClose();
+      // onListClose();
       onCatClose();
       onDeptClose();
     } catch (error) {
@@ -89,16 +93,16 @@ const Shopping = () => {
     }
   };
 
-  const deleteFromList = async (listId: string) => {
-    if (!selectedCategory || !token) return;
+  const deleteFromList = async () => {
+    if (!selectedCategory || !token || !userId) return;
     try {
-      await deleteListItem({ listId, catId: selectedCategory._id, token });
+      await deleteUserCategory({ userId, catId: selectedCategory._id, token });
       toast({
         title: "Category removed from your List",
         duration: 2000,
         position: "top",
       });
-      onListClose();
+      // onListClose();
       onCatClose();
       onDeptClose();
     } catch (error) {
@@ -138,7 +142,7 @@ const Shopping = () => {
     setLoadingUsers(true);
     try {
       if (!token) throw new Error("Unauthorized");
-      const fetchedUsers = await findUsersByCategory(category._id, token);
+      const fetchedUsers = await findUsersByCategory({ catId: category._id, token });
       setUsersInCat(fetchedUsers);
       onCatOpen();
     } catch (error) {
@@ -288,31 +292,19 @@ const Shopping = () => {
           <ModalHeader>{selectedCategory?.title}:</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {/* { isCategoryInList(selectedCategory?._id ?? "")
-                ? (
-                <Button
-                size="xs"
-                bg="gray.200"
-                onClick={() => deleteFromList(selectedCategory?._id ?? "")}
-              >
-                Remove from List
-                </Button> )
-                : 
-                (<Button size="xs"
-                bg="gray.200"
-                onClick={() => addToList(selectedCategory?._id ?? "")}
-                  >
-                  Add to List
-                  </Button>
-                )} */}
-                <Button
-                  size="xs"
-                  bg="gray.200"
-                  onClick={() => handleListChoice()}
-                > 
-                { isCategoryInList(selectedCategory?._id ?? "")
-                ? "Remove from List" : "Add to List" }
-                </Button>
+            <Button
+              size="xs"
+              bg="gray.200"
+              onClick={() => {
+                isCategoryInList(selectedCategory?._id ?? "")
+                  ? deleteFromList()
+                  : addToList();
+              }}
+            >
+              {isCategoryInList(selectedCategory?._id ?? "")
+                ? "Remove from List"
+                : "Add to List"}
+            </Button>
             <Text mb="1rem">
               By adding items to your list, other users can see if you are a
               compatible shopping partner!
@@ -345,26 +337,28 @@ const Shopping = () => {
           <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
-      <Modal isOpen={isListOpen} onClose={onListClose}>
+      {/* <Modal isOpen={isListOpen} onClose={onListClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Choose your List</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {lists.map((list) => (
-              <Button 
-              key={list._id} 
-              onClick={() => {
-                isCategoryInList(selectedCategory?._id ?? "") 
-                ? deleteFromList(list._id) 
-                : addToList(list._id)}}>
+              <Button
+                key={list._id}
+                onClick={() => {
+                  isCategoryInList(selectedCategory?._id ?? "")
+                    ? deleteFromList(list._id)
+                    : addToList(list._id);
+                }}
+              >
                 {list.listName}
               </Button>
             ))}
           </ModalBody>
           <ModalFooter></ModalFooter>
         </ModalContent>
-      </Modal>
+      </Modal> */}
     </Box>
   );
 };

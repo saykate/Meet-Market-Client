@@ -1,7 +1,7 @@
 import { SERVER_URL } from "./config";
 
 export type ReqOptions = {
-  listId: string;
+  userId?: string;
   catId: string;
   token: string;
 }
@@ -15,9 +15,9 @@ const handleRes = async (res: Response) => {
   return data;
 };
 
-export const addListItem = async ({ listId, catId, token }: ReqOptions) => {
-  const res = await fetch(`${SERVER_URL}/lists/${listId}`, {
-    method: "PUT",
+export const addUserCategory = async ({ userId, catId, token }: ReqOptions) => {
+  const res = await fetch(`${SERVER_URL}/users/${userId}/categories`, {
+    method: "POST",
     headers: {
       Authorization: token,
       "Content-Type": "application/json",
@@ -28,9 +28,9 @@ export const addListItem = async ({ listId, catId, token }: ReqOptions) => {
 return handleRes(res)  
 }
 
-export const deleteListItem = async ({ listId, catId, token }: ReqOptions) => {
-  const res = await fetch(`${SERVER_URL}/lists/${listId}`, {
-    method: "DELETE",
+export const deleteUserCategory = async ({ userId, catId, token }: ReqOptions) => {
+  const res = await fetch(`${SERVER_URL}/users/${userId}/categories/remove`, {
+    method: "POST",
     headers: {
       Authorization: token,
       "Content-Type": "application/json",
@@ -41,8 +41,8 @@ export const deleteListItem = async ({ listId, catId, token }: ReqOptions) => {
   return handleRes(res)
 };
 
-export const findUsersByCategory = async (categoryId: string, token: string) => {
-  const res = await fetch(`${SERVER_URL}/lists/category/${categoryId}/users`, {
+export const findUsersByCategory = async ({catId, token}: ReqOptions) => {
+  const res = await fetch(`${SERVER_URL}/users/categories/${catId}`, {
     method: "GET",
     headers: {
       Authorization: token,

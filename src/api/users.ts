@@ -51,12 +51,12 @@ export const listOfUsers = async ({ token }: GetUserRequest) => {
   return data;
 };
 
-export const getUserLists = async ({ userId, token }: GetUserRequest) => {
+export const getUserCategories = async ({ userId, token }: GetUserRequest) => {
   if (!token) {
     throw new Error("No token, user not authorized");
   }
 
-  const res = await fetch(`${SERVER_URL}/users/${userId}/lists`, {
+  const res = await fetch(`${SERVER_URL}/users/${userId}/categories`, {
     headers: {
       Authorization: token,
     },
