@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import {
   SimpleGrid,
   Box,
   Heading,
   Text,
-  Avatar,
   Image,
   useDisclosure,
   Button,
@@ -24,27 +22,16 @@ import {
 } from "@chakra-ui/react";
 import useGetDepartments from "../hooks/useGetDepartments";
 import useAuthContext from "../hooks/useAuthContext";
-import useGetUserCategories from "../hooks/useGetUserCategories";
-import { UserData } from "../api/users";
-import {
-  addUserCategory,
-  deleteUserCategory,
-  findUsersByCategory,
-} from "../api/lists";
+import useCategoryModal from "../hooks/useCategoryModal";
 import { getDepartmentCategories, CategoryData } from "../api/shopping";
 
 const Shopping = () => {
   const { departments, loading, error } = useGetDepartments();
-  const { isAuthenticated, token, userId } = useAuthContext();
-  const { categories: userCategories, setCategories: setUserCategories } = useGetUserCategories(userId as string);
+  const { isAuthenticated } = useAuthContext();
+  const { openModal, setSelectedCategory } = useCategoryModal();
   const [selectedDept, setSelectedDept] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<CategoryData | null>(
-    null
-  );
   const [categories, setCategories] = useState<CategoryData[]>([]);
-  const [usersInCat, setUsersInCat] = useState<UserData[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(false);
-  const [loadingUsers, setLoadingUsers] = useState(false);
   const toast = useToast();
 
   const {
@@ -52,65 +39,6 @@ const Shopping = () => {
     onOpen: onDeptOpen,
     onClose: onDeptClose,
   } = useDisclosure();
-  const {
-    isOpen: isCatOpen,
-    onOpen: onCatOpen,
-    onClose: onCatClose,
-  } = useDisclosure();
-
-  const isCategoryInList = (catId: string) => {
-    return userCategories.some((category) => category._id === catId);
-  };
-
-  const addToList = async () => {
-    if (!selectedCategory || !token || !userId) return;
-    try {
-      await addUserCategory({ userId, catId: selectedCategory._id, token });
-      const newUserCategory = { ...selectedCategory };
-      setUserCategories([...userCategories, newUserCategory]);
-      toast({
-        title: "Category added to your List",
-        duration: 2000,
-        position: "top",
-      });
-      onCatClose();
-      onDeptClose();
-    } catch (error) {
-      console.error("Failed to add category to list", error);
-      toast({
-        title: "Failed to add category to list",
-        status: "error",
-        duration: 2000,
-        position: "top",
-      });
-    }
-  };
-
-  const deleteFromList = async () => {
-    if (!selectedCategory || !token || !userId) return;
-    try {
-      await deleteUserCategory({ userId, catId: selectedCategory._id, token });
-      const updatedCategories = userCategories.filter(
-        (cat) => cat._id !== selectedCategory._id
-      );
-      setUserCategories(updatedCategories);
-      toast({
-        title: "Category removed from your List",
-        duration: 2000,
-        position: "top",
-      });
-      onCatClose();
-      onDeptClose();
-    } catch (error) {
-      console.error("Failed to remove category from list", error);
-      toast({
-        title: "Failed to remove category from list",
-        status: "error",
-        duration: 2000,
-        position: "top",
-      });
-    }
-  };
 
   const handleOpenDeptModal = async (deptId: string) => {
     setSelectedDept(deptId);
@@ -135,28 +63,8 @@ const Shopping = () => {
 
   const handleOpenCatModal = async (category: CategoryData) => {
     setSelectedCategory(category);
-    setLoadingUsers(true);
-    try {
-      if (!token) throw new Error("Unauthorized");
-      const fetchedUsers = await findUsersByCategory({
-        catId: category._id,
-        token,
-      });
-      setUsersInCat(fetchedUsers);
-      onCatOpen();
-    } catch (error) {
-      console.error("Failed to fetch users", error);
-      toast({
-        title: "Failed to fetch users",
-        status: "error",
-        duration: 2000,
-        position: "top",
-      });
-    } finally {
-      setLoadingUsers(false);
-    }
+    openModal(category);
   };
-  console.log("Selected Category", selectedCategory);
 
   return (
     <Box
@@ -280,57 +188,6 @@ const Shopping = () => {
                   )}
                 </Box>
               ))}
-            </SimpleGrid>
-          </ModalBody>
-          <ModalFooter></ModalFooter>
-        </ModalContent>
-      </Modal>
-      <Modal isOpen={isCatOpen} onClose={onCatClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{selectedCategory?.title}:</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Button
-              size="xs"
-              bg="gray.200"
-              onClick={() => {
-                isCategoryInList(selectedCategory?._id ?? "")
-                  ? deleteFromList()
-                  : addToList();
-              }}
-            >
-              {isCategoryInList(selectedCategory?._id ?? "")
-                ? "Remove from List"
-                : "Add to List"}
-            </Button>
-            <Text mb="1rem">
-              By adding items to your list, other users can see if you are a
-              compatible shopping partner!
-            </Text>
-            <SimpleGrid minChildWidth="80px" spacing="10px" w="full">
-              {loadingUsers ? (
-                <Flex justify="center" align="center" w="full" h="100%">
-                  <Spinner size="xl" />
-                </Flex>
-              ) : (
-                usersInCat.map((user) => (
-                  <Flex
-                    flexDirection="column"
-                    alignItems="center"
-                    key={user._id}
-                  >
-                    <Link to={`/profile/${user._id}`}>
-                      <Avatar src={user.profilePhoto} />
-                    </Link>
-                    <Link to={`/profile/${user._id}`}>
-                      {user.username.length > 9
-                        ? `${user.username.slice(0, 9)}...`
-                        : user.username}
-                    </Link>
-                  </Flex>
-                ))
-              )}
             </SimpleGrid>
           </ModalBody>
           <ModalFooter></ModalFooter>

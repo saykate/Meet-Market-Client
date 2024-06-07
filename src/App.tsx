@@ -10,6 +10,7 @@ import About from "./pages/About";
 import AuthRoute from "./components/AuthRoute";
 import useAuthContext from "./hooks/useAuthContext";
 import { jwtDecode } from "jwt-decode";
+import CategoryModal from "./modals/CategoryModal";
 
 function App() {
   const { token, logout } = useAuthContext();
@@ -63,6 +64,7 @@ function App() {
         <Route path="/shopping" element={<Shopping />} />
         <Route path="/about" element={<About />} />
       </Routes>
+      <CategoryModal />
     </>
   );
 }

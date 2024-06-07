@@ -14,11 +14,14 @@ import {
   Avatar,
   Flex,
   Spinner,
+  SimpleGrid,
+  Image,
   Alert,
   AlertIcon,
 } from "@chakra-ui/react";
 import { useState, useEffect, useCallback } from "react";
 import useAuthContext from "../hooks/useAuthContext";
+import useCategoryModal from "../hooks/useCategoryModal";
 import useGetUser from "../hooks/useGetUser";
 import useGetUserCategories from "../hooks/useGetUserCategories";
 import MessageForm from "../modals/MessageForm";
@@ -32,6 +35,7 @@ const Profile = () => {
   const { categories } = useGetUserCategories(userId as string);
   const currentUser = currentUserId === userId;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { openModal } = useCategoryModal();
 
   const handleUpdateSuccess = useCallback(() => {
     setShouldRefetch(true);
@@ -166,22 +170,55 @@ const Profile = () => {
             </Flex>
             <Box
               p="2em"
-              textAlign="left"
+              textAlign="center"
               border="solid"
               borderColor="gray.300"
               mx="2rem"
             >
-              <Heading size="md">Bio:</Heading>
-              <Text>{user.bio}</Text>
+              <Heading size="md" as="u">
+                Bio:
+              </Heading>
+              <Text mt=".5rem">{user.bio}</Text>
             </Box>
             <Box p={{ base: "3em", sm: "5em" }}>
               <Heading size={{ base: "lg", sm: "xl" }}>
                 {user.username} is interested in shopping for:
               </Heading>
-              <hr style={{ height: "1px", backgroundColor: "#c4cfdb" }} />
-              {categories.map((category) => (
-                <Text key={category._id}>{category.title}</Text>
-              ))}
+              <hr
+                style={{
+                  height: "1px",
+                  backgroundColor: "#c4cfdb",
+                  marginBottom: "1rem",
+                }}
+              />
+              <SimpleGrid minChildWidth="70px" spacing="10px" w="full">
+                {categories.map((category) => (
+                  <Box
+                    key={category._id}
+                    display="flex"
+                    flexDir="column"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    h="auto"
+                    w="100%"
+                    p="5px"
+                    shadow="md"
+                    borderWidth="1px"
+                    borderRadius="md"
+                    bg="#F7F5E8"
+                    onClick={() => openModal(category)}
+                  >
+                    <Text fontSize="xs">{category.title}</Text>
+                    <Image
+                      w="60px"
+                      objectFit="cover"
+                      src={category.photo}
+                      alt={category.title}
+                      mb="5px"
+                    />
+                  </Box>
+                ))}
+              </SimpleGrid>
             </Box>
           </Box>
         )
