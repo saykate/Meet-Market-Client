@@ -113,45 +113,68 @@ const CategoryModal: FC = () => {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{selectedCategory?.title}:</ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton border="solid" />
         <ModalBody>
-          <Button
-            size="xs"
-            bg="gray.200"
-            onClick={() => {
-              isCategoryInList(selectedCategory?._id ?? "")
-                ? deleteFromList()
-                : addToList();
-            }}
-          >
-            {isCategoryInList(selectedCategory?._id ?? "")
-              ? "Remove from List"
-              : "Add to List"}
-          </Button>
-          <Text mb="1rem">
-            By adding items to your list, other users can see if you are a
-            compatible shopping partner!
-          </Text>
-          <SimpleGrid minChildWidth="80px" spacing="10px" w="full">
-            {loadingUsers ? (
-              <Flex justify="center" align="center" w="full" h="100%">
-                <Spinner size="xl" />
-              </Flex>
+          <Flex flexDir="column" alignItems="center">
+            {isCategoryInList(selectedCategory?._id ?? "") ? (
+              ""
             ) : (
-              usersInCat.map((user) => (
-                <Flex flexDirection="column" alignItems="center" key={user._id}>
-                  <Link to={`/profile/${user._id}`}>
-                    <Avatar src={user.profilePhoto} />
-                  </Link>
-                  <Link to={`/profile/${user._id}`}>
-                    {user.username.length > 9
-                      ? `${user.username.slice(0, 9)}...`
-                      : user.username}
-                  </Link>
-                </Flex>
-              ))
+              <Text mb="1rem">
+                By adding items to your list, other users can see if you are a
+                compatible shopping partner!
+              </Text>
             )}
-          </SimpleGrid>
+            <Button
+              size="xs"
+              bg="gray.200"
+              mb="1.5rem"
+              border="solid"
+              onClick={() => {
+                isCategoryInList(selectedCategory?._id ?? "")
+                  ? deleteFromList()
+                  : addToList();
+              }}
+            >
+              {isCategoryInList(selectedCategory?._id ?? "")
+                ? "Remove from List"
+                : "Add to List"}
+            </Button>
+            <hr
+              style={{
+                height: "1px",
+                width: "80%",
+                backgroundColor: "black",
+                marginBottom: "1rem",
+              }}
+            />
+            <Text size="med" mb="2rem" as="u">
+              Who's Shopping for this:
+            </Text>
+            <SimpleGrid minChildWidth="80px" spacing="10px" w="full">
+              {loadingUsers ? (
+                <Flex justify="center" align="center" w="full" h="100%">
+                  <Spinner size="xl" />
+                </Flex>
+              ) : (
+                usersInCat.map((user) => (
+                  <Flex
+                    flexDirection="column"
+                    alignItems="center"
+                    key={user._id}
+                  >
+                    <Link to={`/profile/${user._id}`}>
+                      <Avatar src={user.profilePhoto} />
+                    </Link>
+                    <Link to={`/profile/${user._id}`}>
+                      {user.username.length > 9
+                        ? `${user.username.slice(0, 9)}...`
+                        : user.username}
+                    </Link>
+                  </Flex>
+                ))
+              )}
+            </SimpleGrid>
+          </Flex>
         </ModalBody>
         <ModalFooter></ModalFooter>
       </ModalContent>
