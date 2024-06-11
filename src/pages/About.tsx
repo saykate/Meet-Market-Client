@@ -19,8 +19,7 @@ const About = () => {
         Welcome to Meet-Market, your solution to maximizing the benefits of bulk
         shopping without the burden of excess or waste. In a world where living
         expenses continue to rise, Meet-Market aims to revolutionize the way
-        individuals approach shopping, particularly at warehouse retailers like
-        Costco.
+        individuals approach shopping.
       </Text>
 
       <Heading size="lg" p="1rem">
@@ -44,11 +43,11 @@ const About = () => {
         Through our user-friendly app, individuals can create profiles and
         indicate their shopping needs and preferences. Whether it's household
         essentials, pantry staples, or everyday items, users can browse through
-        a variety of categories and add items to their shopping list.
+        a variety of categories and add them to their list.
       </Text>
 
       <Text>
-        Once users have compiled their shopping lists, Meet-Market utilizes
+        Once users have compiled their list of interests, Meet-Market utilizes
         advanced algorithms to match them with other users in their area who are
         seeking similar items. Users can then connect with one another, chat,
         and coordinate plans to share their shopping trips.
@@ -67,9 +66,9 @@ const About = () => {
 
       <Text>
         Additionally, Meet-Market goes beyond just shopping together. With the
-        option to meet up at Costco or other retailers, users have the
-        opportunity to socialize, make new friends, and build meaningful
-        relationships based on shared interests.
+        option to meet up at Costco, users have the opportunity to socialize,
+        make new friends, and build meaningful relationships based on shared
+        interests.
       </Text>
 
       <Heading size="lg" p="1rem">
