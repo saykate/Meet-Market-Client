@@ -26,9 +26,12 @@ import {
 } from "../api/lists";
 import useGetUserCategories from "../hooks/useGetUserCategories";
 
-const CategoryModal: FC = () => {
-  const { selectedCategory, isModalOpen, closeModal } = useCategoryModal();
+type CategoryModalProps = {
+  onClose: () => void;
+}
 
+const CategoryModal: FC<CategoryModalProps> = ({ onClose }) => {
+  const { selectedCategory, isModalOpen, closeModal } = useCategoryModal();
   const { token, userId } = useAuthContext();
   const [usersInCat, setUsersInCat] = useState<UserData[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(false);
@@ -76,6 +79,7 @@ const CategoryModal: FC = () => {
         position: "top",
       });
       closeModal();
+      onClose();
     } catch (error) {
       console.error("Failed to add category to list", error);
       toast({
@@ -97,6 +101,7 @@ const CategoryModal: FC = () => {
         position: "top",
       });
       closeModal();
+      onClose();
     } catch (error) {
       console.error("Failed to remove category from list", error);
       toast({

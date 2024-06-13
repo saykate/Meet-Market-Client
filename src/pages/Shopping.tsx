@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import {
   SimpleGrid,
   Box,
   Heading,
   Text,
   Image,
-  useDisclosure,
+  // useDisclosure,
   Button,
   Flex,
   Modal,
@@ -25,7 +25,13 @@ import useAuthContext from "../hooks/useAuthContext";
 import useCategoryModal from "../hooks/useCategoryModal";
 import { getDepartmentCategories, CategoryData } from "../api/shopping";
 
-const Shopping = () => {
+type ShoppingProps = {
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+}
+
+const Shopping: FC<ShoppingProps> = ({ isOpen, onOpen, onClose }) => {
   const { departments, loading, error } = useGetDepartments();
   const { isAuthenticated } = useAuthContext();
   const { openModal, setSelectedCategory } = useCategoryModal();
@@ -34,11 +40,11 @@ const Shopping = () => {
   const [loadingCategories, setLoadingCategories] = useState(false);
   const toast = useToast();
 
-  const {
-    isOpen: isDeptOpen,
-    onOpen: onDeptOpen,
-    onClose: onDeptClose,
-  } = useDisclosure();
+  // const {
+  //   isOpen: isDeptOpen,
+  //   onOpen: onDeptOpen,
+  //   onClose: onDeptClose,
+  // } = useDisclosure();
 
   const handleOpenDeptModal = async (deptId: string) => {
     setSelectedDept(deptId);
@@ -46,7 +52,7 @@ const Shopping = () => {
     try {
       const fetchedCategories = await getDepartmentCategories(deptId);
       setCategories(fetchedCategories);
-      onDeptOpen();
+      onOpen();
     } catch (error) {
       console.error("Failed to fetch categories", error);
       toast({
@@ -130,7 +136,7 @@ const Shopping = () => {
           ))}
         </SimpleGrid>
       )}
-      <Modal isOpen={isDeptOpen} onClose={onDeptClose}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Categories:</ModalHeader>

@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
+import { useDisclosure } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Messages from "./pages/Messages";
@@ -14,6 +15,11 @@ import CategoryModal from "./modals/CategoryModal";
 
 function App() {
   const { token, logout } = useAuthContext();
+  const {
+    isOpen: isDeptOpen,
+    onOpen: onDeptOpen,
+    onClose: onDeptClose,
+  } = useDisclosure();
 
   useEffect(() => {
     if (token) {
@@ -61,10 +67,10 @@ function App() {
           }
         />
 
-        <Route path="/shopping" element={<Shopping />} />
+        <Route path="/shopping" element={<Shopping onOpen={onDeptOpen} isOpen={isDeptOpen} onClose={onDeptClose}/>} />
         <Route path="/about" element={<About />} />
       </Routes>
-      <CategoryModal />
+      <CategoryModal  onClose={onDeptClose}/>
     </>
   );
 }
