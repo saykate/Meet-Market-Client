@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   Box,
   Spinner,
@@ -62,7 +62,7 @@ const Conversation = () => {
                 }
                 alignItems="center"
               >
-                <Avatar src={message.author.profilePhoto} mr="1rem" />
+                {message.author._id === userId ? <Avatar src={message.author.profilePhoto} mr="1rem" /> : <Link to={`/profile/${message.author._id}`}><Avatar src={message.author.profilePhoto} /></Link>}
                 <Box
                   bg={message.author._id === userId ? "blue.100" : "gray.200"}
                   p="1rem"
