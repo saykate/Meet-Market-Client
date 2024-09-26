@@ -24,6 +24,7 @@ import useAuthContext from "../hooks/useAuthContext";
 import useCategoryModal from "../hooks/useCategoryModal";
 import useGetUser from "../hooks/useGetUser";
 import useGetUserCategories from "../hooks/useGetUserCategories";
+import useFollowUser from "../hooks/useFollowUser";
 import MessageForm from "../modals/MessageForm";
 import ProfileForm from "../modals/ProfileForm";
 
@@ -33,6 +34,7 @@ const Profile = () => {
   const [shouldRefetch, setShouldRefetch] = useState(false);
   const { user, loading, error, refetch } = useGetUser(userId as string);
   const { categories } = useGetUserCategories(userId as string);
+  const { followUser } = useFollowUser(userId as string);
   const currentUser = currentUserId === userId;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { openModal } = useCategoryModal();
@@ -74,6 +76,10 @@ const Profile = () => {
       });
     }
   }, [user]);
+
+  const handleFollow = () => {
+    followUser();
+  };
 
   return (
     <Box
@@ -152,9 +158,14 @@ const Profile = () => {
                 </>
               ) : (
                 <>
-                  <Button onClick={onOpen} bg="gray.300">
-                    Send a Message
-                  </Button>
+                  <Flex gap="3em">
+                    <Button onClick={handleFollow} bg="gray.300">
+                      Follow {user.username}
+                    </Button>
+                    <Button onClick={onOpen} bg="gray.300">
+                      Send a Message
+                    </Button>
+                  </Flex>
                   <Modal isOpen={isOpen} onClose={onClose}>
                     <ModalOverlay />
                     <ModalContent>
