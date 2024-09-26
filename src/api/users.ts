@@ -122,3 +122,25 @@ export const updateUser = async (
     throw new Error("Failed to update user");
   }
 };
+
+export const followUser = async ({ userId, targetUserId, token }: { userId: string, targetUserId: string; token: string }) => {
+  if (!token) {
+    throw new Error("No token, user not authorized");
+  }
+
+  const res = await fetch(`${SERVER_URL}/users/follow`, {
+    method: 'POST',
+    headers: {
+      Authorization: token,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ userId, targetUserId }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to follow user");
+  }
+
+  const { data } = await res.json();
+  return data;
+};
