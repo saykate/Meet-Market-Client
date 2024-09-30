@@ -6,8 +6,8 @@ import useAuthContext from "../hooks/useAuthContext";
 
 export type ProfileFormProps = {
   initialState: Record<string, string>;
-  onClose: () => void;
   onUpdateSuccess: () => void;
+  onClose: () => void;
 };
 
 type ErrorType = {
@@ -16,8 +16,8 @@ type ErrorType = {
 
 const ProfileForm: FC<ProfileFormProps> = ({
   initialState,
-  onClose,
   onUpdateSuccess,
+  onClose,
 }) => {
   const { token, userId, username } = useAuthContext();
   const [loading, setLoading] = useState(false);
@@ -93,6 +93,7 @@ const ProfileForm: FC<ProfileFormProps> = ({
   const handleUpdateUser = async (formData: Record<string, string>) => {
     setLoading(true);
     if (!token || !userId || !username) {
+      setLoading(false)
       console.error("No token or user ID");
       return null;
     }
@@ -113,6 +114,7 @@ const ProfileForm: FC<ProfileFormProps> = ({
     try {
       await updateUser({ userId, token }, userData);
       onUpdateSuccess();
+      console.log("user updated successfully")
       onClose();
       toast({
         title: "Profile updated",

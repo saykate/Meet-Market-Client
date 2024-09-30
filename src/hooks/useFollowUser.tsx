@@ -18,8 +18,6 @@ const useFollowUser = (targetUserId: string) => {
       return
     }
 
-    console.log(targetUserId)
-
     try {
       setLoading(true)
       await api.followUser({ userId, targetUserId, token });

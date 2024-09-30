@@ -1,6 +1,7 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   useDisclosure,
+  useToast,
   Box,
   Heading,
   Button,
@@ -27,6 +28,8 @@ import useGetUserCategories from "../hooks/useGetUserCategories";
 import useFollowUser from "../hooks/useFollowUser";
 import MessageForm from "../modals/MessageForm";
 import ProfileForm from "../modals/ProfileForm";
+import useGetUserFollowers from "../hooks/useGetUserFollowers";
+import useGetUserFollowing from "../hooks/useGetUserFollowing";
 
 const Profile = () => {
   const { userId: currentUserId } = useAuthContext();
@@ -34,10 +37,43 @@ const Profile = () => {
   const [shouldRefetch, setShouldRefetch] = useState(false);
   const { user, loading, error, refetch } = useGetUser(userId as string);
   const { categories } = useGetUserCategories(userId as string);
+  const toast = useToast();
   const { followUser } = useFollowUser(userId as string);
+  const {
+    getUserFollowers,
+    followers,
+    loading: followersLoading,
+    error: followersError,
+  } = useGetUserFollowers(userId as string);
+
+  const {
+    getUserFollowing,
+    following,
+    loading: followingLoading,
+    error: followingError,
+  } = useGetUserFollowing(userId as string);
+
   const currentUser = currentUserId === userId;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { openModal } = useCategoryModal();
+
+  const {
+    isOpen: isFollowingOpen,
+    onOpen: onFollowingOpen,
+    onClose: onFollowingClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isFollowersOpen,
+    onOpen: onFollowersOpen,
+    onClose: onFollowersClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isProfileOpen,
+    onOpen: onProfileOpen,
+    onClose: onProfileClose,
+  } = useDisclosure();
 
   const handleUpdateSuccess = useCallback(() => {
     setShouldRefetch(true);
@@ -77,9 +113,36 @@ const Profile = () => {
     }
   }, [user]);
 
-  const handleFollow = () => {
-    followUser();
+  const handleFollow = async () => {
+    try {
+      await followUser();
+      toast({
+        title: "Success!",
+        description: `You are now following ${user?.username}`,
+        status: "success",
+        duration: 2000,
+        position: "top",
+        isClosable: true,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: `Could not follow ${user?.username}. Please try again later.`,
+        status: "error",
+        duration: 2000,
+        position: "top",
+        isClosable: true,
+      });
+    }
   };
+
+  useEffect(() => {
+    getUserFollowers();
+  }, [userId]);
+
+  useEffect(() => {
+    getUserFollowing();
+  }, [userId]);
 
   return (
     <Box
@@ -138,23 +201,107 @@ const Profile = () => {
               </Flex>
               {currentUser ? (
                 <>
-                  <Button onClick={onOpen} bg="gray.300">
-                    Edit Profile
-                  </Button>
-                  <Modal isOpen={isOpen} onClose={onClose}>
-                    <ModalOverlay />
-                    <ModalContent>
-                      <ModalHeader>Update Your Profile</ModalHeader>
-                      <ModalCloseButton />
-                      <ModalBody>
-                        <ProfileForm
-                          initialState={initialState}
-                          onClose={onClose}
-                          onUpdateSuccess={handleUpdateSuccess}
-                        />
-                      </ModalBody>
-                    </ModalContent>
-                  </Modal>
+                  <Flex gap="1em">
+                    <Button onClick={onFollowingOpen} bg="gray.300">
+                      Following
+                    </Button>
+                    <Modal isOpen={isFollowingOpen} onClose={onFollowingClose}>
+                      <ModalOverlay />
+                      <ModalContent>
+                        <ModalHeader>You are following: </ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                        {followingLoading ? (
+                            <Spinner />
+                          ) : followingError ? (
+                            <Alert status="error">
+                              {followingError.message}
+                            </Alert>
+                          ) : (
+                            <Flex
+                              flexDirection="column"
+                              gap="10px"
+                            >
+                              {following.map((user) => (
+                                <Flex
+                                  flexDirection="column"
+                                  alignItems="center"
+                                  key={user._id}
+                                >
+                                  <Link to={`/profile/${user._id}`}>
+                                    <Avatar src={user.profilePhoto} />
+                                  </Link>
+                                  <Link to={`/profile/${user._id}`}>
+                                    {user.username.length > 9
+                                      ? `${user.username.slice(0, 9)}...`
+                                      : user.username}
+                                  </Link>
+                                </Flex>
+                              ))}
+                            </Flex>
+                          )}
+                        </ModalBody>
+                      </ModalContent>
+                    </Modal>
+                    <Button onClick={onFollowersOpen} bg="gray.300">
+                      Followers
+                    </Button>
+                    <Modal isOpen={isFollowersOpen} onClose={onFollowersClose}>
+                      <ModalOverlay />
+                      <ModalContent>
+                        <ModalHeader>Following you: </ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                           {followersLoading ? (
+                            <Spinner />
+                          ) : followersError ? (
+                            <Alert status="error">
+                              {followersError.message}
+                            </Alert>
+                          ) : (
+                            <Flex
+                              flexDirection="column"
+                              gap="10px"
+                            >
+                              {followers.map((user) => (
+                                <Flex
+                                  flexDirection="column"
+                                  alignItems="center"
+                                  key={user._id}
+                                >
+                                  <Link to={`/profile/${user._id}`}>
+                                    <Avatar src={user.profilePhoto} />
+                                  </Link>
+                                  <Link to={`/profile/${user._id}`}>
+                                    {user.username.length > 9
+                                      ? `${user.username.slice(0, 9)}...`
+                                      : user.username}
+                                  </Link>
+                                </Flex>
+                              ))}
+                            </Flex>
+                          )}
+                        </ModalBody>
+                      </ModalContent>
+                    </Modal>
+                    <Button onClick={onProfileOpen} bg="gray.300">
+                      Edit Profile
+                    </Button>
+                    <Modal isOpen={isProfileOpen} onClose={onProfileClose}>
+                      <ModalOverlay />
+                      <ModalContent>
+                        <ModalHeader>Update Your Profile</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                          <ProfileForm
+                            initialState={initialState}
+                            onUpdateSuccess={handleUpdateSuccess}
+                            onClose={onClose}
+                          />
+                        </ModalBody>
+                      </ModalContent>
+                    </Modal>
+                  </Flex>
                 </>
               ) : (
                 <>

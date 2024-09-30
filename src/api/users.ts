@@ -144,3 +144,41 @@ export const followUser = async ({ userId, targetUserId, token }: { userId: stri
   const { data } = await res.json();
   return data;
 };
+
+export const getUserFollowers = async ({ userId, token }: GetUserRequest) => {
+  if (!token) {
+    throw new Error("No token, user not authorized");
+  }
+
+  const res = await fetch(`${SERVER_URL}/users/${userId}/followers`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to get user's followers");
+  }
+
+  const { data } = await res.json();  
+  return data;
+};
+
+export const getUserFollowing = async ({ userId, token }: GetUserRequest) => {
+  if (!token) {
+    throw new Error("No token, user not authorized");
+  }
+
+  const res = await fetch(`${SERVER_URL}/users/${userId}/following`, {
+    headers: {
+      Authorization: token,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to get user's following");
+  }
+
+  const { data } = await res.json();
+  return data;
+};
