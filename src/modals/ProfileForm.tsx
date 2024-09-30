@@ -7,7 +7,7 @@ import useAuthContext from "../hooks/useAuthContext";
 export type ProfileFormProps = {
   initialState: Record<string, string>;
   onUpdateSuccess: () => void;
-  onClose: () => void;
+  onProfileClose: () => void;
 };
 
 type ErrorType = {
@@ -17,7 +17,7 @@ type ErrorType = {
 const ProfileForm: FC<ProfileFormProps> = ({
   initialState,
   onUpdateSuccess,
-  onClose,
+  onProfileClose,
 }) => {
   const { token, userId, username } = useAuthContext();
   const [loading, setLoading] = useState(false);
@@ -115,7 +115,7 @@ const ProfileForm: FC<ProfileFormProps> = ({
       await updateUser({ userId, token }, userData);
       onUpdateSuccess();
       console.log("user updated successfully")
-      onClose();
+      onProfileClose();
       toast({
         title: "Profile updated",
         duration: 2000,

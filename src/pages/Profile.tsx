@@ -211,17 +211,14 @@ const Profile = () => {
                         <ModalHeader>You are following: </ModalHeader>
                         <ModalCloseButton />
                         <ModalBody>
-                        {followingLoading ? (
+                          {followingLoading ? (
                             <Spinner />
                           ) : followingError ? (
                             <Alert status="error">
                               {followingError.message}
                             </Alert>
                           ) : (
-                            <Flex
-                              flexDirection="column"
-                              gap="10px"
-                            >
+                            <Flex flexDirection="column" gap="10px">
                               {following.map((user) => (
                                 <Flex
                                   flexDirection="column"
@@ -252,17 +249,14 @@ const Profile = () => {
                         <ModalHeader>Following you: </ModalHeader>
                         <ModalCloseButton />
                         <ModalBody>
-                           {followersLoading ? (
+                          {followersLoading ? (
                             <Spinner />
                           ) : followersError ? (
                             <Alert status="error">
                               {followersError.message}
                             </Alert>
                           ) : (
-                            <Flex
-                              flexDirection="column"
-                              gap="10px"
-                            >
+                            <Flex flexDirection="column" gap="10px">
                               {followers.map((user) => (
                                 <Flex
                                   flexDirection="column"
@@ -296,7 +290,7 @@ const Profile = () => {
                           <ProfileForm
                             initialState={initialState}
                             onUpdateSuccess={handleUpdateSuccess}
-                            onClose={onClose}
+                            onProfileClose={onProfileClose}
                           />
                         </ModalBody>
                       </ModalContent>
