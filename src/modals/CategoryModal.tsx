@@ -1,5 +1,5 @@
 import { useState, useEffect, FC } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Modal,
   ModalOverlay,
@@ -28,7 +28,7 @@ import useGetUserCategories from "../hooks/useGetUserCategories";
 
 type CategoryModalProps = {
   onClose: () => void;
-}
+};
 
 const CategoryModal: FC<CategoryModalProps> = ({ onClose }) => {
   const { selectedCategory, isModalOpen, closeModal } = useCategoryModal();
@@ -37,6 +37,7 @@ const CategoryModal: FC<CategoryModalProps> = ({ onClose }) => {
   const [loadingUsers, setLoadingUsers] = useState(false);
   const { categories: userCategories } = useGetUserCategories(userId as string);
   const toast = useToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -113,6 +114,12 @@ const CategoryModal: FC<CategoryModalProps> = ({ onClose }) => {
     }
   };
 
+  const handleUserClick = (userId: string) => {
+    closeModal();
+    onClose();
+    navigate(`/profile/${userId}`);
+  };
+
   return (
     <Modal isOpen={isModalOpen} onClose={closeModal}>
       <ModalOverlay />
@@ -166,15 +173,15 @@ const CategoryModal: FC<CategoryModalProps> = ({ onClose }) => {
                     flexDirection="column"
                     alignItems="center"
                     key={user._id}
+                    onClick={() => handleUserClick(user._id)}
                   >
-                    <Link to={`/profile/${user._id}`}>
-                      <Avatar src={user.profilePhoto} />
-                    </Link>
-                    <Link to={`/profile/${user._id}`}>
+                    <Avatar src={user.profilePhoto} />
+
+                    <Text>
                       {user.username.length > 9
                         ? `${user.username.slice(0, 9)}...`
                         : user.username}
-                    </Link>
+                    </Text>
                   </Flex>
                 ))
               )}

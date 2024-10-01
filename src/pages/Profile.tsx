@@ -225,10 +225,16 @@ const Profile = () => {
                                   alignItems="center"
                                   key={user._id}
                                 >
-                                  <Link to={`/profile/${user._id}`}>
+                                  <Link 
+                                    to={`/profile/${user._id}`}
+                                    onClick={onFollowingClose}
+                                    >
                                     <Avatar src={user.profilePhoto} />
                                   </Link>
-                                  <Link to={`/profile/${user._id}`}>
+                                  <Link 
+                                    to={`/profile/${user._id}`}
+                                    onClick={onFollowingClose}
+                                    >
                                     {user.username.length > 9
                                       ? `${user.username.slice(0, 9)}...`
                                       : user.username}
@@ -263,10 +269,16 @@ const Profile = () => {
                                   alignItems="center"
                                   key={user._id}
                                 >
-                                  <Link to={`/profile/${user._id}`}>
+                                  <Link 
+                                    to={`/profile/${user._id}`}
+                                    onClick={onFollowersClose}
+                                  >
                                     <Avatar src={user.profilePhoto} />
                                   </Link>
-                                  <Link to={`/profile/${user._id}`}>
+                                  <Link 
+                                    to={`/profile/${user._id}`}
+                                    onClick={onFollowersClose}
+                                  >
                                     {user.username.length > 9
                                       ? `${user.username.slice(0, 9)}...`
                                       : user.username}
