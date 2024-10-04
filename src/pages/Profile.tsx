@@ -38,7 +38,7 @@ const Profile = () => {
   const { user, loading, error, refetch } = useGetUser(userId as string);
   const { categories } = useGetUserCategories(userId as string);
   const toast = useToast();
-  const { followUser } = useFollowUser(userId as string);
+  const { toggleFollowUser } = useFollowUser(userId as string);
   const {
     getUserFollowers,
     followers,
@@ -46,12 +46,20 @@ const Profile = () => {
     error: followersError,
   } = useGetUserFollowers(userId as string);
 
+  // const {
+  //   getUserFollowing: getProfileFollowing,
+  //   following,
+  // } = useGetUserFollowing(userId as string);
+
   const {
-    getUserFollowing,
-    following,
+    getUserFollowing: getCurrentUserFollowing,
+    following: currentUserFollowing,
+    setFollowing: setCurrentUserFollowing,
     loading: followingLoading,
     error: followingError,
-  } = useGetUserFollowing(userId as string);
+  } = useGetUserFollowing(currentUserId as string);
+
+  console.log("inside profile", currentUserFollowing)
 
   const currentUser = currentUserId === userId;
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -113,12 +121,57 @@ const Profile = () => {
     }
   }, [user]);
 
-  const handleFollow = async () => {
+
+  useEffect(() => {
+    getUserFollowers();
+    getCurrentUserFollowing();
+    // getProfileFollowing();
+  }, [userId, currentUserId]);
+
+  const isFollowing = (userId: string) => {
+    if (!userId) return false
+    // console.log("inside isFollowing", currentUserFollowing)
+    // console.log("userId", userId)
+    // console.log("list id's", currentUserFollowing.map(user => user._id))
+    // console.log("isFollowing?", currentUserFollowing.some((user) => user._id === userId)) 
+    return currentUserFollowing.some((user) => user._id === userId);
+  };
+
+  const handleToggleFollow = async () => {
+    if (!userId) {
+      toast({
+        title: "Error",
+        description: "Invalid user.",
+        status: "error",
+        duration: 2000,
+        position: "top",
+        isClosable: true,
+      });
+      return;
+    }
+
     try {
-      await followUser();
+      await toggleFollowUser();
+
+      const newUser = {
+        _id: userId, 
+        username: user?.username || "",
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
+        bio: user?.bio || "",
+        birthdate: user?.birthdate ? new Date(user.birthdate) : new Date(),
+        profilePhoto: user?.profilePhoto || "",
+        coverPhoto: user?.coverPhoto || "",
+      }
+
+      if (isFollowing(userId)) {
+        setCurrentUserFollowing(currentUserFollowing.filter((u) => u._id !== userId)); 
+      } else {
+        setCurrentUserFollowing([...currentUserFollowing, newUser]);
+      }
       toast({
         title: "Success!",
-        description: `You are now following ${user?.username}`,
+        description: "Follow status updated",
         status: "success",
         duration: 2000,
         position: "top",
@@ -127,7 +180,7 @@ const Profile = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: `Could not follow ${user?.username}. Please try again later.`,
+        description: `Could not update follow state for ${user?.username}. Please try again later.`,
         status: "error",
         duration: 2000,
         position: "top",
@@ -135,14 +188,6 @@ const Profile = () => {
       });
     }
   };
-
-  useEffect(() => {
-    getUserFollowers();
-  }, [userId]);
-
-  useEffect(() => {
-    getUserFollowing();
-  }, [userId]);
 
   return (
     <Box
@@ -219,22 +264,22 @@ const Profile = () => {
                             </Alert>
                           ) : (
                             <Flex flexDirection="column" gap="10px">
-                              {following.map((user) => (
+                              {currentUserFollowing.map((user) => (
                                 <Flex
                                   flexDirection="column"
                                   alignItems="center"
                                   key={user._id}
                                 >
-                                  <Link 
+                                  <Link
                                     to={`/profile/${user._id}`}
                                     onClick={onFollowingClose}
-                                    >
+                                  >
                                     <Avatar src={user.profilePhoto} />
                                   </Link>
-                                  <Link 
+                                  <Link
                                     to={`/profile/${user._id}`}
                                     onClick={onFollowingClose}
-                                    >
+                                  >
                                     {user.username.length > 9
                                       ? `${user.username.slice(0, 9)}...`
                                       : user.username}
@@ -269,13 +314,13 @@ const Profile = () => {
                                   alignItems="center"
                                   key={user._id}
                                 >
-                                  <Link 
+                                  <Link
                                     to={`/profile/${user._id}`}
                                     onClick={onFollowersClose}
                                   >
                                     <Avatar src={user.profilePhoto} />
                                   </Link>
-                                  <Link 
+                                  <Link
                                     to={`/profile/${user._id}`}
                                     onClick={onFollowersClose}
                                   >
@@ -312,8 +357,10 @@ const Profile = () => {
               ) : (
                 <>
                   <Flex gap="3em">
-                    <Button onClick={handleFollow} bg="gray.300">
-                      Follow {user.username}
+                    <Button onClick={handleToggleFollow} bg="gray.300">
+                      {isFollowing(user?._id)
+                        ? `Unfollow ${user.username}`
+                        : `Follow ${user.username}`}
                     </Button>
                     <Button onClick={onOpen} bg="gray.300">
                       Send a Message

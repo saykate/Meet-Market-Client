@@ -11,7 +11,7 @@ const useFollowUser = (targetUserId: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ErrorType | null>(null);
 
-  const followUser = async () => {
+  const toggleFollowUser = async () => {
     if (!token || !targetUserId || !userId) {
       setLoading(false)
       setError({ message: "Authentication token or target user ID not found" })
@@ -20,10 +20,10 @@ const useFollowUser = (targetUserId: string) => {
 
     try {
       setLoading(true)
-      await api.followUser({ userId, targetUserId, token });
+      await api.toggleFollowUser({ userId, targetUserId, token });
       setError(null)
     } catch (error) {
-      console.error("Failed to follow user", error)
+      console.error("Failed to update follow status", error)
       setError({
         message: (error as Error).message || "An unknown error occurred",
       })
@@ -32,7 +32,7 @@ const useFollowUser = (targetUserId: string) => {
     }
   }
   
-  return { followUser, loading, error }
+  return { toggleFollowUser, loading, error }
 
 }
 export default useFollowUser;

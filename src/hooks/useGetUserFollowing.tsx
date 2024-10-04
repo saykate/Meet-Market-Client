@@ -33,7 +33,8 @@ const useGetUserFollowing = (userId: string) => {
       setLoading(false);
     }
   };
-  return { getUserFollowing, following, loading, error };
+  console.log("inside useGetUserFollowing", following)
+  return { getUserFollowing, following, setFollowing, loading, error };
 };
 
 export default useGetUserFollowing;

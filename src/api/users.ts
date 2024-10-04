@@ -123,7 +123,7 @@ export const updateUser = async (
   }
 };
 
-export const followUser = async ({ userId, targetUserId, token }: { userId: string, targetUserId: string; token: string }) => {
+export const toggleFollowUser = async ({ userId, targetUserId, token }: { userId: string, targetUserId: string; token: string }) => {
   if (!token) {
     throw new Error("No token, user not authorized");
   }
@@ -138,10 +138,11 @@ export const followUser = async ({ userId, targetUserId, token }: { userId: stri
   });
 
   if (!res.ok) {
-    throw new Error("Failed to follow user");
+    throw new Error("Failed to update follow status");
   }
 
-  const { data } = await res.json();
+  const data = await res.json();
+  console.log("Response from backend:", data);
   return data;
 };
 
